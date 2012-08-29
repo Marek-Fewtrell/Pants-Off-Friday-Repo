@@ -4,11 +4,14 @@ public class SolarPanel {
 
 	private String serialNumber;
 	private String brand;
+	//Watts
 	private int pMax;
 	private int pMaxNOCT;
 	private int price;
-	private int length;
-	private int width;
+	//m
+	private double length;
+	private double width;
+	private double area;
 	
 	//default panel
 	public SolarPanel(){
@@ -17,12 +20,16 @@ public class SolarPanel {
 		pMax = 230;
 		pMaxNOCT = 175;
 		price = 450;
-		length = 1665;
-		width = 991;
+		length = 1.665;
+		width = 0.991;
+		area = length * width;
 	}
 	
 	public SolarPanel(String serialNumber){
 		//TODO get data from datastore
+		
+		
+		area = length * width;
 	}
 	
 	public String getSerialNumber(){
@@ -45,11 +52,15 @@ public class SolarPanel {
 		return price;
 	}
 	
-	public int getWidth(){
+	public double getWidth(){
 		return width;
 	}
 	
-	public int getLength(){
+	public double getLength(){
 		return length;
+	}
+	
+	public double getArea(){
+		return area;
 	}
 }

@@ -3,11 +3,13 @@ package project.server;
 public class Tariffs {
 	
 	private String supplierName;
-	private double tariff11;
-	//cents per day
-	private double tariff11SupplyCharge;
+	//cents per kW
+	private double tariff11;	
 	private double tariff33;
 	private double feedInTariff;
+	//cents per day
+	private double tariff11SupplyCharge;
+	//percent
 	private int annualTariffIncrease;
 	//default
 	public Tariffs(){
@@ -19,6 +21,7 @@ public class Tariffs {
 		//feed in tariff = 8c/kWh for <5kW inverters
 		//feedInTariff = 6c/kWh for <100kW inverters
 		feedInTariff = 8;	
+		annualTariffIncrease = 5;
 	}
 	
 	public Tariffs(String supplierName){
@@ -26,11 +29,11 @@ public class Tariffs {
 	}
 	
 	public double getNormalTariff(){
-		return normalTariff;
+		return tariff11;
 	}
 	
 	public double getOffPeakTariff(){
-		return offPeakTariff;
+		return tariff33;
 	}
 	
 	public double getFeedInTariff(){

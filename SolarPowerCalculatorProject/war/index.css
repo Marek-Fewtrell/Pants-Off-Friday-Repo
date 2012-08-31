@@ -14,7 +14,7 @@ body  {
 3. If font sizing is changed in differing amounts on each div instead of on the overall design (ie: #sidebar1 is given a 70% font size and #mainContent is given an 85% font size), this will proportionately change each of the divs overall size. You may want to adjust based on your final font sizing.
 */
 #container { 
-	width: 46em;  /* this width will create a container that will fit in an 800px browser window if text is left at browser default font sizes */
+	/*width: 46em;  /* this width will create a container that will fit in an 800px browser window if text is left at browser default font sizes */
 	background: #FFFFFF;
 	margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
 	border: 1px solid #000000;
@@ -35,15 +35,22 @@ body  {
 3. Space between the side of the div and the elements within it can be created by placing a left and right margin on those elements as seen in the ".twoColElsRtHdr #sidebar1 p" rule.
 */
 #sidebar1 {
-	float: right; 
+	float: left; 
 	width: 12em; /* since this element is floated, a width must be given */
 	background: #EBEBEB; /* the background color will be displayed for the length of the content in the column, but no further */
 	padding: 15px 0; /* top and bottom padding create visual space within this div */
 }
-#sidebar1 h3, .twoColElsRtHdr #sidebar1 p {
+
+#sidebar1 h3 {
+	text-align:center;
+}
+
+#sidebar1 a {
 	margin-left: 10px; /* the left and right margin should be given to every element that will be placed in the side columns */
 	margin-right: 10px;
 }
+
+
 
 /* Tips for mainContent:
 1. If you give this #mainContent div a font-size value different than the #sidebar1 div, the margins of the #mainContent div will be based on its font-size and the width of the #sidebar1 div will be based on its font-size. You may wish to adjust the values of these divs.

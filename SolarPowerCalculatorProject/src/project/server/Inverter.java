@@ -5,21 +5,21 @@ public class Inverter {
 	private String serialNumber;
 	private String brand;
 	private int price;
-	//Watts
-	private int pMax;
+	//kiloWatts
+	private double pMax;
 	//Volts
 	private int vMax;
-	//Watts
-	private int nomACOutput;
+	//kiloWatts
+	private double nomACOutput;
 	//percent
 	private double maxEfficiency;
 	//default 
 	public Inverter(){
 		brand = "SMA";
 		serialNumber = "SB1600TL";
-		pMax = 1700;
+		pMax = 1.700;
 		vMax = 600;
-		nomACOutput = 1600;
+		nomACOutput = 1.600;
 		maxEfficiency = 0.96;
 		price = 990;
 		

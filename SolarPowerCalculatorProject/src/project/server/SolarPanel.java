@@ -4,9 +4,9 @@ public class SolarPanel {
 
 	private String serialNumber;
 	private String brand;
-	//Watts
-	private int pMax;
-	private int pMaxNOCT;
+	//kiloWatts
+	private double pMax;
+	private double pMaxNOCT;
 	private int price;
 	//m
 	private double length;
@@ -17,8 +17,8 @@ public class SolarPanel {
 	public SolarPanel(){
 		serialNumber = "REC230PE";
 		brand = "REC";
-		pMax = 230;
-		pMaxNOCT = 175;
+		pMax = 0.230;
+		pMaxNOCT = 0.175;
 		price = 450;
 		length = 1.665;
 		width = 0.991;

@@ -54,9 +54,12 @@ public class Calculations {
 	}
 	
 	public double getDailySavings(int year){
+		//in cents
 		dailySavings = replacementGeneration * tariff11 + 
 				(this.getPowerGenerated(year) - replacementGeneration)
 				* feedInTariff;
+		//change to dollars
+		dailySavings = dailySavings/100;
 		return dailySavings;
 	}
 	//maybe just return a single value??

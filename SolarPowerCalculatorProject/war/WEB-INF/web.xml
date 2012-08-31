@@ -2,13 +2,13 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>project.server.GreetingServiceImpl</servlet-class>
+    <servlet-name>CalculatorServlet</servlet-name>
+    <servlet-class>project.server.CalculatorServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/solarpowercalculatorproject/greet</url-pattern>
+    <servlet-name>CalculatorServlet</servlet-name>
+    <url-pattern>/CaclulatorServlet</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

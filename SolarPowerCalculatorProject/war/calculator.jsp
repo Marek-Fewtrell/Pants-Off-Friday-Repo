@@ -10,7 +10,7 @@
 
 <h2>Calculator Input:</h2>
 
-<form id="form1" >
+<form method=post action='CalculatorServlet' id="form1" >
 
 <select name="solarPanel">
 <option>Select solar panel</option>

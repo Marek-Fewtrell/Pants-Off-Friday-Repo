@@ -12,6 +12,28 @@
 
 <form id="form1" >
 
+<select name="solarPanel">
+<option>Select solar panel</option>
+<option>REC230PE</option>
+</select></br>
+<label>Enter number of panels:</label>
+<input name="numPanels" maxlength=2></br>
+<select name="inverter">
+<option>Select inverter</option>
+<option>SB1600TL</option>
+</select></br>
+<label>Enter electricity used during day: (kW)</label>
+<input name="daytimeUsage"></br>
+<label>Enter efficiency loss due to panel location: (%)</label>
+<input name="efficiencyLoss" maxlength=2></br>
+<label>Enter postcode:</label>
+<input name="postcode" maxlength=4>
+<label>Enter suburb:</label>
+<input name="suburb"></br>
+<select name="energyProvider">
+<option>Select energy provider</option>
+<option>Origin</option>
+</select></br>
 <label><input /></label>
 <label>Rated power of the solar panel (W):</label><br/>
 <label>Last Quarter Bill</label><br/>

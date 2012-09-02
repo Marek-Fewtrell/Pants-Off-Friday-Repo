@@ -8,7 +8,7 @@
   
   <servlet-mapping>
     <servlet-name>CalculatorServlet</servlet-name>
-    <url-pattern>/CaclulatorServlet</url-pattern>
+    <url-pattern>/CalculatorServlet</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

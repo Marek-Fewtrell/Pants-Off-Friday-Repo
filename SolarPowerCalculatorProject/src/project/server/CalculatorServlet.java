@@ -12,7 +12,7 @@ public class CalculatorServlet extends HttpServlet{
 	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response){
-		String panel = request.getParameter("solarPanel");
+		/*String panel = request.getParameter("solarPanel");
 		String numPanels = request.getParameter("numPanels");
 		String inverter = request.getParameter("inverter");
 		double daytimeUsage = Double.parseDouble(request.getParameter("daytimeUsage"));
@@ -20,6 +20,8 @@ public class CalculatorServlet extends HttpServlet{
 		String postcode = request.getParameter("postcode");
 		String suburb = request.getParameter("suburb");
 		String energyProvider = request.getParameter("energyProvider");
+		String installationCost = request.getParameter("installationCost");
+		String interestRate = request.getParameter("interestRate");*/
 		HttpSession session = request.getSession(true);
 		session.setAttribute("solarPanel", request.getParameter("solarPanel"));
 		session.setAttribute("numPanels", request.getParameter("numPanels"));
@@ -29,6 +31,8 @@ public class CalculatorServlet extends HttpServlet{
 		session.setAttribute("postcode", request.getParameter("postcode"));
 		session.setAttribute("suburb", request.getParameter("suburb"));
 		session.setAttribute("energyProvider", request.getParameter("energyProvider"));
+		session.setAttribute("interestRate", request.getParameter("interestRate"));
+		session.setAttribute("installationCost", request.getParameter("installationCost"));
 		try {
 			//response.sendRedirect("/contact us.jsp");
 			response.sendRedirect("/powerGeneratedReport.jsp");

@@ -27,7 +27,10 @@
 			name="energyProvider">
 			<option>Select energy provider</option>
 			<option>Origin</option>
-		</select> <label><input /></label> <label>Rated power of the solar
+		</select> 
+		<label>Enter initial installation cost:</label><input name="installationCost">
+		<label>Enter interest rate: (%)</label><input name="interestRate">
+		<label>Rated power of the solar
 			panel (W):</label><br /> <label>Last Quarter Bill</label><br /> <label>Cost
 			per kWh</label><br /> <label>Cost of Avg energy bill</label><br /> <label></label><br />
 		<label>Roof Angle</label><br /> <label>Direction of intended

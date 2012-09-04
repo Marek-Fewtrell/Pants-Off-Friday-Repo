@@ -20,12 +20,18 @@
 	String energyProvider = (String)session.getAttribute("energyProvider");
 	Double daytimeUsage = Double.parseDouble((String)session.getAttribute("daytimeUsage"));
 	Double efficiencyLoss = Double.parseDouble((String)session.getAttribute("efficiencyLoss"));
+	Double installationCost = Double.parseDouble((String)session.getAttribute("installationCost"));
+	Double interestRate = Double.parseDouble((String)session.getAttribute("interestRate"));
 	out.print(session.getAttribute("solarPanel"));
 	out.print(session.getAttribute("energyProvider"));
 	Calculations calcs = new Calculations(solarPanel, numPanels, suburb, inverter, energyProvider, daytimeUsage, efficiencyLoss);	
 	double[] savings = new double[20];
-
 	savings = calcs.getCumulativeSavings(20);
+	double[] investment = new double [20];
+	investment[0] = installationCost;
+	for(int i=1; i<investment.length; i++){
+		investment[i] = investment[i-1]*(1+interestRate/100);
+	}
 	out.print("<table><tr><td>Year</td>");
 	for(int i=1; i<savings.length + 1; i++){
 		out.print("<td>" + i + "</td>");
@@ -42,6 +48,10 @@
 	out.print("</tr><tr><td>Yearly Savings</td>");
 	for (int i=0; i<savings.length; i++){
 		out.print("<td>" + savings[i] + "</td>");
+	}
+	out.print("</tr><tr><td>Investment Return</td>");
+	for(int i=0; i<investment.length; i++){
+		out.print("<td>" + investment[i] + "</td>");
 	}
 	out.print("</tr></table>");
 	%>

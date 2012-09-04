@@ -40,11 +40,11 @@ public class SolarPanel {
 		return brand;
 	}
 	
-	public int getPMax(){
+	public double getPMax(){
 		return pMax;
 	}
 	
-	public int getPMaxNOCT(){
+	public double getPMaxNOCT(){
 		return pMaxNOCT;
 	}
 	

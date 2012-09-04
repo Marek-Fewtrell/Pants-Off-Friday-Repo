@@ -6,7 +6,7 @@ public class Calculations {
 	private SolarPanel panel;
 	private SunData sunData;
 	private Tariffs tariffs;
-	private int systemPower;
+	private double systemPower;
 	private int numberPanels;
 	private double dailySavings;
 	private double orientationEfficiencyLoss;

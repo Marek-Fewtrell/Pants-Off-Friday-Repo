@@ -29,7 +29,7 @@ public class Inverter {
 		//TODO get data from datastore
 	}
 	
-	public int getPMax(){
+	public double getPMax(){
 		return pMax;
 	}
 	

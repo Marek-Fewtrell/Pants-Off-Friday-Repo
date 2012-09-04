@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import = "project.server.Calculations"%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,6 +12,39 @@
 <body>
 	<br />!----------Begin Body Area----------!
 	<br />
+	<%
+	String solarPanel = (String)session.getAttribute("solarPanel");
+	int numPanels = Integer.parseInt((String)session.getAttribute("numPanels"));
+	String suburb = (String)session.getAttribute("suburb");
+	String inverter = (String)session.getAttribute("inverter");
+	String energyProvider = (String)session.getAttribute("energyProvider");
+	Double daytimeUsage = Double.parseDouble((String)session.getAttribute("daytimeUsage"));
+	Double efficiencyLoss = Double.parseDouble((String)session.getAttribute("efficiencyLoss"));
+	out.print(session.getAttribute("solarPanel"));
+	out.print(session.getAttribute("energyProvider"));
+	Calculations calcs = new Calculations(solarPanel, numPanels, suburb, inverter, energyProvider, daytimeUsage, efficiencyLoss);	
+	double[] savings = new double[20];
+
+	savings = calcs.getCumulativeSavings(20);
+	out.print("<table><tr><td>Year</td>");
+	for(int i=1; i<savings.length + 1; i++){
+		out.print("<td>" + i + "</td>");
+	}
+	
+	out.print("</tr><tr><td>Daily Generation</td>");
+	for(int i=0; i<savings.length; i++){
+		out.print("<td>"+ calcs.getPowerGenerated(i) +"</td>");
+	}
+	out.print("</tr><tr><td>Yearly Generation</td>");
+	for(int i=0; i<savings.length; i++){
+		out.print("<td>"+ calcs.getPowerGenerated(i)*365.25 +"</td>");
+	}
+	out.print("</tr><tr><td>Yearly Savings</td>");
+	for (int i=0; i<savings.length; i++){
+		out.print("<td>" + savings[i] + "</td>");
+	}
+	out.print("</tr></table>");
+	%>
 	<h1>ENERGY GENERATION REPORT</h1>
 	<%
 	out.println("Thankyou for using Solar Power Calculator... <br/>");

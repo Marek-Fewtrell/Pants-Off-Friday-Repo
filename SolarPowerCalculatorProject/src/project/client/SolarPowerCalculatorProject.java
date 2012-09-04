@@ -58,7 +58,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		// We can add style names to widgets
 		sendButton.addStyleName("sendButton");
 
-		
 		vertPan.add(numPanels);
 		vertPan.add(panelSelect);
 		vertPan.add(inverter);
@@ -133,12 +132,12 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 			/**
 			 * Fired when the user types in the nameField.
-			 *//*
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					sendNameToServer();
-				}
-			}*/
+			 */
+			/*
+			 * public void onKeyUp(KeyUpEvent event) { if
+			 * (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+			 * sendNameToServer(); } }
+			 */
 
 			/**
 			 * Send the name from the nameField to the server and wait for a
@@ -157,7 +156,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				sendButton.setEnabled(false);
 				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
-				solarPowerService.SolarPowerServer(textToServer, new AsyncCallback<String>() {
+				solarPowerService.SolarPowerServer(textToServer,
+						new AsyncCallback<String>() {
 							public void onFailure(Throwable caught) {
 								// Show the RPC error message to the user
 								dialogBox
@@ -170,7 +170,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 							}
 
 							public void onSuccess(String result) {
-								dialogBox.setText("Connection with Server - Success");
+								dialogBox
+										.setText("Connection with Server - Success");
 								serverResponseLabel
 										.removeStyleName("serverResponseLabelError");
 								serverResponseLabel.setHTML(result);
@@ -184,6 +185,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		// Add a handler to send the name to the server
 		MyHandler handler = new MyHandler();
 		sendButton.addClickHandler(handler);
-		//nameField.addKeyUpHandler(handler);
+		// nameField.addKeyUpHandler(handler);
 	}
 }

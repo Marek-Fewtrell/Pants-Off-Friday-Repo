@@ -15,19 +15,19 @@
 		<select name="solarPanel">
 			<option>Select solar panel</option>
 			<option>REC230PE</option>
-		</select></br> <label>Enter number of panels:</label> <input name="numPanels"
-			maxlength=2></br> <select name="inverter">
+		</select> <label>Enter number of panels:</label> <input name="numPanels"
+			maxlength=2> <select name="inverter">
 			<option>Select inverter</option>
 			<option>SB1600TL</option>
-		</select></br> <label>Enter electricity used during day: (kW)</label> <input
-			name="daytimeUsage"></br> <label>Enter efficiency loss due
-			to panel location: (%)</label> <input name="efficiencyLoss" maxlength=2></br>
+		</select> <label>Enter electricity used during day: (kW)</label> <input
+			name="daytimeUsage"> <label>Enter efficiency loss due
+			to panel location: (%)</label> <input name="efficiencyLoss" maxlength=2>
 		<label>Enter postcode:</label> <input name="postcode" maxlength=4>
-		<label>Enter suburb:</label> <input name="suburb"></br> <select
+		<label>Enter suburb:</label> <input name="suburb"> <select
 			name="energyProvider">
 			<option>Select energy provider</option>
 			<option>Origin</option>
-		</select></br> <label><input /></label> <label>Rated power of the solar
+		</select> <label><input /></label> <label>Rated power of the solar
 			panel (W):</label><br /> <label>Last Quarter Bill</label><br /> <label>Cost
 			per kWh</label><br /> <label>Cost of Avg energy bill</label><br /> <label></label><br />
 		<label>Roof Angle</label><br /> <label>Direction of intended

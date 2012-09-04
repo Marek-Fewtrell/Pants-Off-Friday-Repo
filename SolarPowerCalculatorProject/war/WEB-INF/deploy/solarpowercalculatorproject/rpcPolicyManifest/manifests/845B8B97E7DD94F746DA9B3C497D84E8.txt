@@ -1,0 +1,2 @@
+serviceClass: project.client.SolarPowerService
+path: 02CBD524FC2FA2AC2A13E0BBEDC1A64C.gwt.rpc

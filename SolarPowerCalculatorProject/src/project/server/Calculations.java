@@ -21,7 +21,8 @@ public class Calculations {
 
 	
 	public Calculations(String panelNumber, int numberPanels, String suburb,
-			String inverterNumber, String energyCompany){
+			String inverterNumber, String energyCompany, Double dailyUsage, 
+			Double efficiencyLoss){
 		//TODO change all constructors later
 		inverter = new Inverter();
 		panel = new SolarPanel();
@@ -31,11 +32,11 @@ public class Calculations {
 		feedInTariff = tariffs.getFeedInTariff();
 		this.numberPanels = numberPanels;
 		//change to a calculated value
-		orientationEfficiencyLoss = 0.10;
+		orientationEfficiencyLoss = efficiencyLoss/100;
 		//find out if this is how it works
 		systemPower = inverter.getPMax();
 		//change this to user entered data
-		replacementGeneration = 4.5;
+		replacementGeneration = dailyUsage;
 		inverterEfficiency = inverter.getMaxEfficiency();
 		solarExposure = sunData.getSolarExposure();
 	}
@@ -54,12 +55,15 @@ public class Calculations {
 	}
 	
 	public double getDailySavings(int year){
-		//in cents
-		dailySavings = replacementGeneration * tariff11 + 
-				(this.getPowerGenerated(year) - replacementGeneration)
+		//in dollars
+		double power = this.getPowerGenerated(year);
+		if(replacementGeneration < power){
+			dailySavings = replacementGeneration * tariff11 + 
+				(power - replacementGeneration)
 				* feedInTariff;
-		//change to dollars
-		dailySavings = dailySavings/100;
+		}else{
+			dailySavings = power * tariff11;
+		}
 		return dailySavings;
 	}
 	//maybe just return a single value??

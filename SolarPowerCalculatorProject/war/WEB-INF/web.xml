@@ -11,6 +11,16 @@
     <url-pattern>/CalculatorServlet</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>SolarPowerServletImpl</servlet-name>
+    <servlet-class>project.server.SolarPowerServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>SolarPowerServletImpl</servlet-name>
+    <url-pattern>/solarpowercalculatorproject/calc</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

@@ -13,7 +13,7 @@ public class SolarPowerServiceImpl extends RemoteServiceServlet implements Solar
 	@Override
 	public String SolarPowerServer(String name) throws IllegalArgumentException {
 		
-		return "Sup Cunt: " + name;
+		return "Well Hello: " + name;
 	}
 
 	/**

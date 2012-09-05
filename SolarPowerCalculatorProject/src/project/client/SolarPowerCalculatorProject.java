@@ -4,8 +4,11 @@ import project.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -57,6 +60,41 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 		// We can add style names to widgets
 		sendButton.addStyleName("sendButton");
+
+		numPanels.addChangeHandler(new ChangeHandler() {
+
+			@Override
+			public void onChange(ChangeEvent event) {
+				Window.alert("Something");
+
+			}
+
+		});
+
+		class UpdatingHandler implements ChangeHandler {
+
+			private void asyncOutput() {
+				Window.alert("Holy crap it works!");
+			}
+
+			@Override
+			public void onChange(ChangeEvent event) {
+				asyncOutput();
+
+			}
+
+		}
+
+		UpdatingHandler hadle = new UpdatingHandler();
+
+		//numPanels.addChangeHandler(hadle);
+		panelSelect.addChangeHandler(hadle);
+		inverter.addChangeHandler(hadle);
+		daytimeUsage.addChangeHandler(hadle);
+		efficiencyLoss.addChangeHandler(hadle);
+		postcode.addChangeHandler(hadle);
+		suburb.addChangeHandler(hadle);
+		energyProvider.addChangeHandler(hadle);
 
 		vertPan.add(numPanels);
 		vertPan.add(panelSelect);

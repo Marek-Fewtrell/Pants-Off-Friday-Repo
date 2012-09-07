@@ -2,6 +2,7 @@ package project.server;
 
 public class Inverter {
 
+	private Database db;
 	private String serialNumber;
 	private String brand;
 	private int price;
@@ -26,7 +27,10 @@ public class Inverter {
 	}
 	
 	public Inverter(String serialNumber){
-		//TODO get data from datastore
+		db = new Database();
+		this.serialNumber = serialNumber;
+		pMax = db.getInverterPMax(serialNumber);
+		maxEfficiency = db.getInverterMaxEfficiency(serialNumber);
 	}
 	
 	public double getPMax(){

@@ -36,7 +36,6 @@ public class CalculatorServlet extends HttpServlet{
 		session.setAttribute("interestRate", request.getParameter("interestRate"));
 		session.setAttribute("installationCost", request.getParameter("installationCost"));
 		try {
-			//response.sendRedirect("/contact us.jsp");
 			response.sendRedirect("/powerGeneratedReport.jsp");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

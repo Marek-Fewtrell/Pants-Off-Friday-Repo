@@ -23,14 +23,14 @@ public class Calculations {
 	private double idealTilt;
 
 	
-	public Calculations(String panelNumber, int numberPanels, String suburb,
-			String inverterNumber, String energyCompany, Double dailyUsage, 
+	public Calculations(String panelNumber, int numberPanels, int postcode,
+			String inverterNumber, String energyCompany, double dailyUsage, 
 			int latitude, int tilt, int orientation){
 		//TODO change all constructors later
-		inverter = new Inverter();
+		inverter = new Inverter(inverterNumber);
 		panel = new SolarPanel();
-		sunData = new SunData();
-		tariffs = new Tariffs();
+		sunData = new SunData(postcode);
+		tariffs = new Tariffs(energyCompany);
 		tariff11 = tariffs.getNormalTariff();
 		feedInTariff = tariffs.getFeedInTariff();
 		this.numberPanels = numberPanels;
@@ -43,8 +43,14 @@ public class Calculations {
 		inverterEfficiency = inverter.getMaxEfficiency();
 		solarExposure = sunData.getSolarExposure();
 		idealTilt = latitude * IDEALANGLEFACTOR;
-		if((((tilt - idealTilt <= 5) && (tilt - idealTilt > 0))|| ((idealTilt - tilt <= 5) && (idealTilt - tilt > 0))) && ((orientation <= 10) && (orientation >= -10))){
+		if((((tilt - idealTilt <= 5) && (tilt - idealTilt > 0)) || 
+				((idealTilt - tilt <= 5) && (idealTilt - tilt > 0))) && 
+				((orientation <= 10) && (orientation >= -10))){
 			orientationEfficiencyLoss = 0;
+		}else if((((tilt - idealTilt <= 20) && (tilt - idealTilt > 0)) || 
+				((idealTilt - tilt <= 20) && (idealTilt - tilt > 0))) && 
+				((orientation <= 60) && (orientation >= -60))){
+			orientationEfficiencyLoss = 0.1;
 		}else{
 			orientationEfficiencyLoss = 1;
 		}

@@ -50,12 +50,14 @@ public class Database {
 		double tariff33 =  0.171545;
 		return tariff33;
 	}
-	
+	/*
+	 * this is a standard rate in queensland i believe
+	 * 
 	public double getFeedInTariff(String name){
 		double feedInTariff = 0.08;
 		return feedInTariff;
 	}
-	
+	*/
 	public double getAnnualTariffIncrease(String name){
 		double annualTariffIncrease = 5;
 		return annualTariffIncrease;

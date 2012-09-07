@@ -1,6 +1,7 @@
 package project.server;
 
 public class SunData {
+	private Database db;
 	//maybe string
 	private int postcode;
 	private String suburb;
@@ -17,10 +18,14 @@ public class SunData {
 		postcode = 4000;
 		suburb = "Brisbane";
 		solarExposure = 5.3;
+		latitude = 27;
 	}
 	
-	public SunData(int postcode, String suburb){
-		//TODO get solar exposure data from datastore
+	public SunData(int postcode){
+		db = new Database();
+		this.postcode = postcode;
+		solarExposure = db.getSolarExposure(postcode);
+		latitude = db.getLatitude(postcode);
 	}
 	
 	public double getSolarExposure(){

@@ -2,6 +2,7 @@ package project.server;
 
 public class Tariffs {
 	
+	private Database db;
 	private String supplierName;
 	//dollars per kW
 	private double tariff11;	
@@ -25,7 +26,10 @@ public class Tariffs {
 	}
 	
 	public Tariffs(String supplierName){
-		//TODO get data from datastore
+		db = new Database();
+		this.supplierName = supplierName;
+		tariff11 = db.getTariff11(supplierName);
+		tariff33 = db.getTariff33(supplierName);
 	}
 	
 	public double getNormalTariff(){

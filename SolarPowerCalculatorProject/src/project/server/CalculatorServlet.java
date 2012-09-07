@@ -27,7 +27,9 @@ public class CalculatorServlet extends HttpServlet{
 		session.setAttribute("numPanels", request.getParameter("numPanels"));
 		session.setAttribute("inverter", request.getParameter("inverter"));
 		session.setAttribute("daytimeUsage", request.getParameter("daytimeUsage"));
-		session.setAttribute("efficiencyLoss", request.getParameter("efficiencyLoss"));
+		session.setAttribute("tiltAngle", request.getParameter("tiltAngle"));
+		session.setAttribute("orientation", request.getParameter("orientation"));
+		session.setAttribute("latitude", request.getParameter("latitude"));
 		session.setAttribute("postcode", request.getParameter("postcode"));
 		session.setAttribute("suburb", request.getParameter("suburb"));
 		session.setAttribute("energyProvider", request.getParameter("energyProvider"));

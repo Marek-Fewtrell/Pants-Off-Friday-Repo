@@ -40,18 +40,40 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			.create(SolarPowerService.class);
 
 	final Button sendButton = new Button("Send");
-	final TextBox nameField = new TextBox();
+	//final TextBox nameField = new TextBox();
 	final TextBox numPanels = new TextBox();
 	final ListBox panelSelect = new ListBox();
-	final ListBox inverter = new ListBox();
+	final ListBox inverterSelect = new ListBox();
 	final TextBox daytimeUsage = new TextBox();
 	final TextBox efficiencyLoss = new TextBox();
 	final TextBox postcode = new TextBox();
 	final TextBox suburb = new TextBox();
 	final ListBox energyProvider = new ListBox();
+	final TextBox initInstalCost = new TextBox();
+	final TextBox interestRate = new TextBox();
+	
 	final Label errorLabel = new Label();
 	final VerticalPanel vertPan = new VerticalPanel();
-	final HorizontalPanel horizPan = new HorizontalPanel();
+	//final HorizontalPanel horizPan = new HorizontalPanel();
+	
+	final HorizontalPanel inputArea = new HorizontalPanel();
+	
+	final HorizontalPanel mainArea = new HorizontalPanel();
+	final HorizontalPanel calcMainInputArea = new HorizontalPanel();
+	final HorizontalPanel calcOutputArea = new HorizontalPanel();
+	
+	final Label lblNumPanels = new Label();
+	final Label lblPanelSelect = new Label(); 
+	final Label lblInverterSelect = new Label(); 
+	final Label lblDayTimeUsage = new Label(); 
+	final Label lblEfficiencyLoss = new Label();
+	final Label lblPostcode = new Label();
+	final Label lblSuburb = new Label();
+	final Label lblEnergyProvider = new Label();
+	final Label lblInitInstalCost = new Label();
+	final Label lblInterestRate = new Label();
+	
+	final Button outputbtn = new Button();
 
 	/**
 	 * This is the entry point method.
@@ -61,72 +83,112 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		// We can add style names to widgets
 		sendButton.addStyleName("sendButton");
 
-		numPanels.addChangeHandler(new ChangeHandler() {
-
+		/*numPanels.addChangeHandler(new ChangeHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
 				Window.alert("Something");
-
 			}
-
-		});
+		});*/
 
 		class UpdatingHandler implements ChangeHandler {
-
 			private void asyncOutput() {
 				Window.alert("Holy crap it works!");
 			}
-
 			@Override
 			public void onChange(ChangeEvent event) {
 				asyncOutput();
-
 			}
-
 		}
 
 		UpdatingHandler hadle = new UpdatingHandler();
 
-		//numPanels.addChangeHandler(hadle);
-		panelSelect.addChangeHandler(hadle);
-		inverter.addChangeHandler(hadle);
-		daytimeUsage.addChangeHandler(hadle);
-		efficiencyLoss.addChangeHandler(hadle);
-		postcode.addChangeHandler(hadle);
-		suburb.addChangeHandler(hadle);
-		energyProvider.addChangeHandler(hadle);
-
+		// Number of Panel Selection
+		numPanels.addChangeHandler(hadle);
+		vertPan.add(lblNumPanels);
 		vertPan.add(numPanels);
-		vertPan.add(panelSelect);
-		vertPan.add(inverter);
-		vertPan.add(daytimeUsage);
-		vertPan.add(efficiencyLoss);
-		vertPan.add(postcode);
-		vertPan.add(suburb);
-		vertPan.add(energyProvider);
-		horizPan.add(sendButton);
-		horizPan.add(errorLabel);
-
-		numPanels.setText("Insert Number Panels");
-		daytimeUsage.setText("Day Time Usage");
-		efficiencyLoss.setText("Efficiency Loss");
-		postcode.setText("PostCode");
-		suburb.setText("Suburb");
+		lblNumPanels.setText("Insert Number Panels");
+		
+		//Panel Selection
+		panelSelect.addChangeHandler(hadle);
 		panelSelect.addItem("REC230PE");
 		panelSelect.addItem("Second Pan");
 		panelSelect.setVisibleItemCount(2);
-
-		inverter.addItem("SB1600TL");
-		inverter.addItem("second Invert");
-
+		lblPanelSelect.setText("Panel Select");
+		vertPan.add(lblPanelSelect);
+		vertPan.add(panelSelect);
+		
+		//Inverter Selection
+		inverterSelect.addChangeHandler(hadle);
+		vertPan.add(lblInverterSelect);
+		vertPan.add(inverterSelect);
+		inverterSelect.addItem("SB1600TL");
+		inverterSelect.addItem("second Invert");
+		lblInverterSelect.setText("Inverter Select");
+		
+		//Day Time Usage
+		daytimeUsage.addChangeHandler(hadle);
+		vertPan.add(lblDayTimeUsage);
+		vertPan.add(daytimeUsage);
+		lblDayTimeUsage.setText("Day time Electricity usage: (kW)");
+		
+		//Efficiency Loss
+		efficiencyLoss.addChangeHandler(hadle);
+		vertPan.add(lblEfficiencyLoss);
+		vertPan.add(efficiencyLoss);
+		lblEfficiencyLoss.setText("Efficiency Loss");
+		
+		//Postcode
+		postcode.addChangeHandler(hadle);
+		vertPan.add(lblPostcode);
+		vertPan.add(postcode);
+		lblPostcode.setText("Postcode");
+		
+		//Suburb
+		suburb.addChangeHandler(hadle);
+		vertPan.add(lblSuburb);
+		vertPan.add(suburb);
+		lblSuburb.setText("Suburb");
+		
+		//Energy Provider
+		energyProvider.addChangeHandler(hadle);
+		vertPan.add(lblEnergyProvider);
+		vertPan.add(energyProvider);
 		energyProvider.addItem("Origin");
 		energyProvider.addItem("Second Prov");
+		lblEnergyProvider.setText("Energy Provider");
+		
+		//Initial Installation Cost
+		initInstalCost.addChangeHandler(hadle);
+		vertPan.add(lblInitInstalCost);
+		vertPan.add(initInstalCost);
+		lblInitInstalCost.setText("Initial Install Cost");
+		
+		//Interest Rate 
+		interestRate.addChangeHandler(hadle);
+		vertPan.add(lblInterestRate);
+		vertPan.add(interestRate);
+		lblInterestRate.setText("Interest Rate");
+		
+		vertPan.add(sendButton);
+		vertPan.add(errorLabel);
 
+		inputArea.add(vertPan);
+		//inputArea.add(horizPan);
+		
+		calcMainInputArea.add(inputArea);
+		
+		mainArea.add(calcMainInputArea);
+		mainArea.add(calcOutputArea);
+		
 		// Add the Panel to the RootPanel
 		// Use RootPanel.get() to get the entire body element
-		RootPanel.get("CalInputs").add(vertPan);
-		RootPanel.get("CalOther").add(horizPan);
+		RootPanel.get("CalInputs").add(mainArea);
+		//RootPanel.get("CalInputs").add(calcOutputArea);
 
+		outputbtn.setText("Output");
+		calcOutputArea.add(outputbtn);
+		calcOutputArea.setVisible(false);
+		
 		// Focus the cursor on the first field when the app loads
 		numPanels.setFocus(true);
 		numPanels.selectAll();
@@ -166,6 +228,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			 */
 			public void onClick(ClickEvent event) {
 				sendNameToServer();
+				calcOutputArea.setVisible(true);
 			}
 
 			/**

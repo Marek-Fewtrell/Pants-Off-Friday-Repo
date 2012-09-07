@@ -18,11 +18,14 @@ public class Calculations {
 	private double replacementGeneration;
 	private static double DAYSPERYEAR = 365.25;
 	private double [] cumulative;
+	private static double YEARLYEFFICIENCYLOSS = 0.007;
+	private static double IDEALANGLEFACTOR = 0.87; //qld
+	private double idealTilt;
 
 	
 	public Calculations(String panelNumber, int numberPanels, String suburb,
 			String inverterNumber, String energyCompany, Double dailyUsage, 
-			Double efficiencyLoss){
+			int latitude, int tilt, int orientation){
 		//TODO change all constructors later
 		inverter = new Inverter();
 		panel = new SolarPanel();
@@ -32,13 +35,22 @@ public class Calculations {
 		feedInTariff = tariffs.getFeedInTariff();
 		this.numberPanels = numberPanels;
 		//change to a calculated value
-		orientationEfficiencyLoss = efficiencyLoss/100;
+		//orientationEfficiencyLoss = efficiencyLoss/100;
 		//find out if this is how it works
 		systemPower = inverter.getPMax();
 		//change this to user entered data
 		replacementGeneration = dailyUsage;
 		inverterEfficiency = inverter.getMaxEfficiency();
 		solarExposure = sunData.getSolarExposure();
+		idealTilt = latitude * IDEALANGLEFACTOR;
+		if((((tilt - idealTilt <= 5) && (tilt - idealTilt > 0))|| ((idealTilt - tilt <= 5) && (idealTilt - tilt > 0))) && ((orientation <= 10) && (orientation >= -10))){
+			orientationEfficiencyLoss = 0;
+		}else{
+			orientationEfficiencyLoss = 1;
+		}
+		
+		
+		
 	}
 	//use year to adjust efficiency
 	public double getPowerGenerated(int year){
@@ -50,7 +62,8 @@ public class Calculations {
 		//daily generation
 		//needs verification and solar panel age efficiency loss
 		powerGenerated = systemPower * (1 - orientationEfficiencyLoss) * 
-				inverterEfficiency * solarExposure;
+				(1 - YEARLYEFFICIENCYLOSS * (year - 1)) * inverterEfficiency *
+				solarExposure;
 		return powerGenerated;
 	}
 	

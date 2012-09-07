@@ -1,0 +1,19 @@
+/* Generated Output header row */
+.generListHeader {
+  background-color: #2062B8;
+  color: white;
+  font-style: italic;
+}
+
+/* Generated Output flex table */
+.generList {
+  border: 1px solid silver;
+  padding: 2px;
+  margin-bottom:6px;
+}
+
+/* Generated Output Price and Change fields */
+.generListNumericColumn {
+  text-align: right;
+  width:4em;
+}

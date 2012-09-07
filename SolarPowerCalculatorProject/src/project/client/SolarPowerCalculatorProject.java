@@ -1,5 +1,7 @@
 package project.client;
 
+import java.util.ArrayList;
+
 import project.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -12,6 +14,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -73,7 +76,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	final Label lblInitInstalCost = new Label();
 	final Label lblInterestRate = new Label();
 	
-	final Button outputbtn = new Button();
+	final FlexTable generatedTable = new FlexTable();
 
 	/**
 	 * This is the entry point method.
@@ -183,10 +186,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		// Add the Panel to the RootPanel
 		// Use RootPanel.get() to get the entire body element
 		RootPanel.get("CalInputs").add(mainArea);
-		//RootPanel.get("CalInputs").add(calcOutputArea);
 
-		outputbtn.setText("Output");
-		calcOutputArea.add(outputbtn);
 		calcOutputArea.setVisible(false);
 		
 		// Focus the cursor on the first field when the app loads
@@ -247,17 +247,28 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			private void sendNameToServer() {
 				// First, we validate the input.
 				errorLabel.setText("");
-				String textToServer = numPanels.getText();
-				if (!FieldVerifier.isValidName(textToServer)) {
+				ArrayList <String> stuffToServer = new ArrayList<String>(); 
+				stuffToServer.add(numPanels.getText());
+				stuffToServer.add(panelSelect.getItemText(panelSelect.getSelectedIndex()));
+				stuffToServer.add(inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
+				stuffToServer.add(daytimeUsage.getText());
+				stuffToServer.add(efficiencyLoss.getText());
+				stuffToServer.add(postcode.getText());
+				stuffToServer.add(suburb.getText());
+				stuffToServer.add(energyProvider.getItemText(energyProvider.getSelectedIndex()));
+				stuffToServer.add(initInstalCost.getText());
+				stuffToServer.add(interestRate.getText());
+				
+				String asdf = new String();
+				/*if (!FieldVerifier.isValidName(textToServer)) {
 					errorLabel.setText("Please enter at least four characters");
 					return;
-				}
+				}*/
 
 				// Then, we send the input to the server.
 				sendButton.setEnabled(false);
-				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
-				solarPowerService.SolarPowerServer(textToServer,
+				solarPowerService.SolarPowerServer(stuffToServer,
 						new AsyncCallback<String>() {
 							public void onFailure(Throwable caught) {
 								// Show the RPC error message to the user
@@ -278,6 +289,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 								serverResponseLabel.setHTML(result);
 								dialogBox.center();
 								closeButton.setFocus(true);
+								generatingOutput();
 							}
 						});
 			}
@@ -288,4 +300,38 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		sendButton.addClickHandler(handler);
 		// nameField.addKeyUpHandler(handler);
 	}
+	
+	private void generatingOutput() {
+		calcOutputArea.add(generatedTable);
+		
+		generatedTable.setCellPadding(6);
+		generatedTable.getColumnFormatter().addStyleName(0, "generListHeader");
+		generatedTable.addStyleName("generList");
+		generatedTable.getCellFormatter().addStyleName(0, 1, "generListNumericColumn");
+		//generatedTable.getCellFormatter().addStyleName(0, 2, "generListNumericColumn");
+		
+		//Create table row names for data
+		generatedTable.setText(0, 0, "Year");
+		generatedTable.setText(1, 0, "Daily Generation");
+		generatedTable.setText(2, 0, "Yearly Generation");
+		generatedTable.setText(3, 0, "Yearly Savings");
+		generatedTable.setText(4, 0, "Investment Return");
+		
+		generatedTable.setText(0, 1, "1");
+		generatedTable.setText(1, 1, "12.1");
+		generatedTable.setText(2, 1, "123");
+		generatedTable.setText(3, 1, "321");
+		generatedTable.setText(4, 1, "6");
+		
+		generatedTable.setText(0, 2, "1");
+		generatedTable.setText(1, 2, "12.1");
+		generatedTable.setText(2, 2, "123");
+		generatedTable.setText(3, 2, "321");
+		generatedTable.setText(4, 2, "6");
+		
+		generatedTable.getCellFormatter().addStyleName(0, 1, "generListNumericColumn");
+		generatedTable.getCellFormatter().addStyleName(1, 2, "generListNumericColumn");
+		    
+	}
+	
 }

@@ -1,5 +1,7 @@
 package project.server;
 
+import java.util.ArrayList;
+
 import project.client.SolarPowerService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -11,9 +13,16 @@ public class SolarPowerServiceImpl extends RemoteServiceServlet implements Solar
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public String SolarPowerServer(String name) throws IllegalArgumentException {
+	public String SolarPowerServer(ArrayList<String> calcumalations) throws IllegalArgumentException {
 		
-		return "Well Hello: " + name;
+		//Calculations calcs = new Calculations(solarPanel, numPanels, suburb, inverter, energyProvider, daytimeUsage, efficiencyLoss);
+		
+		
+		
+		
+		
+		
+		return "Well Hello: ";
 	}
 
 	/**

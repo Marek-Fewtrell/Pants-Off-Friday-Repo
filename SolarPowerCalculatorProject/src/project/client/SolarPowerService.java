@@ -1,5 +1,7 @@
 package project.client;
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -8,6 +10,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("calc")
 public interface SolarPowerService extends RemoteService {
-	String SolarPowerServer(String name) throws IllegalArgumentException;
+	String SolarPowerServer(ArrayList<String> calcumalations) throws IllegalArgumentException;
 }
 

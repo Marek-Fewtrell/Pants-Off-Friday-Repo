@@ -19,12 +19,15 @@
 	String inverter = (String)session.getAttribute("inverter");
 	String energyProvider = (String)session.getAttribute("energyProvider");
 	Double daytimeUsage = Double.parseDouble((String)session.getAttribute("daytimeUsage"));
-	Double efficiencyLoss = Double.parseDouble((String)session.getAttribute("efficiencyLoss"));
+	//Double efficiencyLoss = Double.parseDouble((String)session.getAttribute("efficiencyLoss"));
 	Double installationCost = Double.parseDouble((String)session.getAttribute("installationCost"));
 	Double interestRate = Double.parseDouble((String)session.getAttribute("interestRate"));
+	int latitude = Integer.parseInt((String)session.getAttribute("latitude"));
+	int tilt = Integer.parseInt((String)session.getAttribute("tiltAngle"));
+	int orientation = Integer.parseInt((String)session.getAttribute("orientation"));
 	out.print(session.getAttribute("solarPanel"));
 	out.print(session.getAttribute("energyProvider"));
-	Calculations calcs = new Calculations(solarPanel, numPanels, suburb, inverter, energyProvider, daytimeUsage, efficiencyLoss);	
+	Calculations calcs = new Calculations(solarPanel, numPanels, suburb, inverter, energyProvider, daytimeUsage, latitude, tilt, orientation);	
 	double[] savings = new double[20];
 	savings = calcs.getCumulativeSavings(20);
 	double[] investment = new double [20];

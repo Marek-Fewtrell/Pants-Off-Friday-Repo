@@ -20,8 +20,9 @@
 			<option>Select inverter</option>
 			<option>SB1600TL</option>
 		</select> <label>Enter electricity used during day: (kW)</label> <input
-			name="daytimeUsage"> <label>Enter efficiency loss due
-			to panel location: (%)</label> <input name="efficiencyLoss" maxlength=2>
+			name="daytimeUsage"> <label>Enter tilt angle:</label> <input name="tiltAngle" maxlength=2>
+		<label>Enter direction panel is facing: (degrees)</label><input name = "orientation">
+		<label>Enter latitude: (degrees)</label><input name = "latitude">
 		<label>Enter postcode:</label> <input name="postcode" maxlength=4>
 		<label>Enter suburb:</label> <input name="suburb"> <select
 			name="energyProvider">

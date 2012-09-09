@@ -60,8 +60,8 @@ body  {
 3. To avoid float drop, you may need to test to determine the approximate maximum image/element size since this layout is based on the user's font sizing combined with the values you set. However, if the user has their browser font size set lower than normal, less space will be available in the #mainContent div than you may see on testing.
 4. In the Internet Explorer Conditional Comment below, the zoom property is used to give the mainContent "hasLayout." This avoids several IE-specific bugs that may occur.
 */
-#mainContent {
-    margin: 0 13em 0 10px; /* the left margin will look best if you match the padding amount to the header and footer. */
+#CalInputs {
+    margin: 0 13em 0 13em; /* the left margin will look best if you match the padding amount to the header and footer. */
     min-height:30em;
 } 
 #footer { 

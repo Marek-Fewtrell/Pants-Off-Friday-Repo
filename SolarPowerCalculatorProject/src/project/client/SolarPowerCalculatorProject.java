@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -17,6 +18,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -80,7 +82,10 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	final Label lblpanDirection = new Label();
 	final Label lbllatitude = new Label();
 	
+	final ScrollPanel outputstuf = new ScrollPanel();
 	final FlexTable generatedTable= new FlexTable();
+	
+	final Button autoFill = new Button("AutoFill");
 
 	/**
 	 * This is the entry point method.
@@ -90,12 +95,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		// We can add style names to widgets
 		sendButton.addStyleName("sendButton");
 
-		/*numPanels.addChangeHandler(new ChangeHandler() {
-			@Override
-			public void onChange(ChangeEvent event) {
-				Window.alert("Something");
-			}
-		});*/
 
 		class UpdatingHandler implements ChangeHandler {
 			private void asyncOutput() {
@@ -195,6 +194,23 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		lblInterestRate.setText("Interest Rate");
 		
 		vertPan.add(sendButton);
+		vertPan.add(autoFill);
+		autoFill.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Window.alert("AutoFilled");
+				numPanels.setText("5");
+				daytimeUsage.setText("123");
+				efficiencyLoss.setText("23");
+				postcode.setText("4053");
+				suburb.setText("Stafford");
+				initInstalCost.setText("300");
+				interestRate.setText("2.4");
+				tiltAngle.setText("30");
+				panDirection.setText("13");
+				latitude.setText("24");
+			}
+		});
 		vertPan.add(errorLabel);
 
 		inputArea.add(vertPan);
@@ -357,8 +373,10 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	}
 	
 	private void generatingOutput(ArrayList<String> result) {
-		
-		calcOutputArea.add(generatedTable);
+		outputstuf.add(generatedTable);
+		outputstuf.setAlwaysShowScrollBars(true);
+		outputstuf.setWidth("50%");
+		calcOutputArea.add(outputstuf);
 		
 		generatedTable.setCellPadding(6);
 		generatedTable.getColumnFormatter().addStyleName(0, "generListHeader");

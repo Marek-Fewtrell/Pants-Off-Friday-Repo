@@ -27,8 +27,11 @@ for (String bat : energyProviders){
 }
 
 	System.out.println(shit);
-
-
+	System.out.println("Please enter the name of the energy supplier");
+	supplierName = in.nextLine();
+	System.out.println("Please enter the Tariff33");
+	String tariff33 = in.nextLine();
+	new_Database.setTariff33(supplierName, Double.parseDouble(tariff33), new_Database.getTariff11(supplierName));
 //new_Database.setTariff11(supplierName, Double.parseDouble(tariff11));
 %>
 </body>

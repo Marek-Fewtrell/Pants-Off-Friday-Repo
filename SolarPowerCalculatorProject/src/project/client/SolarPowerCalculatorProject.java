@@ -288,8 +288,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				ArrayList <String> stuffToServer = new ArrayList<String>(); 
 				stuffToServer.add(panelSelect.getItemText(panelSelect.getSelectedIndex()));
 				stuffToServer.add(numPanels.getText());
-				stuffToServer.add(suburb.getText());
-				//stuffToServer.add(postcode.getText());
+				stuffToServer.add(postcode.getText());
 				stuffToServer.add(inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
 				stuffToServer.add(energyProvider.getItemText(energyProvider.getSelectedIndex()));
 				stuffToServer.add(daytimeUsage.getText());

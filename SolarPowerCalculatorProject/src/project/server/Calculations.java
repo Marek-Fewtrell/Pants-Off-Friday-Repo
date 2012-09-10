@@ -26,13 +26,13 @@ public class Calculations {
 	private double idealTilt;
 
 	
-	public Calculations(String panelNumber, int numberPanels, String suburb,
+	public Calculations(String panelNumber, int numberPanels, int postcode,
 			String inverterNumber, String energyCompany, double dailyUsage, 
 			int latitude, int tilt, int orientation){
 		//TODO change all constructors later
 		inverter = new Inverter(inverterNumber);
 		panel = new SolarPanel();
-		sunData = new SunData(suburb);
+		sunData = new SunData(postcode);
 		tariffs = new Tariffs(energyCompany);
 		tariff11 = tariffs.getNormalTariff();
 		feedInTariff = tariffs.getFeedInTariff();

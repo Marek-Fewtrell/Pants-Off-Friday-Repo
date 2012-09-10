@@ -1,7 +1,5 @@
 package project.server;
 
-
-
 import java.util.ArrayList;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -43,6 +41,12 @@ public class Database {
 	
 	/*-------------------------------------------------------------*/
 						  /*start Tariff*/
+	public void setTariff11(String name, double price){
+		Entity A_DS_Tariff11 = new Entity("DS_Tariff11", name);
+		A_DS_Tariff11.setProperty("Price", price);
+		datastore.put(A_DS_Tariff11);
+	}
+	
 	public double getTariff11(String name){
 		double tariff11 = 0.253781;
 		return tariff11;
@@ -58,10 +62,6 @@ public class Database {
 		return tariff33;
 	}
 	
-//	public double getFeedInTariff(String name){
-//		double feedInTariff = 0.08;
-//		return feedInTariff;
-//	}
 	
 	public double getAnnualTariffIncrease(String name){
 		double annualTariffIncrease = 5;

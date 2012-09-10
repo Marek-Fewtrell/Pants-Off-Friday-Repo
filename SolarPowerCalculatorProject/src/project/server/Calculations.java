@@ -16,6 +16,9 @@ public class Calculations {
 	private double tariff11;
 	private double feedInTariff;
 	private double replacementGeneration;
+	private int latitude;
+	private int tilt;
+	private int orientation;
 	private static double DAYSPERYEAR = 365.25;
 	private double [] cumulative;
 	private static double YEARLYEFFICIENCYLOSS = 0.007;
@@ -42,14 +45,16 @@ public class Calculations {
 		replacementGeneration = dailyUsage;
 		inverterEfficiency = inverter.getMaxEfficiency();
 		solarExposure = sunData.getSolarExposure();
-		idealTilt = latitude * IDEALANGLEFACTOR;
-		if((((tilt - idealTilt <= 5) && (tilt - idealTilt > 0)) || 
-				((idealTilt - tilt <= 5) && (idealTilt - tilt > 0))) && 
-				((orientation <= 10) && (orientation >= -10))){
+		this.latitude = Math.abs(latitude);
+		this.tilt = Math.abs(tilt);
+		this.orientation = Math.abs(orientation);
+		idealTilt = this.latitude * IDEALANGLEFACTOR;
+		
+		if((Math.abs(tilt - idealTilt) <= 5) && 
+				(Math.abs(orientation) <= 10)){
 			orientationEfficiencyLoss = 0;
-		}else if((((tilt - idealTilt <= 20) && (tilt - idealTilt > 0)) || 
-				((idealTilt - tilt <= 20) && (idealTilt - tilt > 0))) && 
-				((orientation <= 60) && (orientation >= -60))){
+		}else if((Math.abs(tilt - idealTilt) <= 20) && 
+				(Math.abs(orientation) <= 60)){
 			orientationEfficiencyLoss = 0.1;
 		}else{
 			orientationEfficiencyLoss = 1;

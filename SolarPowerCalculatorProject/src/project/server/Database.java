@@ -42,13 +42,20 @@ public class Database {
 	/*-------------------------------------------------------------*/
 						  /*start Tariff*/
 	public void setTariff11(String name, double price){
-		Entity A_DS_Tariff11 = new Entity("DS_Tariff11", name);
-		A_DS_Tariff11.setProperty("Price", price);
+		Entity A_DS_Tariff11 = new Entity("Companies", name);
+		A_DS_Tariff11.setProperty("Price11", price);
 		datastore.put(A_DS_Tariff11);
 	}
 	
 	public double getTariff11(String name){
-		double tariff11 = 0.253781;
+		double tariff11 = 0;
+		Query q = new Query("Companies");
+		PreparedQuery pq = datastore.prepare(q);
+		for (Entity result : pq.asIterable()) {
+			if(result.getKey().getName().equals(name)) {
+				tariff11 = (Double) result.getProperty("Price11");
+			}
+	}
 		return tariff11;
 	}
 	
@@ -70,10 +77,14 @@ public class Database {
 	
 	public ArrayList<String> getAllEnergyProviders(){
 		ArrayList<String> energyProviders = new ArrayList<String>();
-		energyProviders.add(0, "Origin");
-		energyProviders.add(1, "Energex");
-		energyProviders.add(2, "Red");
-		energyProviders.add(3, "AGL");
+		
+		Query q = new Query("Companies");
+		PreparedQuery pq = datastore.prepare(q);
+		int counter = 0;
+		for (Entity result : pq.asIterable()) {
+			energyProviders.add(counter, result.getKey().getName());
+			counter++;
+	}
 		return energyProviders;
 	}
 					    	/*end Tariff*/

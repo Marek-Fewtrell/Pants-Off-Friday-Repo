@@ -21,11 +21,14 @@ public class SunData {
 		latitude = 27;
 	}
 	
-	public SunData(int postcode){
+	public SunData(String suburb){
 		db = new Database();
 		this.postcode = postcode;
-		solarExposure = db.getSolarExposure(postcode);
-		latitude = db.getLatitude(postcode);
+		//
+		//
+		//
+		solarExposure = db.getSolarExposure(suburb);
+		latitude = db.getLatitude(suburb);
 	}
 	
 	public double getSolarExposure(){

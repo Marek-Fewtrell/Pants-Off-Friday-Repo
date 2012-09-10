@@ -36,6 +36,13 @@ public class Database {
 //		return width;
 //	}
 	
+	
+	
+	
+	
+	
+	/*-------------------------------------------------------------*/
+						  /*start Tariff*/
 	public double getTariff11(String name){
 		double tariff11 = 0.253781;
 		return tariff11;
@@ -50,14 +57,12 @@ public class Database {
 		double tariff33 =  0.171545;
 		return tariff33;
 	}
-	/*
-	 * this is a standard rate in queensland i believe
-	 * 
-	public double getFeedInTariff(String name){
-		double feedInTariff = 0.08;
-		return feedInTariff;
-	}
-	*/
+	
+//	public double getFeedInTariff(String name){
+//		double feedInTariff = 0.08;
+//		return feedInTariff;
+//	}
+	
 	public double getAnnualTariffIncrease(String name){
 		double annualTariffIncrease = 5;
 		return annualTariffIncrease;
@@ -71,7 +76,13 @@ public class Database {
 		energyProviders.add(3, "AGL");
 		return energyProviders;
 	}
+					    	/*end Tariff*/
+	/*-------------------------------------------------------------*/
+	 
 	
+	
+	/*-------------------------------------------------------------*/
+	                     /*start sun data*/
 	public ArrayList<String> getAllSuburbs(){
 		ArrayList<String> suburbs = new ArrayList<String>();
 		suburbs.add(0, "Chermside");
@@ -90,7 +101,13 @@ public class Database {
 		int latitude = 27;
 		return latitude;
 	}
+	                       /*end Tariff*/
+	/*-------------------------------------------------------------*/
+
 	
+	
+	/*-------------------------------------------------------------*/
+                         /*start inverter*/
 	public ArrayList<String> getInverterSerialNumberByBrand(String brand){
 		ArrayList<String> serialNumbers = new ArrayList<String>();
 		serialNumbers.add(0, "dksh1234");
@@ -119,5 +136,71 @@ public class Database {
 		return maxEfficiency;
 	}
 	
+	public double getInverterPrice(String serial){
+		double price = 990;
+		return price;
+	}
+	
+	public double getInverterNomACOutput(String serial){
+		double nomACOutput = 1.600;
+		return nomACOutput;
+	}
+	
+	public double getInverterVMax(String serial){
+		double vMax = 600;
+		return vMax;
+	}
+	                      /*end inverter*/
+	/*-------------------------------------------------------------*/
+  
+	 
+	
+	/*-------------------------------------------------------------*/
+                           /*start panel*/
+	public ArrayList<String> getSolarPanelSerialNumberByBrand(String brand){
+		ArrayList<String> serialNumbers = new ArrayList<String>();
+		serialNumbers.add(0, "poiu0987");
+		serialNumbers.add(1, "hgfd8765");
+		serialNumbers.add(2, "vbnm4567");
+		serialNumbers.add(3, "defr3856");
+		return serialNumbers;
+	}
+	
+	public ArrayList<String> getAllSolarPanelBrands(){
+		ArrayList<String> brands = new ArrayList<String>();
+		brands.add(0, "MadSun");
+		brands.add(1, "hotpanel");
+		brands.add(2, "shiny energy");
+		brands.add(3, "turn me on sun");
+		return brands;
+	}
+	
+	public double getPanelPMax(String serial){
+		double pMax = 0.230;
+		return pMax;
+	}
+	
+	public double getPanelNOCT(String serial){
+		double pMaxNOCT = 0.175;
+		return pMaxNOCT;
+	}
+	
+	public double getPanelPrice(String serial){
+		double price = 450;
+		return price;
+	}
+	
+	public double getPanelLength(String serial){
+		double length = 1.665;
+		return length;
+	}
+	
+	public double getPanelWidth(String serial){
+		double width = 0.991;
+		return width;
+	}
+                             /*end panel*/
+	/*-------------------------------------------------------------*/
+
 	
 }

@@ -1,7 +1,7 @@
 package project.server;
 
 public class Tariffs {
-	
+	//
 	private Database db;
 	private String supplierName;
 	//dollars per kW

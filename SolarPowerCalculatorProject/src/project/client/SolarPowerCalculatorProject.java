@@ -221,6 +221,27 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		mainArea.add(calcMainInputArea);
 		mainArea.add(calcOutputArea);
 		
+		
+		//**Start output table**
+		outputstuf.add(generatedTable);
+		outputstuf.setAlwaysShowScrollBars(true);
+		outputstuf.setWidth("50%");
+		calcOutputArea.add(outputstuf);
+		
+		generatedTable.setCellPadding(6);
+		generatedTable.getColumnFormatter().addStyleName(0, "generListHeader");
+		generatedTable.addStyleName("generList");
+		generatedTable.getCellFormatter().addStyleName(0, 1, "generListNumericColumn");
+		//generatedTable.getCellFormatter().addStyleName(0, 2, "generListNumericColumn");
+		
+		//Create table row names for data
+		generatedTable.setText(0, 0, "Year");
+		generatedTable.setText(1, 0, "Daily Generation");
+		generatedTable.setText(2, 0, "Yearly Generation");
+		generatedTable.setText(3, 0, "Yearly Savings");
+		generatedTable.setText(4, 0, "Investment Return");
+		//**End output table**
+		
 		// Add the Panel to the RootPanel
 		// Use RootPanel.get() to get the entire body element
 		RootPanel.get("CalInputs").add(mainArea);
@@ -231,6 +252,9 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		numPanels.setFocus(true);
 		numPanels.selectAll();
 
+		
+		
+		
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
 		dialogBox.setText("Remote Procedure Call");
@@ -293,15 +317,17 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				stuffToServer.add(inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
 				stuffToServer.add(energyProvider.getItemText(energyProvider.getSelectedIndex()));
 				stuffToServer.add(daytimeUsage.getText());
-				stuffToServer.add(latitude.getText());
+				//stuffToServer.add(latitude.getText());
 				stuffToServer.add(tiltAngle.getText());
 				stuffToServer.add(panDirection.getText());
-				stuffToServer.add(initInstalCost.getText());
-				stuffToServer.add(interestRate.getText());
+				//stuffToServer.add(initInstalCost.getText());
+				//stuffToServer.add(interestRate.getText());
 				
-				//stuffToServer.add(efficiencyLoss.getText());
+//				String panelNumber, int numberPanels, String suburb,
+//				String inverterNumber, String energyCompany, double dailyUsage, 
+//				int tilt, int orientation
 				
-				//String asdf = new String();
+				
 				/*if (!FieldVerifier.isValidName(textToServer)) {
 					errorLabel.setText("Please enter at least four characters");
 					return;
@@ -374,23 +400,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	}
 	
 	private void generatingOutput(ArrayList<String> result) {
-		outputstuf.add(generatedTable);
-		outputstuf.setAlwaysShowScrollBars(true);
-		outputstuf.setWidth("50%");
-		calcOutputArea.add(outputstuf);
 		
-		generatedTable.setCellPadding(6);
-		generatedTable.getColumnFormatter().addStyleName(0, "generListHeader");
-		generatedTable.addStyleName("generList");
-		generatedTable.getCellFormatter().addStyleName(0, 1, "generListNumericColumn");
-		//generatedTable.getCellFormatter().addStyleName(0, 2, "generListNumericColumn");
-		
-		//Create table row names for data
-		generatedTable.setText(0, 0, "Year");
-		generatedTable.setText(1, 0, "Daily Generation");
-		generatedTable.setText(2, 0, "Yearly Generation");
-		generatedTable.setText(3, 0, "Yearly Savings");
-		generatedTable.setText(4, 0, "Investment Return");
 		
 		//Year
 		for (int i=0; i<20; i++) {

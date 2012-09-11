@@ -1,7 +1,9 @@
 package project.server;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import project.client.CalcException;
 import project.client.CalculationsService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -13,12 +15,22 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public static final String decFormat = "#.##";
+	
 	@Override
-	public ArrayList<String> CalculationsServer(ArrayList<String> asd) throws IllegalArgumentException {
+	public ArrayList<String> CalculationsServer(ArrayList<String> asd) throws CalcException {
 		
-		Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), asd.get(2), asd.get(3), asd.get(4), Double.parseDouble(asd.get(5)), 
-				Integer.parseInt(asd.get(7)), Integer.parseInt(asd.get(8)));
+		if (asd.isEmpty() || asd.get(0) == null || asd.get(0).isEmpty()) {
+			throw new CalcException("Stuff is null");
+		}
 		
+//		Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), Integer.parseInt(asd.get(2)), asd.get(3), asd.get(4), Double.parseDouble(asd.get(5)), 
+//				Integer.parseInt(asd.get(6)), Integer.parseInt(asd.get(7)), Integer.parseInt(asd.get(8)));
+		
+		Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), asd.get(2), asd.get(3), asd.get(4), 
+				Double.parseDouble(asd.get(5)), Integer.parseInt(asd.get(6)), Integer.parseInt((asd.get(7))));
+
+		DecimalFormat decForm = new DecimalFormat(decFormat);
 		
 		/*
 		FlexTable generatedTable = new FlexTable();
@@ -51,27 +63,21 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		}
 		//Daily Generation
 		for(int i=0; i<savings.length; i++){
-			//generatedTable.setText(1, i, calcs.getPowerGenerated(i));
-			//generatedTable.setText(1, i, "Daily Generation");
-			fgh.add(Double.toString(calcs.getPowerGenerated(i)));
+			String temp = decForm.format(calcs.getPowerGenerated(i));
+			fgh.add(temp);
 		}
 		//Yearly Generation
 		for(int i=0; i<savings.length; i++){
-			//generatedTable.setText(2, i, calcs.getPowerGenerated(i)*365.25);
-			//generatedTable.setText(2, i, "Yearly Generation");
-			fgh.add(Double.toString(calcs.getPowerGenerated(i)*365.25));
+			String temp = decForm.format(calcs.getPowerGenerated(i)*365.25);
+			fgh.add(temp);
 		}
 		//Yearly Savings
 		for (int i=0; i<savings.length; i++){
-			//generatedTable.setText(3, i, savings[i]);
-			//generatedTable.setText(3, 0, "Yearly Savings");
-			fgh.add(Double.toString(savings[i]));
+			fgh.add(decForm.format(savings[i]));
 		}
 		//Investment Return
 		for(int i=0; i<investment.length; i++){
-			//generatedTable.setText(4, i, investment[i]);
-			//generatedTable.setText(4, 0, "Investment Return");
-			fgh.add(Double.toString(investment[i]));
+			fgh.add(decForm.format(investment[i]));
 		}
 		
 		

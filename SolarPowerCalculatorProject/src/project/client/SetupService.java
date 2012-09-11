@@ -8,8 +8,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 /**
  * The client side stub for the RPC service.
  */
-@RemoteServiceRelativePath("calcServ")
-public interface CalculationsService extends RemoteService {
-	ArrayList<String> CalculationsServer(ArrayList<String> asd) throws IllegalArgumentException, CalcException;
+@RemoteServiceRelativePath("setup")
+public interface SetupService extends RemoteService {
+	ArrayList<ArrayList<String>> SetupServer() throws IllegalArgumentException;
 }
 

@@ -7,17 +7,33 @@
 <title>Calculator</title>
 </head>
 <body>
-
+<%
+Database db = new Database();
+%>
 	<h2>Calculator Input:</h2>
 
 	<form method="post" action='CalculatorServlet' id="form1">
 
 		<select name="solarPanel">
 			<option>Select solar panel</option>
+			<%
+			ArrayList<String>panels = new ArrayList<String>();
+			panels = db.getSolarPanelSerialNumberByBrand("Average Panel");
+			for(int i=0; i<panels.size(); i++){
+				out.print("<option>" + panels.get(i) +"</option>");
+			}
+			%>
 			<option>REC230PE</option>
 		</select> <label>Enter number of panels:</label> <input name="numPanels"
 			maxlength=2> <select name="inverter">
 			<option>Select inverter</option>
+			<%
+			ArrayList<String>inverters = new ArrayList<String>();
+			inverters = db.getInverterSerialNumberByBrand("Bad Inverter");
+			for(int i=0; i<inverters.size(); i++){
+				out.print("<option>" + inverters.get(i) +"</option>");
+			}
+			%>
 			<option>SB1600TL</option>
 		</select> <label>Enter electricity used during day: (kW)</label> <input
 			name="daytimeUsage"> <label>Enter tilt angle:</label> <input name="tiltAngle" maxlength=2>
@@ -28,7 +44,7 @@
 			name="energyProvider">
 			<option>Select energy provider</option>
 			<%
-			Database db = new Database();
+			
 			ArrayList <String> energyCompanies = new ArrayList<String>();
 			energyCompanies = db.getAllEnergyProviders();
 			for(int i=0; i<energyCompanies.size(); i++){

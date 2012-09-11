@@ -14,6 +14,15 @@ public class Database {
 	/*-------------------------------------------------------------*/
 						  /*start Tariff*/
 	
+	public void setEnergy(String name, double amount, double price11, double price33){
+		Entity A_DS = new Entity("Companies", name);
+		A_DS.setProperty("Increase", amount);
+		A_DS.setProperty("Price33", price33);
+		A_DS.setProperty("Price11", price11);
+		datastore.put(A_DS);
+	}
+	
+	
 	public double getTariff11(String name){
 		double tariff11 = 0;
 		Query q = new Query("Companies");
@@ -42,13 +51,6 @@ public class Database {
 		return tariff33;
 	}
 	
-	public void setEnergy(String name, double amount, double price11, double price33){
-		Entity A_DS = new Entity("Companies", name);
-		A_DS.setProperty("Increase", amount);
-		A_DS.setProperty("Price33", price33);
-		A_DS.setProperty("Price11", price11);
-		datastore.put(A_DS);
-	}
 	
 	public double getAnnualTariffIncrease(String name){
 		double annualTariffIncrease = 0;
@@ -82,6 +84,13 @@ public class Database {
 	
 	/*-------------------------------------------------------------*/
 	                     /*start sun data*/
+	public void setSunData(String suburb, double exposure, double latitude){
+		Entity A_DS = new Entity("Sun_data", suburb);
+		A_DS.setProperty("Exposure", exposure);
+		A_DS.setProperty("Latitude", latitude);
+		datastore.put(A_DS);
+	}
+	
 	public ArrayList<String> getAllSuburbs(){
 		ArrayList<String> suburbs = new ArrayList<String>();
 		Query q = new Query("Sun_data");
@@ -94,12 +103,6 @@ public class Database {
 		return suburbs;
 	}
 	
-	public void setSolarExposure(String suburb, double exposure, int latitude){
-		Entity A_DS = new Entity("Sun_data", suburb);
-		A_DS.setProperty("Exposure", exposure);
-		A_DS.setProperty("Latitude", latitude);
-		datastore.put(A_DS);
-	}
 	
 	public double getSolarExposure(String suburb){
 		double solarExposure = 0;
@@ -107,35 +110,29 @@ public class Database {
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(suburb)) {
-				if(result.getProperty("Increase") != null){
-				solarExposure = (Double) result.getProperty("Increase");
+				if(result.getProperty("Exposure") != null){
+				solarExposure = (Double) result.getProperty("Exposure");
 			}
 			}
 	}
 		return solarExposure;
 	}
 	
-	public void setLatitude(String suburb, int latitude, double exposure){
-		Entity A_DS = new Entity("Sun_data", suburb);
-		A_DS.setProperty("Exposure", exposure);
-		A_DS.setProperty("Latitude", latitude);
-		datastore.put(A_DS);
-	}
 	
-	public int getLatitude(String suburb){
-		int latitude = 27;
+	public double getLatitude(String suburb){
+		double latitude = 0;
 		Query q = new Query("Sun_data");
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(suburb)) {
 				if(result.getProperty("Latitude") != null){
-				latitude = (Integer)(result.getProperty("Latitude"));
+				latitude = (Double)(result.getProperty("Latitude"));
 			}
 			}
 	}
 		return latitude;
 	}
-	                       /*end Tariff*/
+	                       /*end SunData*/
 	/*-------------------------------------------------------------*/
 
 	
@@ -143,45 +140,52 @@ public class Database {
 	/*-------------------------------------------------------------*/
                          /*start inverter*/
 	
-	
+	public void setInverter(String brand, String serial, double pMax, double maxEfficiency, double price, double nomACOutput, double vMax){
+		Entity A_DS = new Entity("Inverter_data", serial);
+		A_DS.setProperty("PMax", pMax);
+		A_DS.setProperty("MaxEfficiency", maxEfficiency);
+		A_DS.setProperty("Brand", brand);
+		A_DS.setProperty("Price", price);
+		A_DS.setProperty("NomACOutput", nomACOutput);
+		A_DS.setProperty("VMax", vMax);
+		datastore.put(A_DS);
+	}
 	
 	public ArrayList<String> getInverterSerialNumberByBrand(String brand){
 		ArrayList<String> serialNumbers = new ArrayList<String>();
-		Query q = new Query(brand+"invert");
+		Query q = new Query("Inverter_data");
 		PreparedQuery pq = datastore.prepare(q);
 		int counter = 0;
+		String compair = "";
 		for (Entity result : pq.asIterable()) {
+			compair = (String)result.getProperty("Brand");
+			if(compair.equals(brand)) {
 			serialNumbers.add(counter, result.getKey().getName());
 			counter++;
+			}
 	}
 		return serialNumbers;
 	}
 	
 	public ArrayList<String> getAllInverterBrands(){
 		ArrayList<String> brands = new ArrayList<String>();
-		Query q = new Query("InverterBrands");
+		Query q = new Query("Inverter_data");
 		PreparedQuery pq = datastore.prepare(q);
 		int counter = 0;
 		for (Entity result : pq.asIterable()) {
-			brands.add(counter, result.getKey().getName());
+			if(brands.contains((String)result.getProperty("Brand")) == false){
+			brands.add(counter, (String)result.getProperty("Brand"));
 			counter++;
+			}
 	}
 		return brands;
 	}
 	
-	public void setInverter(String brand, String serial, double pMax, double maxEfficiency, double price, double nomACOutput, double vMax){
-		Entity A_DS = new Entity(brand + "invert", serial);
-		Entity B_DS = new Entity("InverterBrands", brand);
-		A_DS.setProperty("PMax", pMax);
-		A_DS.setProperty("MaxEfficiency", maxEfficiency);
-		B_DS.setProperty("Name", brand);
-		datastore.put(A_DS);
-		datastore.put(B_DS);
-	}
 	
-	public double getInverterPMax(String serial, String brand){
+	
+	public double getInverterPMax(String serial){
 		double pMax = 0;
-		Query q = new Query(brand+"invert");
+		Query q = new Query("Inverter_data");
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(serial)) {
@@ -194,9 +198,9 @@ public class Database {
 	}
 	
 
-	public double getInverterMaxEfficiency(String serial, String brand){
+	public double getInverterMaxEfficiency(String serial){
 		double maxEfficiency = 0;
-		Query q = new Query(brand+"invert");
+		Query q = new Query("Inverter_data");
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(serial)) {
@@ -209,9 +213,9 @@ public class Database {
 	}
 	
 
-	public double getInverterPrice(String serial, String brand){
+	public double getInverterPrice(String serial){
 		double price = 0;
-		Query q = new Query(brand+"invert");
+		Query q = new Query("Inverter_data");
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(serial)) {
@@ -223,9 +227,9 @@ public class Database {
 		return price;
 	}
 	
-	public double getInverterNomACOutput(String serial, String brand){
+	public double getInverterNomACOutput(String serial){
 		double nomACOutput = 0;
-		Query q = new Query(brand+"invert");
+		Query q = new Query("Inverter_data");
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(serial)) {
@@ -237,9 +241,9 @@ public class Database {
 		return nomACOutput;
 	}
 	
-	public double getInverterVMax(String serial, String brand){
+	public double getInverterVMax(String serial){
 		double vMax = 0;
-		Query q = new Query(brand+"invert");
+		Query q = new Query("Inverter_data");
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(serial)) {
@@ -257,34 +261,52 @@ public class Database {
 	
 	/*-------------------------------------------------------------*/
                            /*start panel*/
+	
+	public void setPanel(String brand, String serial, double length, double width, double price, double pMaxNOCT, double pMax){
+		Entity A_DS = new Entity("Panel_data", serial);
+		A_DS.setProperty("PMax", pMax);
+		A_DS.setProperty("PMaxNOCT", pMaxNOCT);
+		A_DS.setProperty("Price", price);
+		A_DS.setProperty("Length", length);
+		A_DS.setProperty("Width", width);
+		A_DS.setProperty("Brand", brand);
+		datastore.put(A_DS);
+	}
+	
 	public ArrayList<String> getSolarPanelSerialNumberByBrand(String brand){
 		ArrayList<String> serialNumbers = new ArrayList<String>();
-		Query q = new Query(brand+"panel");
+		Query q = new Query("Panel_data");
 		PreparedQuery pq = datastore.prepare(q);
 		int counter = 0;
+		String compair = "";
 		for (Entity result : pq.asIterable()) {
+			compair = (String)result.getProperty("Brand");
+			if(compair.equals(brand)) {
 			serialNumbers.add(counter, result.getKey().getName());
 			counter++;
+			}
 	}
 		return serialNumbers;
 	}
 	
 	public ArrayList<String> getAllSolarPanelBrands(){
 		ArrayList<String> brands = new ArrayList<String>();
-		Query q = new Query("PanelBrands");
+		Query q = new Query("Panel_data");
 		PreparedQuery pq = datastore.prepare(q);
 		int counter = 0;
 		for (Entity result : pq.asIterable()) {
-			brands.add(counter, result.getKey().getName());
+			if(brands.contains((String)result.getProperty("Brand")) == false){
+			brands.add(counter, (String)result.getProperty("Brand"));
 			counter++;
+			}
 	}
 		return brands;
 	}
 
 	
-	public double getPanelPMax(String serial, String brand){
+	public double getPanelPMax(String serial){
 		double pMax = 0;
-		Query q = new Query(brand+"panel");
+		Query q = new Query("Panel_data");
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(serial)) {
@@ -297,9 +319,9 @@ public class Database {
 	}
 	
 
-	public double getPanelNOCT(String serial, String brand){
+	public double getPanelNOCT(String serial){
 		double pMaxNOCT = 0;
-		Query q = new Query(brand+"panel");
+		Query q = new Query("Panel_data");
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(serial)) {
@@ -312,9 +334,9 @@ public class Database {
 	}
 
 	
-	public double getPanelPrice(String serial, String brand){
-		double price = 450;
-		Query q = new Query(brand+"panel");
+	public double getPanelPrice(String serial){
+		double price = 0;
+		Query q = new Query("Panel_data");
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(serial)) {
@@ -326,22 +348,11 @@ public class Database {
 		return price;
 	}
 	
-	public void setPanel(String brand, String serial, double length, double width, double price, double pMaxNOCT, double pMax){
-		Entity A_DS = new Entity(brand + "panel", serial);
-		Entity B_DS = new Entity("PanelBrands", brand);
-		A_DS.setProperty("PMax", pMax);
-		A_DS.setProperty("PMaxNOCT", pMaxNOCT);
-		A_DS.setProperty("Price", price);
-		A_DS.setProperty("Length", length);
-		A_DS.setProperty("Width", width);
-		B_DS.setProperty("Name", brand);
-		datastore.put(A_DS);
-		datastore.put(B_DS);
-	}
 	
-	public double getPanelLength(String serial, String brand){
+	
+	public double getPanelLength(String serial){
 		double length = 0;
-		Query q = new Query(brand+"panel");
+		Query q = new Query("Panel_data");
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(serial)) {
@@ -353,9 +364,9 @@ public class Database {
 		return length;
 	}
 	
-	public double getPanelWidth(String serial, String brand){
+	public double getPanelWidth(String serial){
 		double width = 0.991;
-		Query q = new Query(brand+"panel");
+		Query q = new Query("Panel_data");
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			if(result.getKey().getName().equals(serial)) {

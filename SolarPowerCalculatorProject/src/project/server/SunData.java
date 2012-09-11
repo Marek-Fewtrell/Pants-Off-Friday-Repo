@@ -10,7 +10,7 @@ public class SunData {
 	//out how to calculate using solarExposure
 	private double solarExposure;//kwH/m^2
 	private double sunlightHours;
-	private int latitude;
+	private double latitude;
 	//maybe add monthly stats later
 	
 	//default

@@ -32,8 +32,8 @@ public class Inverter {
 		//
 		//edit
 		//
-		pMax = db.getInverterPMax(serialNumber, "a");
-		maxEfficiency = db.getInverterMaxEfficiency(serialNumber, "a");
+		pMax = db.getInverterPMax(serialNumber);
+		maxEfficiency = db.getInverterMaxEfficiency(serialNumber);
 	}
 	
 	public double getPMax(){

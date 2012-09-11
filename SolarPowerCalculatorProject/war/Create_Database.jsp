@@ -51,6 +51,16 @@ for (int i = 0; i < suburb.length; i++){
 	
 }
 
+db.setEnergy("Click Energy", 0.05, 0.2538, 0.1715);
+db.setEnergy("Integral Energy", 0.05, 0.25378, 0.17155);
+db.setEnergy("Origin", 0.05, 0.253781, 0.171545);
+
+db.setPanel("SOLARLAND", "SLP135-24", 1.5, 0.675, 999, 135, 135);
+db.setPanel("SOLON", "BLACK230/07", 1.640, 1, 1000, 186, 260);
+db.setPanel("SOLON", "BLUE230/07", 1.640, 1, 1000, 190, 260);
+db.setPanel("REC", "Rec250peBLK", 1.665, 0.991, 1000, 182, 250);
+db.setPanel("REC", "Rec255pePLUS", 1.665, 0.991, 1000, 193, 255);
+
 /*  db.setEnergy("Origin", 5, .234, .123);
 db.setEnergy("CLick Energy", 4, .345, .876);
 db.setEnergy("Energyex", 5, .567, .493);

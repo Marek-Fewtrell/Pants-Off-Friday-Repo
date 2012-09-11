@@ -17,7 +17,7 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 	public ArrayList<String> CalculationsServer(ArrayList<String> asd) throws IllegalArgumentException {
 		
 		Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), asd.get(2), asd.get(3), asd.get(4), Double.parseDouble(asd.get(5)), 
-				Integer.parseInt(asd.get(6)), Integer.parseInt(asd.get(7)), Integer.parseInt(asd.get(8)));
+				Integer.parseInt(asd.get(7)), Integer.parseInt(asd.get(8)));
 		
 		
 		/*

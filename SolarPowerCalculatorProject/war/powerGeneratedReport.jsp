@@ -28,7 +28,7 @@
 	int orientation = Integer.parseInt((String)session.getAttribute("orientation"));
 	out.print(session.getAttribute("solarPanel"));
 	out.print(session.getAttribute("energyProvider"));
-	Calculations calcs = new Calculations(solarPanel, numPanels, suburb, inverter, energyProvider, daytimeUsage, latitude, tilt, orientation);	
+	Calculations calcs = new Calculations(solarPanel, numPanels, suburb, inverter, energyProvider, daytimeUsage, tilt, orientation);	
 	double[] savings = new double[20];
 	savings = calcs.getCumulativeSavings(20);
 	double[] investment = new double [20];

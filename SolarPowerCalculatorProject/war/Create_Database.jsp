@@ -55,11 +55,16 @@ db.setEnergy("Click Energy", 0.05, 0.2538, 0.1715);
 db.setEnergy("Integral Energy", 0.05, 0.25378, 0.17155);
 db.setEnergy("Origin", 0.05, 0.253781, 0.171545);
 
-db.setPanel("SOLARLAND", "SLP135-24", 1.5, 0.675, 999, 135, 135);
-db.setPanel("SOLON", "BLACK230/07", 1.640, 1, 1000, 186, 260);
-db.setPanel("SOLON", "BLUE230/07", 1.640, 1, 1000, 190, 260);
-db.setPanel("REC", "Rec250peBLK", 1.665, 0.991, 1000, 182, 250);
-db.setPanel("REC", "Rec255pePLUS", 1.665, 0.991, 1000, 193, 255);
+db.setPanel("SOLARLAND", "SLP135-24", 1.5, 0.675, 999, 0.135, 0.135);
+db.setPanel("SOLON", "BLACK230/07", 1.640, 1, 1000, 0.186, 0.260);
+db.setPanel("SOLON", "BLUE230/07", 1.640, 1, 1000, 0.190, 0.260);
+db.setPanel("REC", "Rec250peBLK", 1.665, 0.991, 1000, 0.182, 0.250);
+db.setPanel("REC", "Rec255pePLUS", 1.665, 0.991, 1000, 0.193, 0.255);
+
+db.setInverter("SMA", "SB1700", 1.85, 0.935, 1700, 1.55, 400);
+db.setInverter("SMA", "SB3000", 3.15, 0.963, 2500, 3.0, 700);
+db.setInverter("Conergy", "WR1700", 1.5, 0.942, 1500, 1.3, 500);
+db.setInverter("SMA", "SB5000TL", 5.3, 0.97, 3000, 5.0, 550);
 
 /*  db.setEnergy("Origin", 5, .234, .123);
 db.setEnergy("CLick Energy", 4, .345, .876);

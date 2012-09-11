@@ -18,7 +18,7 @@ Database db = new Database();
 			<option>Select solar panel</option>
 			<%
 			ArrayList<String>panels = new ArrayList<String>();
-			panels = db.getSolarPanelSerialNumberByBrand("Average Panel");
+			panels = db.getSolarPanelSerialNumberByBrand("REC");
 			for(int i=0; i<panels.size(); i++){
 				out.print("<option>" + panels.get(i) +"</option>");
 			}
@@ -29,12 +29,12 @@ Database db = new Database();
 			<option>Select inverter</option>
 			<%
 			ArrayList<String>inverters = new ArrayList<String>();
-			inverters = db.getInverterSerialNumberByBrand("Bad Inverter");
+			inverters = db.getInverterSerialNumberByBrand("SMA");
 			for(int i=0; i<inverters.size(); i++){
 				out.print("<option>" + inverters.get(i) +"</option>");
 			}
 			%>
-			<option>SB1600TL</option>
+			
 		</select> <label>Enter electricity used during day: (kW)</label> <input
 			name="daytimeUsage"> <label>Enter tilt angle:</label> <input name="tiltAngle" maxlength=2>
 		<label>Enter direction panel is facing: (degrees)</label><input name = "orientation">

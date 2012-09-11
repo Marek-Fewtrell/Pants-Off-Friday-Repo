@@ -16,7 +16,7 @@ public class Calculations {
 	private double tariff11;
 	private double feedInTariff;
 	private double replacementGeneration;
-	private int latitude;
+	private double latitude;
 	private int tilt;
 	private int orientation;
 	private static double DAYSPERYEAR = 365.25;
@@ -28,7 +28,7 @@ public class Calculations {
 	
 	public Calculations(String panelNumber, int numberPanels, String suburb,
 			String inverterNumber, String energyCompany, double dailyUsage, 
-			int latitude, int tilt, int orientation){
+			int tilt, int orientation){
 		//TODO change all constructors later
 		inverter = new Inverter(inverterNumber);
 		panel = new SolarPanel();
@@ -45,7 +45,7 @@ public class Calculations {
 		replacementGeneration = dailyUsage;
 		inverterEfficiency = inverter.getMaxEfficiency();
 		solarExposure = sunData.getSolarExposure();
-		this.latitude = Math.abs(latitude);
+		latitude = Math.abs(sunData.getLatitude());
 		this.tilt = Math.abs(tilt);
 		this.orientation = Math.abs(orientation);
 		idealTilt = this.latitude * IDEALANGLEFACTOR;

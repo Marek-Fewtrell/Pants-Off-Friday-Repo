@@ -35,4 +35,8 @@ public class SunData {
 		return solarExposure;
 	}
 	
+	public double getLatitude(){
+		return latitude;
+	}
+	
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" import = "project.server.Database" import = "java.util.Scanner" import = "java.util.ArrayList"
-    pageEncoding="ISO-8859-1"%>
+    import = "java.util.List" import = "java.io.IOException" import = "java.io.FileReader"
+   import = "java.io.BufferedReader" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,7 +11,47 @@
 <%
 Database db = new Database();
 
- db.setEnergy("Origin", 5, .234, .123);
+List<String> _suburb = new ArrayList<String>();
+List<String> _latitude = new ArrayList<String>();
+List<String> _solar = new ArrayList<String>();
+BufferedReader br = null;
+try {
+	br = new BufferedReader(new FileReader("QLD.txt"));
+
+	String word;
+	String[] awordList;
+	while ((word = br.readLine()) != null){
+		
+		awordList = word.split("\t");
+		_suburb.add(awordList[0]);
+		_latitude.add(awordList[1]);
+		_solar.add(awordList[2]);
+	}
+} catch (IOException e) {
+	e.printStackTrace();
+} finally {
+	try {
+		br.close();
+	} catch (IOException ex) {
+		ex.printStackTrace();
+	}
+}
+
+String[] suburb = new String[_suburb.size()];
+String[] latitude = new String[_suburb.size()];
+String[] exposure = new String[_suburb.size()];
+
+_suburb.toArray(suburb);
+_latitude.toArray(latitude);
+_solar.toArray(exposure);
+
+for (int i = 0; i < suburb.length; i++){
+	
+	db.setSunData(suburb[i], Double.parseDouble(exposure[i]), Double.parseDouble(latitude[i]));
+	
+}
+
+/*  db.setEnergy("Origin", 5, .234, .123);
 db.setEnergy("CLick Energy", 4, .345, .876);
 db.setEnergy("Energyex", 5, .567, .493);
 
@@ -102,7 +143,9 @@ System.out.println(next12);
 String next13 = Double.toString(db.getPanelPrice("AP345"));
 System.out.println(next13);
 String next14 = Double.toString(db.getPanelWidth("GP123"));
-System.out.println(next14);
+System.out.println(next14); */
+
+
 
 %>
 </body>

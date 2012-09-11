@@ -31,7 +31,7 @@ public class Calculations {
 			int tilt, int orientation){
 		//TODO change all constructors later
 		inverter = new Inverter(inverterNumber);
-		panel = new SolarPanel();
+		panel = new SolarPanel(panelNumber);
 		sunData = new SunData(suburb);
 		tariffs = new Tariffs(energyCompany);
 		tariff11 = tariffs.getNormalTariff();

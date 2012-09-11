@@ -7,11 +7,12 @@ public class SolarPanel {
 	//kiloWatts
 	private double pMax;
 	private double pMaxNOCT;
-	private int price;
+	private double price;
 	//m
 	private double length;
 	private double width;
 	private double area;
+	private Database db = new Database();
 	
 	//default panel
 	public SolarPanel(){
@@ -27,8 +28,12 @@ public class SolarPanel {
 	
 	public SolarPanel(String serialNumber){
 		//TODO get data from datastore
-		
-		
+		this.serialNumber = serialNumber;
+		pMax = db.getPanelPMax(serialNumber);
+		pMaxNOCT = db.getPanelNOCT(serialNumber);
+		price = db.getPanelPrice(serialNumber);
+		length = db.getPanelLength(serialNumber);
+		width = db.getPanelWidth(serialNumber);
 		area = length * width;
 	}
 	
@@ -48,7 +53,7 @@ public class SolarPanel {
 		return pMaxNOCT;
 	}
 	
-	public int getPrice(){
+	public double getPrice(){
 		return price;
 	}
 	

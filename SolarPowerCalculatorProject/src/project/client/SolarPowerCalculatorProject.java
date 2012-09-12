@@ -38,9 +38,9 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	 * Create a remote service proxy to talk to the server-side Greeting
 	 * service.
 	 */
-	private final SolarPowerServiceAsync solarPowerService = GWT
-			.create(SolarPowerService.class);
+	private final SolarPowerServiceAsync solarPowerService = GWT.create(SolarPowerService.class);
 	private final CalculationsServiceAsync calcService = GWT.create(CalculationsService.class);
+	private final SetupServiceAsync setupService = GWT.create(SetupService.class);
 
 	final Button sendButton = new Button("Send");
 	//final TextBox nameField = new TextBox();
@@ -116,8 +116,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		
 		//Panel Selection
 		panelSelect.addChangeHandler(hadle);
-		panelSelect.addItem("REC230PE");
-		panelSelect.addItem("Second Pan");
+		//panelSelect.addItem("REC230PE");
+		//panelSelect.addItem("Second Pan");
 		panelSelect.setVisibleItemCount(2);
 		lblPanelSelect.setText("Panel Select");
 		vertPan.add(lblPanelSelect);
@@ -127,8 +127,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		inverterSelect.addChangeHandler(hadle);
 		vertPan.add(lblInverterSelect);
 		vertPan.add(inverterSelect);
-		inverterSelect.addItem("SB1600TL");
-		inverterSelect.addItem("second Invert");
+		//inverterSelect.addItem("SB1600TL");
+		//inverterSelect.addItem("second Invert");
 		lblInverterSelect.setText("Inverter Select");
 		
 		//Day Time Usage
@@ -177,8 +177,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		energyProvider.addChangeHandler(hadle);
 		vertPan.add(lblEnergyProvider);
 		vertPan.add(energyProvider);
-		energyProvider.addItem("Origin");
-		energyProvider.addItem("Second Prov");
+		//energyProvider.addItem("Origin");
+		//energyProvider.addItem("Second Prov");
 		lblEnergyProvider.setText("Energy Provider");
 		
 		//Initial Installation Cost
@@ -252,7 +252,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		numPanels.setFocus(true);
 		numPanels.selectAll();
 
-		
+		createLists();
 		
 		
 		// Create the popup dialog box
@@ -302,6 +302,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			 * sendNameToServer(); } }
 			 */
 
+			
+			
 			/**
 			 * Send the name from the nameField to the server and wait for a
 			 * response.
@@ -398,6 +400,38 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		sendButton.addClickHandler(handler);
 		// nameField.addKeyUpHandler(handler);
 	}
+	
+	private void createLists() {
+		setupService.SetupServer(new AsyncCallback<ArrayList<ArrayList<String>>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Failed");
+			}
+
+			@Override
+			public void onSuccess(ArrayList<ArrayList<String>> result) {
+				ArrayList<String> array0 = result.get(0);
+				ArrayList<String> array1 = result.get(1);
+				ArrayList<String> array2 = result.get(2);
+				
+				for(int i = 0; i > array0.size(); i++){
+					panelSelect.addItem(array0.get(i));
+				}
+				
+				for (int i = 0; i > array1.size(); i++) {
+					inverterSelect.addItem(array1.get(i));
+				}
+
+				for (int i = 0; i > array2.size(); i++) {
+					energyProvider.addItem(array2.get(i));
+				}
+				
+			}
+			
+		});
+	}
+	
 	
 	private void generatingOutput(ArrayList<String> result) {
 		

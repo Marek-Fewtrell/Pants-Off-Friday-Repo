@@ -17,6 +17,9 @@ public class Calculations {
 	private double feedInTariff;
 	private double replacementGeneration;
 	private double latitude;
+	private String panelNumber;
+	private String inverterNumber;
+	private String energyCompany;
 	private int tilt;
 	private int orientation;
 	private static double DAYSPERYEAR = 365.25;
@@ -25,15 +28,18 @@ public class Calculations {
 	private static double IDEALANGLEFACTOR = 0.87; //qld
 	private double idealTilt;
 
-	
+	//For testing only
 	public Calculations(String panelNumber, int numberPanels, String suburb,
 			String inverterNumber, String energyCompany, double dailyUsage, 
-			int tilt, int orientation){
+			int tilt, int orientation, String test){
 		//TODO change all constructors later
-		inverter = new Inverter(inverterNumber);
-		panel = new SolarPanel(panelNumber);
-		sunData = new SunData(suburb);
-		tariffs = new Tariffs(energyCompany);
+		this.panelNumber = panelNumber;
+		this.inverterNumber = inverterNumber;
+		this.energyCompany = energyCompany;
+		inverter = new Inverter();
+		panel = new SolarPanel();
+		sunData = new SunData();
+		tariffs = new Tariffs();
 		tariff11 = tariffs.getNormalTariff();
 		feedInTariff = tariffs.getFeedInTariff();
 		this.numberPanels = numberPanels;
@@ -58,18 +64,56 @@ public class Calculations {
 			orientationEfficiencyLoss = 0.1;
 		}else{
 			orientationEfficiencyLoss = 1;
+		}	
+		
+	}
+	
+	public Calculations(String panelNumber, int numberPanels, String suburb,
+			String inverterNumber, String energyCompany, double dailyUsage, 
+			int tilt, int orientation){
+		//TODO change all constructors later
+		this.panelNumber = panelNumber;
+		this.inverterNumber = inverterNumber;
+		this.energyCompany = energyCompany;
+		inverter = new Inverter(inverterNumber);
+		panel = new SolarPanel(panelNumber);
+		sunData = new SunData(suburb);
+		tariffs = new Tariffs(energyCompany);
+		tariff11 = tariffs.getNormalTariff();
+		feedInTariff = tariffs.getFeedInTariff();
+		this.numberPanels = numberPanels;
+		//change to a calculated value
+		//orientationEfficiencyLoss = efficiencyLoss/100;
+		//find out if this is how it works
+		systemPower = inverter.getPMax();
+		if(panel.getPMaxNOCT()*numberPanels < systemPower){
+			systemPower = panel.getPMaxNOCT()*numberPanels;
 		}
+			
+		//change this to user entered data
+		replacementGeneration = dailyUsage;
+		inverterEfficiency = inverter.getMaxEfficiency();
+		solarExposure = sunData.getSolarExposure();
+		latitude = Math.abs(sunData.getLatitude());
+		this.tilt = Math.abs(tilt);
+		this.orientation = Math.abs(orientation);
+		idealTilt = this.latitude * IDEALANGLEFACTOR;
 		
-		
+		if((Math.abs(tilt - idealTilt) <= 5) && 
+				(Math.abs(orientation) <= 10)){
+			orientationEfficiencyLoss = 0;
+		}else if((Math.abs(tilt - idealTilt) <= 20) && 
+				(Math.abs(orientation) <= 60)){
+			orientationEfficiencyLoss = 0.1;
+		}else{
+			orientationEfficiencyLoss = 1;
+		}	
 		
 	}
 	//use year to adjust efficiency
 	public double getPowerGenerated(int year){
 		
-		if(panel.getPMaxNOCT()*numberPanels < systemPower){
-			systemPower = panel.getPMaxNOCT()*numberPanels;
-		}
-				
+			
 		//daily generation
 		//needs verification and solar panel age efficiency loss
 		powerGenerated = systemPower * (1 - orientationEfficiencyLoss) * 
@@ -99,4 +143,63 @@ public class Calculations {
 		}
 		return cumulative;
 	}
+	
+	//the following getters are just for testing
+	public String getPanelNumber(){
+		return panelNumber;
+	}
+	
+	public String getInverterNumber(){
+		return inverterNumber;
+	}
+	
+	public String getEnergyCompany(){
+		return energyCompany;
+	}
+	
+	public double getTariff11(){
+		return tariff11;
+	}
+	
+	public double getFeedInTariff(){
+		return feedInTariff;
+	}
+	
+	public int getNumberPanels(){
+		return numberPanels;
+	}
+	
+	public double getSystemPower(){
+		return systemPower;
+	}
+	
+	public double getReplacementGeneration(){
+		return replacementGeneration;
+	}
+	
+	public double getInverterEfficiency(){
+		return inverterEfficiency;
+	}
+	
+	public double getSolarExposure(){
+		return solarExposure;
+	}
+	
+	public double getLatitude(){
+		return latitude;
+	}
+	
+	public int getTilt(){
+		return tilt;
+	}
+	
+	public int getOrientation(){
+		return orientation;
+	}
+	
+	public double getOrientationEfficiencyLoss(){
+		return orientationEfficiencyLoss;
+	}
+	
+	
 }

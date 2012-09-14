@@ -151,6 +151,20 @@ public class Database {
 		datastore.put(A_DS);
 	}
 	
+	public String getInverterBrandByInverterSerialNumber(String serial){
+		String brand = "";
+		Query q = new Query("Inverter_data");
+		PreparedQuery pq = datastore.prepare(q);
+		String compair = "";
+		for (Entity result : pq.asIterable()) {
+			compair = result.getKey().getName();
+			if(compair.equals(serial)) {
+			brand = (String)result.getProperty("Brand");
+			}
+	}
+		return brand;
+	}
+	
 	public ArrayList<String> getInverterSerialNumberByBrand(String brand){
 		ArrayList<String> serialNumbers = new ArrayList<String>();
 		Query q = new Query("Inverter_data");
@@ -181,6 +195,17 @@ public class Database {
 		return brands;
 	}
 	
+	public ArrayList<String> getAllInverterSerials(){
+		ArrayList<String> serials = new ArrayList<String>();
+		Query q = new Query("Inverter_data");
+		PreparedQuery pq = datastore.prepare(q);
+		int counter = 0;
+		for (Entity result : pq.asIterable()) {
+			serials.add(counter, result.getKey().getName());
+			counter++;
+	}
+		return serials;
+	}
 	
 	
 	public double getInverterPMax(String serial){
@@ -289,6 +314,20 @@ public class Database {
 		return serialNumbers;
 	}
 	
+	public String getSolarPanelBrandByPanelSerialNumber(String serial){
+		String brand = "";
+		Query q = new Query("Panel_data");
+		PreparedQuery pq = datastore.prepare(q);
+		String compair = "";
+		for (Entity result : pq.asIterable()) {
+			compair = result.getKey().getName();
+			if(compair.equals(serial)) {
+			brand = (String)result.getProperty("Brand");
+			}
+	}
+		return brand;
+	}
+	
 	public ArrayList<String> getAllSolarPanelBrands(){
 		ArrayList<String> brands = new ArrayList<String>();
 		Query q = new Query("Panel_data");
@@ -303,6 +342,17 @@ public class Database {
 		return brands;
 	}
 
+	public ArrayList<String> getAllSolarPanelSerials(){
+		ArrayList<String> serials = new ArrayList<String>();
+		Query q = new Query("Panel_data");
+		PreparedQuery pq = datastore.prepare(q);
+		int counter = 0;
+		for (Entity result : pq.asIterable()) {
+			serials.add(counter, result.getKey().getName());
+			counter++;
+	}
+		return serials;
+	}
 	
 	public double getPanelPMax(String serial){
 		double pMax = 0;

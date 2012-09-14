@@ -11,7 +11,7 @@
 <%
 Database db = new Database();
 
-List<String> _suburb = new ArrayList<String>();
+/* List<String> _suburb = new ArrayList<String>();
 List<String> _latitude = new ArrayList<String>();
 List<String> _solar = new ArrayList<String>();
 BufferedReader br = null;
@@ -44,14 +44,14 @@ String[] exposure = new String[_suburb.size()];
 _suburb.toArray(suburb);
 _latitude.toArray(latitude);
 _solar.toArray(exposure);
-
-for (int i = 0; i < suburb.length; i++){
+ */
+/* for (int i = 0; i < suburb.length; i++){
 	
 	db.setSunData(suburb[i], Double.parseDouble(exposure[i]), Double.parseDouble(latitude[i]));
 	
-}
+} */
 
-db.setEnergy("Click Energy", 0.05, 0.2538, 0.1715);
+/* db.setEnergy("Click Energy", 0.05, 0.2538, 0.1715);
 db.setEnergy("Integral Energy", 0.05, 0.25378, 0.17155);
 db.setEnergy("Origin", 0.05, 0.253781, 0.171545);
 
@@ -64,7 +64,23 @@ db.setPanel("REC", "Rec255pePLUS", 1.665, 0.991, 1000, 0.193, 0.255);
 db.setInverter("SMA", "SB1700", 1.85, 0.935, 1700, 1.55, 400);
 db.setInverter("SMA", "SB3000", 3.15, 0.963, 2500, 3.0, 700);
 db.setInverter("Conergy", "WR1700", 1.5, 0.942, 1500, 1.3, 500);
-db.setInverter("SMA", "SB5000TL", 5.3, 0.97, 3000, 5.0, 550);
+db.setInverter("SMA", "SB5000TL", 5.3, 0.97, 3000, 5.0, 550); */
+
+/* String shit = db.getInverterBrandByInverterSerialNumber("SB1700");
+System.out.println(shit);
+shit = db.getSolarPanelBrandByPanelSerialNumber("Rec255pePLUS");
+System.out.println(shit);
+
+ArrayList<String> energyProviders = db.getAllInverterSerials();
+for(String provider : energyProviders){
+	System.out.println(provider);
+}
+
+energyProviders = db.getAllSolarPanelSerials();
+for(String provider : energyProviders){
+	System.out.println(provider);
+} */
+
 
 /*  db.setEnergy("Origin", 5, .234, .123);
 db.setEnergy("CLick Energy", 4, .345, .876);

@@ -1,5 +1,7 @@
 package project.shared;
 
+import java.util.regex.Pattern;
+
 /**
  * <p>
  * FieldVerifier validates that the name the user enters is valid.
@@ -38,5 +40,37 @@ public class FieldVerifier {
 			return false;
 		}
 		return name.length() > 3;
+	}
+	
+	public static boolean isNull(String option) {
+		if (option == null) {
+			return true;
+		} else {
+		return false;
+		}
+	}
+	
+	public static boolean isEmpty(String option) {
+		if (option.isEmpty() || option == "") {
+			return true;
+		} else {
+		 return false;
+		}
+	}
+	
+	public static boolean containsLetters(String option) {
+		if (option.matches("^[a-zA-Z]*$")) {
+			return true;
+		} else {
+		return false;
+		}
+	}
+	
+	public static boolean containsNum(String option) {
+		if (option.matches("^[0-9.]*$")) {
+			return true;
+		} else {
+		return false;
+		}
 	}
 }

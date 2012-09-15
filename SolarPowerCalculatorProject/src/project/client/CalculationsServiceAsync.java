@@ -6,6 +6,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 public interface CalculationsServiceAsync {
-	void CalculationsServer(ArrayList<String> asd, AsyncCallback<ArrayList<String>> callback)
+	void CalculationsServer(ArrayList<String> stuffToServer, AsyncCallback<ArrayList<ArrayList<String>>> callback)
 			throws IllegalArgumentException;
 }

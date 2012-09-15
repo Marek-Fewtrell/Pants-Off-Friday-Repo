@@ -18,7 +18,7 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 	public static final String decFormat = "#.##";
 	
 	@Override
-	public ArrayList<String> CalculationsServer(ArrayList<String> asd) throws CalcException {
+	public ArrayList<ArrayList<String>> CalculationsServer(ArrayList<String> asd) throws CalcException {
 		
 		if (asd.isEmpty() || asd.get(0) == null || asd.get(0).isEmpty()) {
 			throw new CalcException("Stuff is null");
@@ -42,10 +42,15 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		generatedTable.setText(3, 0, "Yearly Savings");
 		generatedTable.setText(4, 0, "Investment Return");
 */
+		ArrayList<String> array1 = new ArrayList<String>();//Year
+		ArrayList<String> array2 = new ArrayList<String>();//Daily Gen
+		ArrayList<String> array3 = new ArrayList<String>();//Yearly Gen
+		ArrayList<String> array4 = new ArrayList<String>();//Yearly Savings
+		ArrayList<String> array5 = new ArrayList<String>();//Invest Return
+		ArrayList<ArrayList<String>> arrayOut = new ArrayList<ArrayList<String>>();
 		
-		ArrayList<String> fgh = new ArrayList<String>();
-		Double installationCost = Double.parseDouble(asd.get(9));
-		Double interestRate = Double.parseDouble(asd.get(10));
+		Double installationCost = Double.parseDouble(asd.get(8));
+		Double interestRate = Double.parseDouble(asd.get(9));
 		
 		double[] savings = new double[20];
 		savings = calcs.getCumulativeSavings(20);
@@ -57,31 +62,32 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		
 		//Year
 		for (int i = 1; i < savings.length + 1; i++) {
-			//generatedTable.setText(0, i, i);
-			//generatedTable.setText(0, i, "Year");
-			fgh.add(Integer.toString(i));
+			array1.add(Integer.toString(i));
 		}
 		//Daily Generation
 		for(int i=0; i<savings.length; i++){
-			String temp = decForm.format(calcs.getPowerGenerated(i));
-			fgh.add(temp);
+			array2.add(decForm.format(calcs.getPowerGenerated(i)));
 		}
 		//Yearly Generation
 		for(int i=0; i<savings.length; i++){
-			String temp = decForm.format(calcs.getPowerGenerated(i)*365.25);
-			fgh.add(temp);
+			array3.add(decForm.format(calcs.getPowerGenerated(i)*365.25));
 		}
 		//Yearly Savings
 		for (int i=0; i<savings.length; i++){
-			fgh.add(decForm.format(savings[i]));
+			array4.add(decForm.format(savings[i]));
 		}
 		//Investment Return
 		for(int i=0; i<investment.length; i++){
-			fgh.add(decForm.format(investment[i]));
+			array5.add(decForm.format(investment[i]));
 		}
 		
+		arrayOut.add(array1);
+		arrayOut.add(array2);
+		arrayOut.add(array3);
+		arrayOut.add(array4);
+		arrayOut.add(array5);
 		
-		return fgh;
+		return arrayOut;
 	}
 
 

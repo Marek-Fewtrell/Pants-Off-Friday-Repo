@@ -55,11 +55,27 @@ _solar.toArray(exposure);
 db.setEnergy("Integral Energy", 0.05, 0.25378, 0.17155);
 db.setEnergy("Origin", 0.05, 0.253781, 0.171545);
 
-db.setPanel("SOLARLAND", "SLP135-24", 1.5, 0.675, 999, 0.135, 0.135);
+db.setPanel("SOLARLAND", "SLP135-24", 1.5, 0.675, 999, 0.12015, 0.135);
+db.setPanel("SOLARLAND", "SLP195S-24", 1.58, 0.808, 999, 0.175695, 0.195);
+db.setPanel("SOLARLAND", "SLP135-24", 1.64, 0.992, 999, 0.21252, 0.23);
 db.setPanel("SOLON", "BLACK230/07", 1.640, 1, 1000, 0.186, 0.260);
 db.setPanel("SOLON", "BLUE230/07", 1.640, 1, 1000, 0.190, 0.260);
 db.setPanel("REC", "Rec250peBLK", 1.665, 0.991, 1000, 0.182, 0.250);
 db.setPanel("REC", "Rec255pePLUS", 1.665, 0.991, 1000, 0.193, 0.255);
+db.setPanel("REC", " REC215PE", 1.665, 0.991, 1000, 0.19565, 0.215);
+db.setPanel("Lorentz", "LA130-24S", 1.43, 0.636, 1000, 0.12012, 0.13);
+db.setPanel("Lorentz", "LA160-24S", 1.556, 0.669, 1000, 0.14784, 0.16);
+db.setPanel("Conergy", "C175M", 1.575, 0.826, 1000, 0.15925, 0.175);
+db.setPanel("Sanyo", "HIP-210NKHE6", 1.58, 0.798, 1000, 0.1995, 0.21);
+db.setPanel("Sanyo", "MP6-230E01", 1.658, 0.986, 1000, 0.2093, 0.23);
+db.setPanel("SunPower", "SPR-200", 1.559, 0.798, 1000, 0.1848, 0.2);
+db.setPanel("SunPower", "SPR-210", 1.559, 0.798, 1000, 0.19404, 0.21);
+db.setPanel("SunPower", "SPR-225", 1.559, 0.798, 1000, 0.2079, 0.225);
+db.setPanel("SunPower", "SPR-300W", 1.559, 1.046, 1000, 0.2772, 0.3);
+db.setPanel("Suntech", "STP170S-24Ad", 1.2, 0.8, 1000, 0.151232, 0.17);
+db.setPanel("Suntech", "STP180S24AdBlack", 1.58, 0.808, 1000, 0.16272, 0.18);
+db.setPanel("Suntech", "STP190-18Ub", 1.2, 0.8, 1000, 0.17214, 0.19);
+db.setPanel("Suntech", "STP250-20/Wd", 1.64, 0.992, 1000, 0.184, 0.25);
 
 db.setInverter("SMA", "SB1700", 1.85, 0.935, 1700, 1.55, 400);
 db.setInverter("SMA", "SB3000", 3.15, 0.963, 2500, 3.0, 700);

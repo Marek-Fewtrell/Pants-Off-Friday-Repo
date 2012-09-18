@@ -147,6 +147,34 @@ public class Calculations {
 		return cumulative;
 	}
 	
+	public double getBreakEven(double initialCost, double interestRate){
+		double[] investment = new double [20];
+		investment[0] = initialCost;
+		for(int i=1; i<investment.length; i++){
+			investment[i] = investment[i-1]*(1+interestRate/100);
+		} 
+		double[] savings = new double [20];
+		savings = this.getCumulativeSavings(20);
+		double year = 0;
+		for(int i=0; i<savings.length; i++){
+			if(savings[i] < investment[i]){
+				year = i +1.0;
+			}
+		}
+		double saved = savings[(int) year];
+		double invested = investment[(int) year];
+		double day = 0;
+		for(int i=0; i<366; i++){
+			saved = saved + this.getDailySavings((int)year+1);
+			invested = invested + (1+interestRate/100/365)*invested;
+			if(saved < invested){
+				day = i + 2.0;
+			}	
+		}
+		double breakEven = year + day/365;
+		return breakEven;
+	}
+	
 	//the following getters are just for testing
 	public String getPanelNumber(){
 		return panelNumber;

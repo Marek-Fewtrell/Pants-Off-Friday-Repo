@@ -23,7 +23,7 @@ public class SetupServiceImpl extends RemoteServiceServlet implements SetupServi
 		ArrayList<ArrayList<String>> arrayOut = new ArrayList<ArrayList<String>>();
 		
 		ArrayList<String>panels = new ArrayList<String>();
-		panels = db.getSolarPanelSerialNumberByBrand("REC");
+		panels = db.getAllSolarPanelSerials();
 		for(int i=0; i<panels.size(); i++){
 			//out.print("<option>" + panels.get(i) +"</option>");
 			array1.add(panels.get(i));
@@ -31,7 +31,7 @@ public class SetupServiceImpl extends RemoteServiceServlet implements SetupServi
 		
 		
 		ArrayList<String>inverters = new ArrayList<String>();
-		inverters = db.getInverterSerialNumberByBrand("SMA");
+		inverters = db.getAllInverterSerials();
 		for(int i=0; i<inverters.size(); i++){
 			//out.print("<option>" + inverters.get(i) +"</option>");
 			array2.add(inverters.get(i));

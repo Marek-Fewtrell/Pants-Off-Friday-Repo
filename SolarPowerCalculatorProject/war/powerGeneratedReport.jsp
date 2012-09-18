@@ -58,6 +58,8 @@
 		out.print("<td>" + investment[i] + "</td>");
 	}
 	out.print("</tr></table>");
+	
+	out.print("Break even time: " + calcs.getBreakEven(installationCost, interestRate));
 	%>
 	<h1>ENERGY GENERATION REPORT</h1>
 	<%

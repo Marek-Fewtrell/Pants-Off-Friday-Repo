@@ -158,17 +158,17 @@ public class Calculations {
 		double year = 0;
 		for(int i=0; i<savings.length; i++){
 			if(savings[i] < investment[i]){
-				year = i +1.0;
+				year = i + 1.0;
 			}
 		}
-		double saved = savings[(int) year];
-		double invested = investment[(int) year];
+		double saved = savings[(int) year - 1];
+		double invested = investment[(int) year - 1];
 		double day = 0;
 		for(int i=0; i<366; i++){
 			saved = saved + this.getDailySavings((int)year+1);
-			invested = invested + (1+interestRate/100/365)*invested;
+			invested = invested + (interestRate/100/365)*invested;
 			if(saved < invested){
-				day = i + 2.0;
+				day = i + 1.0;
 			}	
 		}
 		double breakEven = year + day/365;

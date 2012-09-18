@@ -1,0 +1,2 @@
+serviceClass: project.client.SetupService
+path: F8DF5377E1A9DF962268C818E3BA29B0.gwt.rpc

@@ -47,6 +47,9 @@ public class Calculations {
 		//orientationEfficiencyLoss = efficiencyLoss/100;
 		//find out if this is how it works
 		systemPower = inverter.getPMax();
+		if(panel.getPMaxNOCT()*numberPanels < systemPower){
+			systemPower = panel.getPMaxNOCT()*numberPanels;
+		}
 		//change this to user entered data
 		replacementGeneration = dailyUsage;
 		inverterEfficiency = inverter.getMaxEfficiency();

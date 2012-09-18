@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import project.client.CalcException;
 import project.server.Calculations;
 
 
@@ -52,9 +53,6 @@ public class CalculationsTest {
 		assertTrue(test.getReplacementGeneration() == 10.0);
 		assertTrue(test.getTilt() == 20);
 		assertTrue(test.getOrientation() == 0);
-		System.out.print(test.getPowerGenerated(1));
-		System.out.print(test.getPowerGenerated(10));
-		System.out.print(test.getDailySavings(1));
 	}
 
 	@Test
@@ -75,6 +73,63 @@ public class CalculationsTest {
 	@Test
 	public void testGetDailySavingsYearTen(){
 		assertTrue(decForm.format(test.getDailySavings(10)).equals("2.06"));
+	}
+	
+	@Test
+	public void testGetCumulativeSavings(){
+		double[] savings = test.getCumulativeSavings(20);
+		assertTrue(decForm.format(savings[0]).equals("801.76"));
+		assertTrue(decForm.format(savings[1]).equals("1597.91"));
+		assertTrue(decForm.format(savings[2]).equals("2388.45"));
+		assertTrue(decForm.format(savings[3]).equals("3173.37"));
+		assertTrue(decForm.format(savings[4]).equals("3952.69"));
+		assertTrue(decForm.format(savings[5]).equals("4726.39"));
+	}
+	
+	@Test 
+	public void testLessPanels(){
+		Calculations test2 = new Calculations(panelNumber, 4, suburb, inverterNumber,
+				energyCompany, dailyUsage, tilt, orientation, "test");
+		assertTrue(test2.getSystemPower() == 0.7);
+		assertTrue(decForm.format(test2.getPowerGenerated(1)).equals("3.56"));
+	}
+	
+	@Test 
+	public void noPanels(){
+		Calculations test2 = new Calculations(panelNumber, 0, suburb, inverterNumber,
+				energyCompany, dailyUsage, tilt, orientation, "test");
+		assertTrue(test2.getSystemPower() == 0);
+		assertTrue(test2.getPowerGenerated(1) == 0);
+	}
+	
+	@Test (expected = CalcException.class)
+	public void negativePanels(){
+		Calculations test2 = new Calculations(panelNumber, -5, suburb, inverterNumber,
+				energyCompany, dailyUsage, tilt, orientation, "test");
+	}
+	
+	@Test
+	public void lessDailyUsage(){
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, 2.0, tilt, orientation, "test");
+		assertTrue(test2.getSystemPower() == 1.7);
+		assertTrue(decForm.format(test2.getPowerGenerated(1)).equals("8.65"));
+		assertTrue(decForm.format(test2.getDailySavings(1)).equals("1.04"));
+	}
+	
+	@Test
+	public void noDailyUsage(){
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, 0.0, tilt, orientation, "test");
+		assertTrue(test2.getSystemPower() == 1.7);
+		assertTrue(decForm.format(test2.getPowerGenerated(1)).equals("8.65"));
+		assertTrue(decForm.format(test2.getDailySavings(1)).equals("0.69"));
+	}
+	
+	@Test (expected = CalcException.class)
+	public void negativeDailyUsage(){
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany,-5.1, tilt, orientation, "test");
 	}
 	// Test lower boundary limit on orientation at 100% efficiency (negative)
 

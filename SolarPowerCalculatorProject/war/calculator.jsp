@@ -18,18 +18,17 @@ Database db = new Database();
 			<option>Select solar panel</option>
 			<%
 			ArrayList<String>panels = new ArrayList<String>();
-			panels = db.getSolarPanelSerialNumberByBrand("REC");
+			panels = db.getAllSolarPanelSerials();
 			for(int i=0; i<panels.size(); i++){
 				out.print("<option>" + panels.get(i) +"</option>");
 			}
 			%>
-			<option>REC230PE</option>
 		</select> <label>Enter number of panels:</label> <input name="numPanels"
 			maxlength=2> <select name="inverter">
 			<option>Select inverter</option>
 			<%
 			ArrayList<String>inverters = new ArrayList<String>();
-			inverters = db.getInverterSerialNumberByBrand("SMA");
+			inverters = db.getAllInverterSerials();
 			for(int i=0; i<inverters.size(); i++){
 				out.print("<option>" + inverters.get(i) +"</option>");
 			}

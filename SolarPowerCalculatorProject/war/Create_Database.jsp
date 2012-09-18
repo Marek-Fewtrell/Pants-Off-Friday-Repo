@@ -80,7 +80,62 @@ db.setPanel("Suntech", "STP250-20/Wd", 1.64, 0.992, 1000, 0.184, 0.25);
 db.setInverter("SMA", "SB1700", 1.85, 0.935, 1700, 1.55, 400);
 db.setInverter("SMA", "SB3000", 3.15, 0.963, 2500, 3.0, 700);
 db.setInverter("Conergy", "WR1700", 1.5, 0.942, 1500, 1.3, 500);
-db.setInverter("SMA", "SB5000TL", 5.3, 0.97, 3000, 5.0, 550); 
+db.setInverter("SMA", "SB5000TL", 5.3, 0.97, 3000, 5.0, 550);
+/* Start added by Marek 18/09/2012 */
+/* db.setInverter(Company Name, Model Number, 
+Max Output, Max Efficiency, price, nominal Output, vMax*/
+db.setInverter("Conergy", "WR2300", 2.0, 0.943, 1900, 1.8, 500); 
+db.setInverter("Conergy", "WR3300", 2.65, 0.943, 2000, 2.5, 500); 
+db.setInverter("Conergy", "WR4600", 4.1, 0.943, 3100, 3.5, 500); 
+db.setInverter("Conergy", "WR5900", 5.0, 0.943, 2200, 4.6, 530); 
+
+db.setInverter("Fronius", "IG15", 1.5, 0.942, 1500, 1.3, 500); 
+db.setInverter("Fronius", "IG20", 2.0, 0.943, 1500, 1.8, 500); 
+db.setInverter("Fronius", "IG30", 2.6, 0.943, 2600, 2.5, 500); 
+db.setInverter("Fronius", "IG40", 4.1, 0.943, 3100, 3.5, 500); 
+db.setInverter("Fronius", "IG300", 24.0, 0.943, 6000, 24.0, 530); 
+db.setInverter("Fronius", "IG500", 40.0, 0.943, 12000, 40.0, 530); 
+
+db.setInverter("KACO", "1501xi", 1.5, 0.95, 1300, 1.5, 400); 
+db.setInverter("KACO", "3501xi", 3.3, 0.95, 1800, 3.3, 400); 
+db.setInverter("KACO", "4501xi", 4.6, 0.95, 2600, 4.6, 400); 
+
+db.setInverter("Latronics", "PVE1200", 1.2, 0.93, 1900, 1.0, 100); 
+db.setInverter("Latronics", "PVE2500", 3.1, 0.93, 3500, 2.1, 200);
+
+db.setInverter("Motech", "3300MS", 3.6, 0.963, 2000, 3.3, 500);
+db.setInverter("Motech", "3800MS", 4.2, 0.963, 2700, 3.8, 500);
+db.setInverter("Motech", "4600MS", 5.1, 0.963, 2900, 4.6, 500);
+
+db.setInverter("PowerRouter", "PR30S", 3.3, 0.945, 2100, 3.0, 480);
+db.setInverter("PowerRouter", "PR37S", 4.0, 0.945, 2600, 3.7, 480);
+db.setInverter("PowerRouter", "PR50S", 5.5, 0.945, 3100, 5.0, 480);
+
+db.setInverter("Omnik", "1.5kTL", 1.75, 0.974, 1400, 1.5, 500);
+db.setInverter("Omnik", "2kTL", 2.3, 0.974, 2000, 2.0, 500);
+
+db.setInverter("Power-One", "PVI-6000-OUTD", 6.9, 0.97, 2300, 6.2, 600);
+db.setInverter("Power-One", "PVI-5000-OUTD-AU", 5.75, 0.97, 2600, 4.8, 600);
+db.setInverter("Power-One", "PVI-4.2-OUTD", 4.82, 0.968, 2300, 4.38, 600);
+db.setInverter("Power-One", "PVI-3.0-OUTD", 3.5, 0.968, 1700, 3.12, 600);
+db.setInverter("Power-One", "PVI-2000-OUTD", 2.3, 0.96, 1200, 2.1, 600);
+
+db.setInverter("SMA", "SB700", 0.7, 0.934, 875, 0.6, 250);
+db.setInverter("SMA", "SB1100", 1.1, 0.93, 1100, 1.0, 400);
+db.setInverter("SMA", "SB1200", 1.3, 0.921, 1300, 1.2, 400);
+db.setInverter("SMA", "SB1700", 1.7, 0.935, 1400, 1.5, 400);
+db.setInverter("SMA", "SB2500", 2.5, 0.941, 1800, 2.3, 600);
+db.setInverter("SMA", "SB3300", 3.6, 0.952, 2000, 3.3, 500);
+db.setInverter("SMA", "SB3800", 3.8, 0.956, 2100, 3.8, 500);
+db.setInverter("SMA", "SMC5000A", 5.5, 0.961, 2700, 5.0, 600);
+db.setInverter("SMA", "SMC6000A", 6.0, 0.961, 2800, 6.0, 600);
+db.setInverter("SMA", "SMC7000TL", 7.0, 0.98, 2900, 7.0, 700);
+db.setInverter("SMA", "SMC10000TL", 10.0, 0.98, 4300, 10.0, 700);
+db.setInverter("SMA", "SMC11000TL", 11.0, 0.98, 4300, 11.0, 700);
+
+db.setInverter("Xantrex", "FT2.8-AU", 2.8, 0.95, 1680, 2.3, 600);
+
+/* End added by Marek 18/09/2012 */
 
 /* String shit = db.getInverterBrandByInverterSerialNumber("SB1700");
 System.out.println(shit);

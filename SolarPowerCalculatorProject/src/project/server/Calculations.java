@@ -1,5 +1,7 @@
 package project.server;
 
+import project.shared.CalcException;
+
 public class Calculations {
 	
 	private Inverter inverter;
@@ -28,53 +30,24 @@ public class Calculations {
 	private static double IDEALANGLEFACTOR = 0.87; //qld
 	private double idealTilt;
 
-	//For testing only
-	public Calculations(String panelNumber, int numberPanels, String suburb,
-			String inverterNumber, String energyCompany, double dailyUsage, 
-			int tilt, int orientation, String test){
-		//TODO change all constructors later
-		this.panelNumber = panelNumber;
-		this.inverterNumber = inverterNumber;
-		this.energyCompany = energyCompany;
-		inverter = new Inverter();
-		panel = new SolarPanel();
-		sunData = new SunData();
-		tariffs = new Tariffs();
-		tariff11 = tariffs.getNormalTariff();
-		feedInTariff = tariffs.getFeedInTariff();
-		this.numberPanels = numberPanels;
-		//change to a calculated value
-		//orientationEfficiencyLoss = efficiencyLoss/100;
-		//find out if this is how it works
-		systemPower = inverter.getPMax();
-		if(panel.getPMaxNOCT()*numberPanels < systemPower){
-			systemPower = panel.getPMaxNOCT()*numberPanels;
-		}
-		//change this to user entered data
-		replacementGeneration = dailyUsage;
-		inverterEfficiency = inverter.getMaxEfficiency();
-		solarExposure = sunData.getSolarExposure();
-		latitude = Math.abs(sunData.getLatitude());
-		this.tilt = Math.abs(tilt);
-		this.orientation = Math.abs(orientation);
-		idealTilt = this.latitude * IDEALANGLEFACTOR;
-		
-		if((Math.abs(tilt - idealTilt) <= 5) && 
-				(Math.abs(orientation) <= 10)){
-			orientationEfficiencyLoss = 0;
-		}else if((Math.abs(tilt - idealTilt) <= 20) && 
-				(Math.abs(orientation) <= 60)){
-			orientationEfficiencyLoss = 0.1;
-		}else{
-			orientationEfficiencyLoss = 1;
-		}	
-		
-	}
+	
 	
 	public Calculations(String panelNumber, int numberPanels, String suburb,
 			String inverterNumber, String energyCompany, double dailyUsage, 
-			int tilt, int orientation){
-		//TODO change all constructors later
+			int tilt, int orientation) throws CalcException{
+		if(numberPanels < 0){
+			throw new CalcException("Number of panels must be positive");
+		}
+		if(dailyUsage < 0){
+			throw new CalcException("Daily usage must be positive");
+		}
+		if((tilt < 0) || (tilt > 90)){
+			throw new CalcException("Tilt must be between 0 and 90 degrees");
+		}
+		if((orientation <= -360) || (orientation >= 360)){
+			throw new CalcException("Orientation must be between -360 and 360 degrees");
+		}
+
 		this.panelNumber = panelNumber;
 		this.inverterNumber = inverterNumber;
 		this.energyCompany = energyCompany;
@@ -85,40 +58,42 @@ public class Calculations {
 		tariff11 = tariffs.getNormalTariff();
 		feedInTariff = tariffs.getFeedInTariff();
 		this.numberPanels = numberPanels;
-		//change to a calculated value
-		//orientationEfficiencyLoss = efficiencyLoss/100;
-		//find out if this is how it works
 		systemPower = inverter.getPMax();
+		
+		//changes system power if the total power of the solar panels
+		//is less than that of the inverter pMax
 		if(panel.getPMaxNOCT()*numberPanels < systemPower){
 			systemPower = panel.getPMaxNOCT()*numberPanels;
 		}
 			
-		//change this to user entered data
 		replacementGeneration = dailyUsage;
 		inverterEfficiency = inverter.getMaxEfficiency();
 		solarExposure = sunData.getSolarExposure();
 		latitude = Math.abs(sunData.getLatitude());
-		this.tilt = Math.abs(tilt);
-		this.orientation = Math.abs(orientation);
+		this.tilt = tilt;
 		idealTilt = this.latitude * IDEALANGLEFACTOR;
+		this.orientation = Math.abs(orientation);
 		
+		//changes orientation angle to a number between 0 and 180
+		if(this.orientation > 180){
+			this.orientation = 360 - this.orientation;
+		}
+		
+		//calculate orientation efficiency loss
 		if((Math.abs(tilt - idealTilt) <= 5) && 
-				(Math.abs(orientation) <= 10)){
+				this.orientation <= 10){
 			orientationEfficiencyLoss = 0;
 		}else if((Math.abs(tilt - idealTilt) <= 20) && 
-				(Math.abs(orientation) <= 60)){
+				this.orientation <= 60){
 			orientationEfficiencyLoss = 0.1;
 		}else{
-			orientationEfficiencyLoss = 1;
-		}	
-		
+			orientationEfficiencyLoss = 0.2;
+		}		
 	}
+	
 	//use year to adjust efficiency
-	public double getPowerGenerated(int year){
-		
-			
+	public double getPowerGenerated(int year){			
 		//daily generation
-		//needs verification and solar panel age efficiency loss
 		powerGenerated = systemPower * (1 - orientationEfficiencyLoss) * 
 				(1 - YEARLYEFFICIENCYLOSS * (year - 1)) * inverterEfficiency *
 				solarExposure;
@@ -147,34 +122,107 @@ public class Calculations {
 		return cumulative;
 	}
 	
-	public double getBreakEven(double initialCost, double interestRate){
+	public double getBreakEven(double initialCost, double interestRate) throws CalcException{
+		if(initialCost < 0){
+			throw new CalcException("Initial cost must be positive");
+		}
+		if(interestRate < 0){
+			throw new CalcException("Interest rate must be positive");
+		}
+		
 		double[] investment = new double [20];
 		investment[0] = initialCost;
 		for(int i=1; i<investment.length; i++){
 			investment[i] = investment[i-1]*(1+interestRate/100);
-		} 
+		}
+		
 		double[] savings = new double [20];
 		savings = this.getCumulativeSavings(20);
 		double year = 0;
+		//find what year the investment breaks even
 		for(int i=0; i<savings.length; i++){
 			if(savings[i] < investment[i]){
 				year = i + 1.0;
 			}
 		}
-		double saved = savings[(int) year - 1];
-		double invested = investment[(int) year - 1];
-		double day = 0;
-		for(int i=0; i<366; i++){
-			saved = saved + this.getDailySavings((int)year+1);
-			invested = invested + (interestRate/100/365)*invested;
-			if(saved < invested){
-				day = i + 1.0;
-			}	
+		if(year < 20){
+			double saved = savings[(int) year - 1];
+			double invested = investment[(int) year - 1];
+			double day = 0;
+			//find what day the investment breaks even 
+			for(int i=0; i<366; i++){
+				saved = saved + this.getDailySavings((int)year+1);
+				invested = invested + (interestRate/100/365)*invested;
+				if(saved < invested){
+					day = i + 1.0;
+				}	
+			}
+			double breakEven = year + day/365;
+			return breakEven;
+		}else{
+			//this number to indicate investment doesnt break even
+			return -5.0;
 		}
-		double breakEven = year + day/365;
-		return breakEven;
 	}
 	
+	//For testing only
+		public Calculations(String panelNumber, int numberPanels, String suburb,
+				String inverterNumber, String energyCompany, double dailyUsage, 
+				int tilt, int orientation, String test) throws CalcException{
+			if(numberPanels < 0){
+				throw new CalcException("Number of panels must be positive");
+			}
+			if(dailyUsage < 0){
+				throw new CalcException("Daily usage must be positive");
+			}
+			if((tilt < 0) || (tilt > 90)){
+				throw new CalcException("Tilt must be between 0 and 90 degrees");
+			}
+			if((orientation <= -360) || (orientation >= 360)){
+				throw new CalcException("Orientation must be between -360 and 360 degrees");
+			}
+
+			this.panelNumber = panelNumber;
+			this.inverterNumber = inverterNumber;
+			this.energyCompany = energyCompany;
+			inverter = new Inverter();
+			panel = new SolarPanel();
+			sunData = new SunData();
+			tariffs = new Tariffs();
+			tariff11 = tariffs.getNormalTariff();
+			feedInTariff = tariffs.getFeedInTariff();
+			this.numberPanels = numberPanels;
+			systemPower = inverter.getPMax();
+			
+			//changes system power if the total power of the solar panels
+			//is less than that of the inverter pMax
+			if(panel.getPMaxNOCT()*numberPanels < systemPower){
+				systemPower = panel.getPMaxNOCT()*numberPanels;
+			}
+				
+			replacementGeneration = dailyUsage;
+			inverterEfficiency = inverter.getMaxEfficiency();
+			solarExposure = sunData.getSolarExposure();
+			latitude = Math.abs(sunData.getLatitude());
+			this.tilt = tilt;
+			idealTilt = this.latitude * IDEALANGLEFACTOR;
+			this.orientation = Math.abs(orientation);
+			//changes orientation angle to a number between 0 and 180
+			if(this.orientation > 180){
+				this.orientation = 360 - this.orientation;
+			}
+			
+			if((Math.abs(tilt - idealTilt) <= 5) && 
+					this.orientation <= 10){
+				orientationEfficiencyLoss = 0;
+			}else if((Math.abs(tilt - idealTilt) <= 20) && 
+					this.orientation <= 60){
+				orientationEfficiencyLoss = 0.1;
+			}else{
+				orientationEfficiencyLoss = 0.2;
+			}		
+		}
+		
 	//the following getters are just for testing
 	public String getPanelNumber(){
 		return panelNumber;

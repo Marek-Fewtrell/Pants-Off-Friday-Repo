@@ -3,8 +3,8 @@ package project.server;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import project.client.CalcException;
 import project.client.CalculationsService;
+import project.shared.CalcException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

@@ -7,8 +7,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import project.client.CalcException;
 import project.server.Calculations;
+import project.shared.CalcException;
 
 
 public class CalculationsTest {
@@ -26,7 +26,7 @@ public class CalculationsTest {
 	DecimalFormat decForm = new DecimalFormat(decFormat);
 	
 	@Before
-	public void setup() {
+	public void setup() throws CalcException {
 		//helper.setUp();
 		test = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
 				energyCompany, dailyUsage, tilt, orientation, "test");
@@ -87,7 +87,7 @@ public class CalculationsTest {
 	}
 	
 	@Test 
-	public void testLessPanels(){
+	public void testLessPanels() throws CalcException{
 		Calculations test2 = new Calculations(panelNumber, 4, suburb, inverterNumber,
 				energyCompany, dailyUsage, tilt, orientation, "test");
 		assertTrue(test2.getSystemPower() == 0.7);
@@ -95,7 +95,7 @@ public class CalculationsTest {
 	}
 	
 	@Test 
-	public void noPanels(){
+	public void noPanels() throws CalcException{
 		Calculations test2 = new Calculations(panelNumber, 0, suburb, inverterNumber,
 				energyCompany, dailyUsage, tilt, orientation, "test");
 		assertTrue(test2.getSystemPower() == 0);
@@ -103,13 +103,13 @@ public class CalculationsTest {
 	}
 	
 	@Test (expected = CalcException.class)
-	public void negativePanels(){
+	public void negativePanels() throws CalcException{
 		Calculations test2 = new Calculations(panelNumber, -5, suburb, inverterNumber,
 				energyCompany, dailyUsage, tilt, orientation, "test");
 	}
 	
 	@Test
-	public void lessDailyUsage(){
+	public void lessDailyUsage() throws CalcException{
 		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
 				energyCompany, 2.0, tilt, orientation, "test");
 		assertTrue(test2.getSystemPower() == 1.7);
@@ -118,7 +118,7 @@ public class CalculationsTest {
 	}
 	
 	@Test
-	public void noDailyUsage(){
+	public void noDailyUsage() throws CalcException{
 		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
 				energyCompany, 0.0, tilt, orientation, "test");
 		assertTrue(test2.getSystemPower() == 1.7);
@@ -127,7 +127,7 @@ public class CalculationsTest {
 	}
 	
 	@Test (expected = CalcException.class)
-	public void negativeDailyUsage(){
+	public void negativeDailyUsage() throws CalcException{
 		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
 				energyCompany,-5.1, tilt, orientation, "test");
 	}

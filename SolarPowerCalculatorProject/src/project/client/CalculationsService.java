@@ -2,6 +2,8 @@ package project.client;
 
 import java.util.ArrayList;
 
+import project.shared.CalcException;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 

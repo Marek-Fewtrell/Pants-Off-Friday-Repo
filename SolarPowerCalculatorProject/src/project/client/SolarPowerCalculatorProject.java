@@ -312,6 +312,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				 // panelSelect 
 				 //if (FieldVerifier.isNull())
 				 //numPanels is not null or not letters
+				//numPanels is positive
 				
 				//suburb is not null or numbers
 				
@@ -320,14 +321,19 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				//energy provider is not null
 				
 				//daytimeUsage is not null or letters
+				//daytimeUsage is positive
 				
 				//tiltAngle is not null or letters
+				//0 >= tiltAngle > 90
 				
 				//panDirection is not null or letters
+				//-360 > panDirection > 360
 				
 				//initInstalCost is not null or letters
+				//initInstallCost is positive
 				
 				//interestRate is not null or letters
+				//interestRate is positive
 				
 				errorLabel.setText("");
 				ArrayList<String> stuffToServer = new ArrayList<String>();

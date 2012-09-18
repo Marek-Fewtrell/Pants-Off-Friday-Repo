@@ -53,13 +53,12 @@ public class Calculations {
 		this.energyCompany = energyCompany;
 		inverter = new Inverter(inverterNumber);
 		panel = new SolarPanel(panelNumber);
-		sunData = new SunData(suburb);
-		tariffs = new Tariffs(energyCompany);
-		tariff11 = tariffs.getNormalTariff();
-		feedInTariff = tariffs.getFeedInTariff();
+		sunData = new SunData(suburb);	
 		this.numberPanels = numberPanels;
 		systemPower = inverter.getPMax();
-		
+		tariffs = new Tariffs(energyCompany, systemPower);
+		feedInTariff = tariffs.getFeedInTariff();
+		tariff11 = tariffs.getNormalTariff();
 		//changes system power if the total power of the solar panels
 		//is less than that of the inverter pMax
 		if(panel.getPMaxNOCT()*numberPanels < systemPower){

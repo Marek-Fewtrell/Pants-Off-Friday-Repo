@@ -25,11 +25,16 @@ public class Tariffs {
 		annualTariffIncrease = 5;
 	}
 	
-	public Tariffs(String supplierName){
+	public Tariffs(String supplierName, double inverterPower){
 		db = new Database();
 		this.supplierName = supplierName;
 		tariff11 = db.getTariff11(supplierName);
 		tariff33 = db.getTariff33(supplierName);
+		if(inverterPower <= 5){
+			feedInTariff = 0.08;
+		}else{
+			feedInTariff = 0.06;
+		}
 	}
 	
 	public double getNormalTariff(){

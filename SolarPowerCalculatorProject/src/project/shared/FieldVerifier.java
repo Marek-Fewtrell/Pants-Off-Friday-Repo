@@ -1,6 +1,5 @@
 package project.shared;
 
-import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -42,6 +41,11 @@ public class FieldVerifier {
 		return name.length() > 3;
 	}
 	
+	/**
+	 * Checks to see if the provided string is null or not.
+	 * @param option to be checked for null
+	 * @return true if is null
+	 */
 	public static boolean isNull(String option) {
 		if (option == null) {
 			return true;
@@ -50,6 +54,11 @@ public class FieldVerifier {
 		}
 	}
 	
+	/**
+	 * Checks to see if the provided string is empty or not
+	 * @param option to be checked for empty
+	 * @return true if empty || ""
+	 */
 	public static boolean isEmpty(String option) {
 		if (option.isEmpty() || option == "") {
 			return true;
@@ -58,6 +67,11 @@ public class FieldVerifier {
 		}
 	}
 	
+	/**
+	 * Checks to see if the provided string contains letters 
+	 * @param option to be checked for letters
+	 * @return true if string has letters
+	 */
 	public static boolean containsLetters(String option) {
 		if (option.matches("^[a-zA-Z]*$")) {
 			return true;
@@ -66,6 +80,11 @@ public class FieldVerifier {
 		}
 	}
 	
+	/**
+	 * Checks to see if the provided string contains numbers
+	 * @param option to be checked for numbers
+	 * @return true if string has numbers or a decimal(.)
+	 */
 	public static boolean containsNum(String option) {
 		if (option.matches("^[0-9.]*$")) {
 			return true;

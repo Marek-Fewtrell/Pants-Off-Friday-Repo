@@ -32,7 +32,7 @@
 	double[] savings = new double[20];
 	savings = calcs.getCumulativeSavings(20);
 	double[] investment = new double [20];
-	investment[0] = installationCost;
+	investment[0] = installationCost*(1+interestRate/100);
 	for(int i=1; i<investment.length; i++){
 		investment[i] = investment[i-1]*(1+interestRate/100);
 	}

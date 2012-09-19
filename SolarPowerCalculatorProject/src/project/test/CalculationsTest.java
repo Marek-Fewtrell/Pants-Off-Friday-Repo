@@ -131,6 +131,89 @@ public class CalculationsTest {
 		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
 				energyCompany,-5.1, tilt, orientation, "test");
 	}
+	// Test orientation at -10
+	@Test
+	public void testOrientationAtNegTen() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+			energyCompany, dailyUsage, tilt, -10, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0);
+	}
+	
+	// Test orientation at -11
+	@Test
+	public void testOrientationAtNegEleven() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+			energyCompany, dailyUsage, tilt, -11, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.1);
+	}
+
+	// Test orientation at -60		
+	@Test
+	public void testOrientationAtNegSixty() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+			energyCompany, dailyUsage, tilt, -60, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.1);
+	}	
+	
+	// Test orientation at -61		
+	@Test
+	public void testOrientationAtNegSixtyOne() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+			energyCompany, dailyUsage, tilt, -61, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.2);
+	}
+	
+	// Test orientation at +10
+	@Test
+	public void testOrientationAtPosTen() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+			energyCompany, dailyUsage, tilt, 10, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0);
+	}
+	
+	// Test orientation at +11
+	@Test
+	public void testOrientationAtPosEleven() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+			energyCompany, dailyUsage, tilt, 11, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.1);
+	}
+
+	// Test orientation at +60		
+	@Test
+	public void testOrientationAtPosSixty() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+			energyCompany, dailyUsage, tilt, 60, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.1);
+	}	
+	
+	// Test orientation at +61		
+	@Test
+	public void testOrientationAtPosSixtyOne() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+			energyCompany, dailyUsage, tilt, 61, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.2);
+	}
+			
+	// Test to throw exception at -500
+	@Test (expected = CalcException.class)
+	public void testOrientationAtNegFiveHundred() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, tilt, -500, "test");
+	}
+	
+	// Test to throw exception at +500
+	@Test (expected = CalcException.class)
+	public void testOrientationAtPosFiveHundred() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, tilt, 500, "test");
+	}
+	
+	//-11 = 0.1 loss, -10 = 0 loss, -60 = 0.1 loss, -61 = 0.2 loss
+	//if orientation is -500 should throw calcExeption
+	//if orientation value is -300 should change the orientation value to +60 (statement in constructor) 
+	//Tests for exception handling??	
+	
 	// Test lower boundary limit on orientation at 100% efficiency (negative)
 
 	// Test upper boundary limit on orientation at 100% efficiency (positive)

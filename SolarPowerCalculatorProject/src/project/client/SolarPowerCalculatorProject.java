@@ -59,7 +59,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	final TextBox interestRate = new TextBox();
 	final TextBox tiltAngle = new TextBox();
 	final TextBox panDirection = new TextBox();
-	final TextBox latitude = new TextBox();
+	//final TextBox latitude = new TextBox();
 
 	final Label errorLabel = new Label();
 	final VerticalPanel vertPan = new VerticalPanel();
@@ -86,7 +86,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	final Label lblInterestRate = new Label();
 	final Label lbltiltAngle = new Label();
 	final Label lblpanDirection = new Label();
-	final Label lbllatitude = new Label();
+	//final Label lbllatitude = new Label();
+	final Label lblbreakeven = new Label();
 
 	final ScrollPanel outputstuf = new ScrollPanel();
 	final FlexTable generatedTable = new FlexTable();
@@ -158,10 +159,10 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		lblpanDirection.setText("Facing Panel Direction (degrees): ");
 
 		// Latitude
-		latitude.addChangeHandler(hadle);
-		vertPan2.add(lbllatitude);
-		vertPan2.add(latitude);
-		lbllatitude.setText("Latitude (degrees): ");
+		//latitude.addChangeHandler(hadle);
+		//vertPan2.add(lbllatitude);
+		//vertPan2.add(latitude);
+		//lbllatitude.setText("Latitude (degrees): ");
 
 		// Postcode
 		postcode.addChangeHandler(hadle);
@@ -187,7 +188,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		vertPan2.add(interestRate);
 		lblInterestRate.setText("Interest Rate: ");
 		
-
+		
 		vertPan.add(sendButton);
 		vertPan.add(errorLabel);
 		vertPan.add(autoFill);
@@ -200,11 +201,11 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				efficiencyLoss.setText("23");
 				postcode.setText("4053");
 				suburb.setText("STAFFORD");
-				initInstalCost.setText("300");
+				initInstalCost.setText("2200");
 				interestRate.setText("2.4");
 				tiltAngle.setText("30");
 				panDirection.setText("13");
-				latitude.setText("24");
+				//latitude.setText("24");
 			}
 		});
 		//vertPan.add(errorLabel);
@@ -218,6 +219,9 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		flowPan.add(calcOutputArea);
 		
 		mainArea.add(flowPan);
+		
+		
+		calcOutputArea.add(lblbreakeven);
 
 		// **Start output table**
 		outputstuf.add(generatedTable);
@@ -510,6 +514,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		ArrayList<String> array2 = result.get(2);
 		ArrayList<String> array3 = result.get(3);
 		ArrayList<String> array4 = result.get(4);
+		ArrayList<String> array5 = result.get(5);
 		
 		// Year
 		for (int i = 0; i < array0.size(); i++) {
@@ -535,6 +540,13 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		for (int i = 0; i < array4.size(); i++) {
 			generatedTable.setText(4, i + 1, array4.get(i).toString());
 		}
+		//Window.alert(array5.get(0).toString());
+		//lblbreakeven.setText("Break even time: ");// + array5.get(0).toString());
+		
+		
+		lblbreakeven.setText("Break Even: " + array5.get(0).toString());
+		
+		//calcOutputArea.add("Break even time: " + calcs.getBreakEven(installationCost, interestRate);
 
 	}
 

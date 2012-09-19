@@ -1,2 +1,0 @@
-serviceClass: project.client.CalculationsService
-path: 29435C017F2536EE3576147EA57E0864.gwt.rpc

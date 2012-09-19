@@ -1,2 +1,0 @@
-serviceClass: project.client.GreetingService
-path: A9D3D92E49CAFE806658BD47E14C8AAD.gwt.rpc

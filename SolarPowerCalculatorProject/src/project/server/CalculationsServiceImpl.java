@@ -47,6 +47,7 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		ArrayList<String> array3 = new ArrayList<String>();//Yearly Gen
 		ArrayList<String> array4 = new ArrayList<String>();//Yearly Savings
 		ArrayList<String> array5 = new ArrayList<String>();//Invest Return
+		ArrayList<String> array6 = new ArrayList<String>();//Break even
 		ArrayList<ArrayList<String>> arrayOut = new ArrayList<ArrayList<String>>();
 		
 		Double installationCost = Double.parseDouble(asd.get(8));
@@ -55,7 +56,7 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		double[] savings = new double[20];
 		savings = calcs.getCumulativeSavings(20);
 		double[] investment = new double [20];
-		investment[0] = installationCost;
+		investment[0] = installationCost *(1+interestRate/100);
 		for(int i=1; i<investment.length; i++){
 			investment[i] = investment[i-1]*(1+interestRate/100);
 		}
@@ -81,11 +82,14 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 			array5.add(decForm.format(investment[i]));
 		}
 		
+		array6.add(Double.toString(calcs.getBreakEven(installationCost, interestRate)));
+		
 		arrayOut.add(array1);
 		arrayOut.add(array2);
 		arrayOut.add(array3);
 		arrayOut.add(array4);
 		arrayOut.add(array5);
+		arrayOut.add(array6);
 		
 		return arrayOut;
 	}

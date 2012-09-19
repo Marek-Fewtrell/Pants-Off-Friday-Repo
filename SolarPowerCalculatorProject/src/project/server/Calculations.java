@@ -150,9 +150,10 @@ public class Calculations {
 			if(year == 0){
 				saved = 0;
 				invested = initialCost;
+			}else{
+				saved = savings[(int) year - 1];
+				invested = investment[(int) year - 1];
 			}
-			saved = savings[(int) year - 1];
-			invested = investment[(int) year - 1];
 			double day = 0;
 			//find what day the investment breaks even 
 			for(int i=0; i<366; i++){

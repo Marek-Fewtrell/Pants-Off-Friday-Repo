@@ -13,7 +13,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -34,6 +33,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	private static final String SERVER_ERROR = "An error occurred while "
 			+ "attempting to contact the server. Please check your network "
 			+ "connection and try again.";
+	
+	private static final String SERVER_SUCCESS = "Request processed succesfully. Results are now displayed.";
 
 	/**
 	 * Create a remote service proxy to talk to the server-side services.
@@ -51,42 +52,39 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	final ListBox panelSelect = new ListBox();
 	final ListBox inverterSelect = new ListBox();
 	final TextBox daytimeUsage = new TextBox();
-	final TextBox efficiencyLoss = new TextBox();
 	final TextBox postcode = new TextBox();
-	final TextBox suburb = new TextBox();
 	final ListBox energyProvider = new ListBox();
 	final TextBox initInstalCost = new TextBox();
 	final TextBox interestRate = new TextBox();
 	final TextBox tiltAngle = new TextBox();
 	final TextBox panDirection = new TextBox();
-	//final TextBox latitude = new TextBox();
 
 	final Label errorLabel = new Label();
-	final VerticalPanel vertPan = new VerticalPanel();
-	final VerticalPanel vertPan2 = new VerticalPanel();
-
-	final FlowPanel flowPan = new FlowPanel();
-	final FlowPanel flowPan2 = new FlowPanel();
 	
+	//Contains left inputs
+	final VerticalPanel vertPan = new VerticalPanel();
+	//Contains right inputs
+	final VerticalPanel vertPan2 = new VerticalPanel();
+	//Contains vertPan and vertPan2.
 	final HorizontalPanel inputArea = new HorizontalPanel();
-
-	final HorizontalPanel mainArea = new HorizontalPanel();
+	//Contains input area.
 	final HorizontalPanel calcMainInputArea = new HorizontalPanel();
-	final HorizontalPanel calcOutputArea = new HorizontalPanel();
+	//Contains the outputs including generatedTable.
+	final VerticalPanel calcOutputArea = new VerticalPanel();
+	//Contains calcMainInputArea and calcOutputArea
+	final VerticalPanel mainArea = new VerticalPanel();
+
 
 	final Label lblNumPanels = new Label();
 	final Label lblPanelSelect = new Label();
 	final Label lblInverterSelect = new Label();
 	final Label lblDayTimeUsage = new Label();
-	final Label lblEfficiencyLoss = new Label();
 	final Label lblPostcode = new Label();
-	final Label lblSuburb = new Label();
 	final Label lblEnergyProvider = new Label();
 	final Label lblInitInstalCost = new Label();
 	final Label lblInterestRate = new Label();
 	final Label lbltiltAngle = new Label();
 	final Label lblpanDirection = new Label();
-	//final Label lbllatitude = new Label();
 	final Label lblbreakeven = new Label();
 
 	final ScrollPanel outputstuf = new ScrollPanel();
@@ -120,7 +118,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		numPanels.addChangeHandler(hadle);
 		vertPan.add(lblNumPanels);
 		vertPan.add(numPanels);
-		lblNumPanels.setText("Number of Panel: ");
+		lblNumPanels.setText("Number of Panels: ");
 
 		// Panel Selection
 		panelSelect.addChangeHandler(hadle);
@@ -138,7 +136,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		energyProvider.addChangeHandler(hadle);
 		vertPan.add(lblEnergyProvider);
 		vertPan.add(energyProvider);
-		lblEnergyProvider.setText("Energy Provider: ");
+		lblEnergyProvider.setText("Select Energy Provider: ");
 				
 		// Day Time Usage
 		daytimeUsage.addChangeHandler(hadle);
@@ -156,25 +154,13 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		panDirection.addChangeHandler(hadle);
 		vertPan2.add(lblpanDirection);
 		vertPan2.add(panDirection);
-		lblpanDirection.setText("Facing Panel Direction (degrees): ");
-
-		// Latitude
-		//latitude.addChangeHandler(hadle);
-		//vertPan2.add(lbllatitude);
-		//vertPan2.add(latitude);
-		//lbllatitude.setText("Latitude (degrees): ");
+		lblpanDirection.setText("Roof direction (deviation from Solar North)(degrees): ");
 
 		// Postcode
 		postcode.addChangeHandler(hadle);
 		vertPan2.add(lblPostcode);
 		vertPan2.add(postcode);
 		lblPostcode.setText("Postcode: ");
-
-		// Suburb
-		suburb.addChangeHandler(hadle);
-		vertPan2.add(lblSuburb);
-		vertPan2.add(suburb);
-		lblSuburb.setText("Suburb: ");
 		
 		// Initial Installation Cost
 		initInstalCost.addChangeHandler(hadle);
@@ -196,43 +182,42 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				Window.alert("AutoFilled");
-				numPanels.setText("5");
-				daytimeUsage.setText("123");
-				efficiencyLoss.setText("23");
+				numPanels.setText("8");
+				daytimeUsage.setText("10");
 				postcode.setText("4053");
-				suburb.setText("STAFFORD");
-				initInstalCost.setText("2200");
-				interestRate.setText("2.4");
-				tiltAngle.setText("30");
-				panDirection.setText("13");
-				//latitude.setText("24");
+				initInstalCost.setText("3200");
+				interestRate.setText("4.6");
+				tiltAngle.setText("20");
+				panDirection.setText("6");
 			}
 		});
-		//vertPan.add(errorLabel);
 
 		inputArea.add(vertPan);
 		inputArea.add(vertPan2);
 		
 		calcMainInputArea.add(inputArea);
-		flowPan.setWidth("2em");
-		flowPan.add(calcMainInputArea);
-		flowPan.add(calcOutputArea);
 		
-		mainArea.add(flowPan);
-		
+		mainArea.add(calcMainInputArea);
+		mainArea.add(calcOutputArea);
 		
 		calcOutputArea.add(lblbreakeven);
 
 		// **Start output table**
 		outputstuf.add(generatedTable);
 		outputstuf.setAlwaysShowScrollBars(true);
-		outputstuf.setWidth("100%");
+		outputstuf.setWidth("40%");
 		calcOutputArea.add(outputstuf);
 
 		generatedTable.setCellPadding(6);
 		generatedTable.getColumnFormatter().addStyleName(0, "generListHeader");
 		generatedTable.addStyleName("generList");
-		generatedTable.getCellFormatter().addStyleName(0, 1, "generListNumericColumn");
+		//generatedTable.getCellFormatter().addStyleName(0, 1, "generListNumericColumn");
+		generatedTable.getRowFormatter().addStyleName(0, "generListNumericColumn");
+		generatedTable.getRowFormatter().addStyleName(1, "generListNumericColumn");
+		generatedTable.getRowFormatter().addStyleName(2, "generListNumericColumn");
+		generatedTable.getRowFormatter().addStyleName(3, "generListNumericColumn");
+		generatedTable.getRowFormatter().addStyleName(4, "generListNumericColumn");
+		
 
 		// Create table row names for data
 		generatedTable.setText(0, 0, "Year");
@@ -246,6 +231,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		// Use RootPanel.get() to get the entire body element
 		RootPanel.get("CalInputs").add(mainArea);
 
+		//Hides the output area until needed.
 		calcOutputArea.setVisible(false);
 
 		// Focus the cursor on the first field when the app loads
@@ -256,7 +242,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
-		dialogBox.setText("Remote Procedure Call");
+		dialogBox.setText("Processing Request");
 		dialogBox.setAnimationEnabled(true);
 		final Button closeButton = new Button("Close");
 		// We can set the id of a widget by accessing its Element
@@ -265,9 +251,9 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		final HTML serverResponseLabel = new HTML();
 		VerticalPanel dialogVPanel = new VerticalPanel();
 		dialogVPanel.addStyleName("dialogVPanel");
-		dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
+		dialogVPanel.add(new HTML("<b>Sending request to server:</b>"));
 		dialogVPanel.add(textToServerLabel);
-		dialogVPanel.add(new HTML("<br><b>Server replies:</b>"));
+		dialogVPanel.add(new HTML("<br><b>Request Status</b>"));
 		dialogVPanel.add(serverResponseLabel);
 		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
 		dialogVPanel.add(closeButton);
@@ -293,129 +279,77 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			}
 
 			/**
-			 * Fired when the user types in the nameField.
-			 */
-			/*
-			 * public void onKeyUp(KeyUpEvent event) { if
-			 * (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-			 * sendNameToServer(); } }
-			 */
-
-			/**
 			 * Send the name from the nameField to the server and wait for a
 			 * response.
 			 */
 			private void sendNameToServer() {
-				// First, we validate the input.
-				
-				
-//				 if (!FieldVerifier.isValidName(textToServer)) {
-//				 errorLabel.setText("Please enter at least four characters");
-//				 return; }
-				 
-				 // panelSelect 
-				 //if (FieldVerifier.isNull())
-				 //numPanels is not null or not letters
-				//numPanels is positive
-				
-				//suburb is not null or numbers
-				
-				//inverter select is not null
-				
-				//energy provider is not null
-				
-				//daytimeUsage is not null or letters
-				//daytimeUsage is positive
-				
-				//tiltAngle is not null or letters
-				//0 >= tiltAngle > 90
-				
-				//panDirection is not null or letters
-				//-360 > panDirection > 360
-				
-				//initInstalCost is not null or letters
-				//initInstallCost is positive
-				
-				//interestRate is not null or letters
-				//interestRate is positive
 				
 				errorLabel.setText("");
 				ArrayList<String> stuffToServer = new ArrayList<String>();
 				stuffToServer.add(panelSelect.getItemText(panelSelect.getSelectedIndex()));
 				stuffToServer.add(numPanels.getText());
-				stuffToServer.add(suburb.getText());
-				// stuffToServer.add(postcode.getText());
+				stuffToServer.add(postcode.getText());
 				stuffToServer.add(inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
 				stuffToServer.add(energyProvider.getItemText(energyProvider.getSelectedIndex()));
 				stuffToServer.add(daytimeUsage.getText());
-				// stuffToServer.add(latitude.getText());
 				stuffToServer.add(tiltAngle.getText());
 				stuffToServer.add(panDirection.getText());
 				stuffToServer.add(initInstalCost.getText());
 				stuffToServer.add(interestRate.getText());
-
-				/*Iterator<String> iterate = stuffToServer.iterator();
-				while (iterate.hasNext()){
-					FieldVerifier.isNull(iterate.toString());
-				}*/
 				
 				boolean toSend = true;
 				
-				
 				for (String s : stuffToServer) {
 					if (FieldVerifier.isNull(s) || FieldVerifier.isEmpty(s.toString())) {
-						errorLabel.setText("Error, something is wrong");
-						errorLabel.setVisible(true);
+						errorLabel.setText("Error, a field is empty");
 						toSend = false;
 						return;
 					}
 				}
 				
-				if (!FieldVerifier.containsNum(numPanels.getText())) {
-					errorLabel.setText("fuck7");
-					errorLabel.setVisible(true);
-					Window.alert(numPanels.getText().toString());
-					toSend = false;
-				}
-
-				if (!FieldVerifier.containsLetters(suburb.getText())) {
-					errorLabel.setText("fuck6");
-					errorLabel.setVisible(true);
-					toSend = false;
-				}
-
-				if (!FieldVerifier.containsNum(daytimeUsage.getText())) {
-					errorLabel.setText("fuck5");
-					errorLabel.setVisible(true);
-					toSend = false;
-				}
-
-				if (!FieldVerifier.containsNum(tiltAngle.getText())) {
-					errorLabel.setText("fuck4");
-					errorLabel.setVisible(true);
-					toSend = false;
-				}
-
-				if (!FieldVerifier.containsNum(panDirection.getText())) {
-					errorLabel.setText("fuck3");
-					errorLabel.setVisible(true);
-					toSend = false;
-				}
-
-				if (!FieldVerifier.containsNum(initInstalCost.getText())) {
-					errorLabel.setText("fuck2");
-					errorLabel.setVisible(true);
-					toSend = false;
-				}
-
 				if (!FieldVerifier.containsNum(interestRate.getText())) {
-					errorLabel.setText("fuck1");
+					errorLabel.setText("No letter in the interest rate field.");
+					toSend = false;
+					errorLabel.setVisible(true);
+				}
+				
+				if (!FieldVerifier.containsNum(initInstalCost.getText())) {
+					errorLabel.setText("No letter in the initial install cost field.");
+					toSend = false;
+					errorLabel.setVisible(true);
+				}
+				
+				if (!FieldVerifier.containsNum(postcode.getText())) {
+					errorLabel.setText("No letters in the postcode field.");
+					toSend = false;
+					errorLabel.setVisible(true);
+				}
+				
+				if (!FieldVerifier.containsNum(panDirection.getText())) {
+					errorLabel.setText("No letter in the Roof Dirction field.");
+					toSend = false;
+					errorLabel.setVisible(true);
+				}
+				
+				if (!FieldVerifier.containsNum(tiltAngle.getText())) {
+					errorLabel.setText("No letter in the roof tilt angle field.");
+					toSend = false;
+					errorLabel.setVisible(true);
+				}
+				
+				if (!FieldVerifier.containsNum(daytimeUsage.getText())) {
+					errorLabel.setText("No letter in the Day time usage field.");
+					toSend = false;
+					errorLabel.setVisible(true);
+				}
+				
+				if (!FieldVerifier.containsNum(numPanels.getText())) {
+					errorLabel.setText("No letters in the the Number of Panels field.");
 					errorLabel.setVisible(true);
 					toSend = false;
 				}
 				
-				
-				if (toSend == true){
+				if (toSend == true) {
 				// Then, we send the input to the server.
 				sendButton.setEnabled(false);
 				serverResponseLabel.setText("");
@@ -456,7 +390,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 										.setText("Connection with Server - Success");
 								serverResponseLabel
 										.removeStyleName("serverResponseLabelError");
-								// serverResponseLabel.setHTML(result);
+								serverResponseLabel.setHTML(SERVER_SUCCESS);
 								dialogBox.center();
 								closeButton.setFocus(true);
 								calcOutputArea.setVisible(true);
@@ -543,8 +477,11 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		//Window.alert(array5.get(0).toString());
 		//lblbreakeven.setText("Break even time: ");// + array5.get(0).toString());
 		
-		
-		lblbreakeven.setText("Break Even: " + array5.get(0).toString());
+		if (Double.parseDouble(array5.get(0)) <= 0){
+			lblbreakeven.setText("Break Even: Does not break even");
+		} else {		
+			lblbreakeven.setText("Break Even: " + array5.get(0).toString() + " yrs");
+		}
 		
 		//calcOutputArea.add("Break even time: " + calcs.getBreakEven(installationCost, interestRate);
 

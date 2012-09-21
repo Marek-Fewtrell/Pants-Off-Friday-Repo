@@ -86,7 +86,7 @@ public class FieldVerifier {
 	 * @return true if string has numbers or a decimal(.)
 	 */
 	public static boolean containsNum(String option) {
-		if (option.matches("^[0-9.]*$")) {
+		if (option.matches("^[0-9.-]*$")) {
 			return true;
 		} else {
 		return false;

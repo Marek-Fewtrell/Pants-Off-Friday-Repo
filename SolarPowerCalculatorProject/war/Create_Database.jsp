@@ -62,7 +62,7 @@ db.setPanel("SOLON", "BLACK230/07", 1.640, 1, 1000, 0.186, 0.260);
 db.setPanel("SOLON", "BLUE230/07", 1.640, 1, 1000, 0.190, 0.260);
 db.setPanel("REC", "Rec250peBLK", 1.665, 0.991, 1000, 0.182, 0.250);
 db.setPanel("REC", "Rec255pePLUS", 1.665, 0.991, 1000, 0.193, 0.255);
-db.setPanel("REC", " REC215PE", 1.665, 0.991, 1000, 0.19565, 0.215);
+db.setPanel("REC", "REC215PE", 1.665, 0.991, 1000, 0.19565, 0.215);
 db.setPanel("Lorentz", "LA130-24S", 1.43, 0.636, 1000, 0.12012, 0.13);
 db.setPanel("Lorentz", "LA160-24S", 1.556, 0.669, 1000, 0.14784, 0.16);
 db.setPanel("Conergy", "C175M", 1.575, 0.826, 1000, 0.15925, 0.175);

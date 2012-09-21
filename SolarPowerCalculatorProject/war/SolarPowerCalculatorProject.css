@@ -63,7 +63,7 @@ body  {
 #CalInputs {
     margin: 0 13em 0 13em; /* the left margin will look best if you match the padding amount to the header and footer. */
     min-height:30em;
-} 
+}
 #footer { 
     padding: 0 10px; /* this padding matches the left alignment of the elements in the divs that appear above it. */
     background:#DDDDDD;

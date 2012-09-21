@@ -31,17 +31,7 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 				Double.parseDouble(asd.get(5)), Integer.parseInt(asd.get(6)), Integer.parseInt((asd.get(7))));
 
 		DecimalFormat decForm = new DecimalFormat(decFormat);
-		
-		/*
-		FlexTable generatedTable = new FlexTable();
-		
-		//Create table row names for data
-		generatedTable.setText(0, 0, "Year");
-		generatedTable.setText(1, 0, "Daily Generation");
-		generatedTable.setText(2, 0, "Yearly Generation");
-		generatedTable.setText(3, 0, "Yearly Savings");
-		generatedTable.setText(4, 0, "Investment Return");
-*/
+
 		ArrayList<String> array1 = new ArrayList<String>();//Year
 		ArrayList<String> array2 = new ArrayList<String>();//Daily Gen
 		ArrayList<String> array3 = new ArrayList<String>();//Yearly Gen
@@ -82,7 +72,8 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 			array5.add(decForm.format(investment[i]));
 		}
 		
-		array6.add(Double.toString(calcs.getBreakEven(installationCost, interestRate)));
+		
+		array6.add(decForm.format((calcs.getBreakEven(installationCost, interestRate))));
 		
 		arrayOut.add(array1);
 		arrayOut.add(array2);

@@ -1,2 +1,5 @@
 # Module solarpowercalculatorproject
 # RPC service class, partial path of RPC policy file
+project.client.CalculationsService, 02513AD4BEEA8366953F1A62B0002081.gwt.rpc
+project.client.SetupService, F8DF5377E1A9DF962268C818E3BA29B0.gwt.rpc
+project.client.SolarPowerService, 2D5E0BEC65B264CB860864534CAC2B95.gwt.rpc

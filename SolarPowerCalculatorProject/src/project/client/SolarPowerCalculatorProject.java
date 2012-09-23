@@ -90,20 +90,18 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	final ScrollPanel outputstuf = new ScrollPanel();
 	final FlexTable generatedTable = new FlexTable();
 
-	final Button autoFill = new Button("AutoFill");
+	final Button autoFill = new Button("Sample Data");
+	final Label lblAutoFill = new Label();
 
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
 
-		// We can add style names to widgets
-		//sendButton.addStyleName("sendButton");
-
 		class UpdatingHandler implements ChangeHandler {
 			@SuppressWarnings("unused")
 			private void asyncOutput() {
-				// Window.alert("Holy crap it works!");
+				
 			}
 
 			@Override
@@ -174,14 +172,18 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		vertPan2.add(interestRate);
 		lblInterestRate.setText("Interest Rate: ");
 		
+		// Sample data stuff
+		lblAutoFill.setText("Insert a selection of sample data");
+		vertPan.add(lblAutoFill);
+		vertPan.add(autoFill);
+		
 		
 		vertPan.add(sendButton);
 		vertPan.add(errorLabel);
-		vertPan.add(autoFill);
+
 		autoFill.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				Window.alert("AutoFilled");
 				numPanels.setText("8");
 				daytimeUsage.setText("10");
 				postcode.setText("4053");
@@ -211,7 +213,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		generatedTable.setCellPadding(6);
 		generatedTable.getColumnFormatter().addStyleName(0, "generListHeader");
 		generatedTable.addStyleName("generList");
-		//generatedTable.getCellFormatter().addStyleName(0, 1, "generListNumericColumn");
 		generatedTable.getRowFormatter().addStyleName(0, "generListNumericColumn");
 		generatedTable.getRowFormatter().addStyleName(1, "generListNumericColumn");
 		generatedTable.getRowFormatter().addStyleName(2, "generListNumericColumn");
@@ -251,7 +252,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		final HTML serverResponseLabel = new HTML();
 		VerticalPanel dialogVPanel = new VerticalPanel();
 		dialogVPanel.addStyleName("dialogVPanel");
-		dialogVPanel.add(new HTML("<b>Sending request to server:</b>"));
+		dialogVPanel.add(new HTML("<b>Sending request to server....</b>"));
 		dialogVPanel.add(textToServerLabel);
 		dialogVPanel.add(new HTML("<br><b>Request Status</b>"));
 		dialogVPanel.add(serverResponseLabel);
@@ -353,24 +354,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				// Then, we send the input to the server.
 				sendButton.setEnabled(false);
 				serverResponseLabel.setText("");
-
-				/*
-				 * solarPowerService.SolarPowerServer(stuffToServer, new
-				 * AsyncCallback<String>() { public void onFailure(Throwable
-				 * caught) { // Show the RPC error message to the user dialogBox
-				 * .setText("Connection with Server - Failure");
-				 * serverResponseLabel
-				 * .addStyleName("serverResponseLabelError");
-				 * serverResponseLabel.setHTML(SERVER_ERROR);
-				 * dialogBox.center(); closeButton.setFocus(true); }
-				 * 
-				 * public void onSuccess(String result) { dialogBox
-				 * .setText("Connection with Server - Success");
-				 * serverResponseLabel
-				 * .removeStyleName("serverResponseLabelError");
-				 * serverResponseLabel.setHTML(result); dialogBox.center();
-				 * closeButton.setFocus(true); //generatingOutput(); } });
-				 */
 
 				calcService.CalculationsServer(stuffToServer,
 						new AsyncCallback<ArrayList<ArrayList<String>>>() {

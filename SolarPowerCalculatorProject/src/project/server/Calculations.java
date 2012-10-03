@@ -85,9 +85,29 @@ public class Calculations {
 		}else if((Math.abs(tilt - idealTilt) <= 20) && 
 				this.orientation <= 60){
 			orientationEfficiencyLoss = 0.1;
-		}else{
+		}else if((Math.abs(tilt) <= idealTilt - 17)){
 			orientationEfficiencyLoss = 0.2;
-		}		
+		}else if((Math.abs(tilt) <= -0.03457*(this.orientation^2) + 75 - idealTilt)){
+			orientationEfficiencyLoss = 0.2;
+		}else if((Math.abs(tilt) <= idealTilt - 4)){
+			orientationEfficiencyLoss = 0.3;
+		}else if((Math.abs(tilt) <= -0.03457*(this.orientation^2) + 85 - idealTilt)){
+			orientationEfficiencyLoss = 0.3;
+		}else if((Math.abs(tilt) <= idealTilt + 9)){
+			orientationEfficiencyLoss = 0.4;
+		}else if((Math.abs(tilt) <= -0.03457*(this.orientation^2) + 95 - idealTilt)){
+			orientationEfficiencyLoss = 0.4;
+		}else if((Math.abs(tilt) <= idealTilt + 22)){
+			orientationEfficiencyLoss = 0.5;
+		}else if((Math.abs(tilt) <= -0.03457*(this.orientation^2) + 105 - idealTilt)){
+			orientationEfficiencyLoss = 0.5;
+		}else if((Math.abs(tilt) <= idealTilt + 35)){
+			orientationEfficiencyLoss = 0.6;
+		}else if((Math.abs(tilt) <= -0.03457*(this.orientation^2) + 115 - idealTilt)){
+			orientationEfficiencyLoss = 0.6;
+		}else{
+			orientationEfficiencyLoss = 0.7;
+		}
 	}
 	
 	//use year to adjust efficiency

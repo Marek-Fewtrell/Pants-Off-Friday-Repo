@@ -77,39 +77,7 @@ public class Calculations {
 		if(this.orientation > 180){
 			this.orientation = 360 - this.orientation;
 		}
-		
-
-		//calculate orientation efficiency loss
-		if((Math.abs(tilt - idealTilt) <= 5) && 
-				this.orientation <= 10){
-			orientationEfficiencyLoss = 0;
-		}else if((Math.abs(tilt - idealTilt) <= 20) && 
-				this.orientation <= 60){
-			orientationEfficiencyLoss = 0.1;
-		}else if((Math.abs(tilt) <= idealTilt - 17)){
-			orientationEfficiencyLoss = 0.2;
-			System.out.print((-0.003457*(this.orientation^2)) + 40 + idealTilt);
-		}else if((Math.abs(tilt) <= (-0.003457*this.orientation*this.orientation)+(40 + idealTilt))){
-			orientationEfficiencyLoss = 0.2;
-		}else if((Math.abs(tilt) <= idealTilt - 4)){
-			orientationEfficiencyLoss = 0.3;
-		}else if((Math.abs(tilt) <= (-0.002619*this.orientation*this.orientation)+(50 + idealTilt))){
-			orientationEfficiencyLoss = 0.3;
-		}else if((Math.abs(tilt) <= idealTilt + 9)){
-			orientationEfficiencyLoss = 0.4;
-		}else if((Math.abs(tilt) <= (-0.002097*this.orientation*this.orientation)+(60 + idealTilt))){
-			orientationEfficiencyLoss = 0.4;
-		}else if((Math.abs(tilt) <= idealTilt + 22)){
-			orientationEfficiencyLoss = 0.5;
-		}else if((Math.abs(tilt) <= (-0.001744*this.orientation*this.orientation)+(70 + idealTilt))){
-			orientationEfficiencyLoss = 0.5;
-		}else if((Math.abs(tilt) <= idealTilt + 35)){
-			orientationEfficiencyLoss = 0.6;
-		}else if((Math.abs(tilt) <= (-0.001490*this.orientation*this.orientation)+(80 + idealTilt))){
-			orientationEfficiencyLoss = 0.6;
-		}else{
-			orientationEfficiencyLoss = 0.7;
-		}
+		calcOrientationEfficiencyLoss();
 	}
 	
 	//use year to adjust efficiency
@@ -141,6 +109,43 @@ public class Calculations {
 			cumulative[i] = cumulative[i-1] + getDailySavings(i+1)*DAYSPERYEAR;
 		}
 		return cumulative;
+	}
+	
+	private void calcDailyElectricityConsumption(double periodUsage, int billingPeriod){
+		replacementGeneration = periodUsage/billingPeriod/24*solarExposure;
+	}
+	
+	private void calcOrientationEfficiencyLoss(){
+		//calculate orientation efficiency loss
+		if((Math.abs(tilt - idealTilt) <= 5) && 
+				orientation <= 10){
+			orientationEfficiencyLoss = 0;
+		}else if((Math.abs(tilt - idealTilt) <= 20) && 
+				orientation <= 60){
+			orientationEfficiencyLoss = 0.1;
+		}else if((Math.abs(tilt) <= idealTilt - 17)){
+			orientationEfficiencyLoss = 0.2;
+		}else if((Math.abs(tilt) <= (-0.003457*orientation*orientation)+(40 + idealTilt))){
+			orientationEfficiencyLoss = 0.2;
+		}else if((Math.abs(tilt) <= idealTilt - 4)){
+			orientationEfficiencyLoss = 0.3;
+		}else if((Math.abs(tilt) <= (-0.002619*orientation*orientation)+(50 + idealTilt))){
+			orientationEfficiencyLoss = 0.3;
+		}else if((Math.abs(tilt) <= idealTilt + 9)){
+			orientationEfficiencyLoss = 0.4;
+		}else if((Math.abs(tilt) <= (-0.002097*orientation*orientation)+(60 + idealTilt))){
+			orientationEfficiencyLoss = 0.4;
+		}else if((Math.abs(tilt) <= idealTilt + 22)){
+			orientationEfficiencyLoss = 0.5;
+		}else if((Math.abs(tilt) <= (-0.001744*orientation*orientation)+(70 + idealTilt))){
+			orientationEfficiencyLoss = 0.5;
+		}else if((Math.abs(tilt) <= idealTilt + 35)){
+			orientationEfficiencyLoss = 0.6;
+		}else if((Math.abs(tilt) <= (-0.001490*orientation*orientation)+(80 + idealTilt))){
+			orientationEfficiencyLoss = 0.6;
+		}else{
+			orientationEfficiencyLoss = 0.7;
+		}
 	}
 	
 	public double getBreakEven(double initialCost, double interestRate) throws CalcException{
@@ -239,38 +244,7 @@ public class Calculations {
 			if(this.orientation > 180){
 				this.orientation = 360 - this.orientation;
 			}
-			
-			//calculate orientation efficiency loss
-			if((Math.abs(tilt - idealTilt) <= 5) && 
-					this.orientation <= 10){
-				orientationEfficiencyLoss = 0;
-			}else if((Math.abs(tilt - idealTilt) <= 20) && 
-					this.orientation <= 60){
-				orientationEfficiencyLoss = 0.1;
-			}else if((Math.abs(tilt) <= idealTilt - 17)){
-				orientationEfficiencyLoss = 0.2;
-				System.out.print((-0.003457*(this.orientation^2)) + 40 + idealTilt);
-			}else if((Math.abs(tilt) <= (-0.003457*this.orientation*this.orientation)+(40 + idealTilt))){
-				orientationEfficiencyLoss = 0.2;
-			}else if((Math.abs(tilt) <= idealTilt - 4)){
-				orientationEfficiencyLoss = 0.3;
-			}else if((Math.abs(tilt) <= (-0.002619*this.orientation*this.orientation)+(50 + idealTilt))){
-				orientationEfficiencyLoss = 0.3;
-			}else if((Math.abs(tilt) <= idealTilt + 9)){
-				orientationEfficiencyLoss = 0.4;
-			}else if((Math.abs(tilt) <= (-0.002097*this.orientation*this.orientation)+(60 + idealTilt))){
-				orientationEfficiencyLoss = 0.4;
-			}else if((Math.abs(tilt) <= idealTilt + 22)){
-				orientationEfficiencyLoss = 0.5;
-			}else if((Math.abs(tilt) <= (-0.001744*this.orientation*this.orientation)+(70 + idealTilt))){
-				orientationEfficiencyLoss = 0.5;
-			}else if((Math.abs(tilt) <= idealTilt + 35)){
-				orientationEfficiencyLoss = 0.6;
-			}else if((Math.abs(tilt) <= (-0.001490*this.orientation*this.orientation)+(80 + idealTilt))){
-				orientationEfficiencyLoss = 0.6;
-			}else{
-				orientationEfficiencyLoss = 0.7;
-			}
+			calcOrientationEfficiencyLoss();
 		}
 		
 	//the following getters are just for testing

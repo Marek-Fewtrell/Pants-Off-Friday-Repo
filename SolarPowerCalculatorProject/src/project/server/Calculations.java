@@ -167,7 +167,7 @@ public class Calculations {
 		double year = 0;
 		//find what year the investment breaks even
 		for(int i=0; i<savings.length; i++){
-			if(savings[i] < investment[i]){
+			if(savings[i] <= investment[i]){
 				year = i + 1.0;
 			}
 		}
@@ -184,7 +184,7 @@ public class Calculations {
 			double day = 0;
 			//find what day the investment breaks even 
 			for(int i=0; i<366; i++){
-				saved = saved + this.getDailySavings((int)year+1);
+				saved = saved + this.getDailySavings((int)year);
 				invested = invested + (interestRate/100/365)*invested;
 				if(saved < invested){
 					day = i + 1.0;

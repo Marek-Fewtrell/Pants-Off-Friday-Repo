@@ -8,6 +8,8 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.CellBrowser;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -17,10 +19,12 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.TreeViewModel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -176,7 +180,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		lblAutoFill.setText("Insert a selection of sample data");
 		vertPan.add(lblAutoFill);
 		vertPan.add(autoFill);
-		
 		
 		vertPan.add(sendButton);
 		vertPan.add(errorLabel);
@@ -411,9 +414,22 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 							panelSelect.addItem(array0.get(i));
 						}
 
-						for (int i = 0; i < array1.size(); i++) {
+						// Create a model for the browser.
+					    TreeViewModel model = new CellBrowserInverter.CustomTreeModel(array1);
+
+					    /*
+					     * Create the browser using the model. We use <code>null</code> as the
+					     * default value of the root node. The default value will be passed to
+					     * CustomTreeModel#getNodeInfo();
+					     */
+					    CellBrowser browser = new CellBrowser(model, null);
+					    browser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+
+					    // Add the browser to the root layout panel.
+					    RootLayoutPanel.get().add(browser);
+						/*for (int i = 0; i < array1.size(); i++) {
 							inverterSelect.addItem(array1.get(i));
-						}
+						}*/
 
 						for (int i = 0; i < array2.size(); i++) {
 							energyProvider.addItem(array2.get(i));

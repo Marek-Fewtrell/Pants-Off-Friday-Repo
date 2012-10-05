@@ -149,6 +149,7 @@ public class Calculations {
 	}
 	
 	public double getBreakEven(double initialCost, double interestRate) throws CalcException{
+		System.out.println("fafdsafsd");
 		if(initialCost < 0){
 			throw new CalcException("Initial cost must be positive");
 		}
@@ -179,13 +180,14 @@ public class Calculations {
 				invested = initialCost;
 			}else{
 				saved = savings[(int) year - 1];
-				invested = investment[(int) year - 1];
+				invested = investment[(int) year];
 			}
 			double day = 0;
 			//find what day the investment breaks even 
 			for(int i=0; i<366; i++){
 				saved = saved + this.getDailySavings((int)year);
 				invested = invested + (interestRate/100/DAYSPERYEAR)*invested;
+				System.out.println(invested);
 				if(saved < invested){
 					day = i + 1.0;
 				}	

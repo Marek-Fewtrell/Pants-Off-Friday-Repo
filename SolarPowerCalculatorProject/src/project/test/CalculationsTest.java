@@ -209,6 +209,154 @@ public class CalculationsTest {
 				energyCompany, dailyUsage, tilt, 500, "test");
 	}
 	
+	//
+	//Test the flat areas of the graph
+	//
+	//idealTilt - 17, orientation 150 = 0.2 loss
+	@Test
+	public void testOrientationAtSixByOneFifty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 6, 150, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.2);
+	}
+	
+	//idealTilt -16, orientation 150 = 0.3 loss
+	@Test
+	public void testOrientationAtSevenByOneFifty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 7, 150, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.3);
+	}
+	
+	//idealTilt -5 orientation 150 = 0.3 loss
+	@Test
+	public void testOrientationAtNineteenByOneFifty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 19, 150, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.3);
+	}
+	//idealTilt -4 orientation 150 = 0.4 loss
+	@Test
+	public void testOrientationAtTwentyByOneFifty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 20, 150, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.4);
+	}
+	
+	//idealTilt + 8 orientation 170 = 0.4 loss
+	@Test
+	public void testOrientationAtThirtyTwoByOneSeventy() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 32, 170, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.4);
+	}
+	
+	//idealTilt + 9 orientation 170 = 0.5 loss
+	@Test
+	public void testOrientationAtThirtyThreeByOneSeventy() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 33, 170, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.5);
+	}
+	
+	//idealTilt + 21 orientation 170 = 0.5 loss
+	//45
+	@Test
+	public void testOrientationAtFortyFiveByOneSeventy() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 45, 170, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.5);
+	}
+	//46
+	@Test
+	public void testOrientationAtFortySixByOneSeventy() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 46, 170, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.6);
+	}
+	
+	//ideal tilt + 34 orientation 175 = 0.6 loss
+	//58
+	@Test
+	public void testOrientationAtFiftyEightByOneSeventyFive() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 58, 175, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.6);
+	}
+	//ideal tilt + 35 orientation 175 = 0.7 loss
+	//59
+	@Test
+	public void testOrientationAtFiftyNineByOneSeventyFive() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 59, 175, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.7);
+	}
+	
+	//
+	//Test the curves
+	//
+	//tilt = 41 orientation = 80 loss = 0.2
+	@Test
+	public void testOrientationAtFortyOneByEighty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 41, 80, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.2);
+	}
+	
+	//orientation = 80 tilt = 42 loss = 0.3
+	@Test
+	public void testOrientationAtFortyTwoByEighty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 42, 80, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.3);
+	}
+	
+	//orientation = 80 tilt 56 loss = 0.3
+	@Test
+	public void testOrientationAtFiftySixByEighty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 56, 80, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.3);
+	}
+	
+	//orientation = 80 tilt = 57 loss = 0.4
+	@Test
+	public void testOrientationAtFiftySevenByEighty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 57, 80, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.4);
+	}
+	
+	//orientation = 80 tilt = 70 loss 0.4
+	@Test
+	public void testOrientationAtSeventyByEighty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 70, 80, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.4);
+	}
+	
+	//orientation = 80 tilt = 71 loss 0.5
+	@Test
+	public void testOrientationAtSeventyOneByEighty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 71, 80, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.5);
+	}
+	
+	//orientation = 80 tilt = 82 loss = 0.5
+	@Test
+	public void testOrientationAtEightyTwoByEighty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 82, 80, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.5);
+	}
+	//orientation = 80 tilt = 83 loss = 0.6
+	@Test
+	public void testOrientationAtEightyThreeByEighty() throws CalcException{
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+				energyCompany, dailyUsage, 83, 80, "test");
+		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.6);
+	}
 	//-11 = 0.1 loss, -10 = 0 loss, -60 = 0.1 loss, -61 = 0.2 loss
 	//if orientation is -500 should throw calcExeption
 	//if orientation value is -300 should change the orientation value to +60 (statement in constructor) 

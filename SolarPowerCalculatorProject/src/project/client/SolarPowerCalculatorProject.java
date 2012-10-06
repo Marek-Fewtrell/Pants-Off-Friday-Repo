@@ -1,7 +1,9 @@
 package project.client;
 
 import java.util.ArrayList;
+
 import project.shared.FieldVerifier;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -65,6 +67,11 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 	final Label errorLabel = new Label();
 	
+	//Contains Inverter selection cell browser
+	final VerticalPanel inverterBrowserPan = new VerticalPanel();
+	//Contains Panel selection cell browser
+	final VerticalPanel panelBrowserPan = new VerticalPanel();
+	
 	//Contains left inputs
 	final VerticalPanel vertPan = new VerticalPanel();
 	//Contains right inputs
@@ -77,7 +84,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	final VerticalPanel calcOutputArea = new VerticalPanel();
 	//Contains calcMainInputArea and calcOutputArea
 	final VerticalPanel mainArea = new VerticalPanel();
-
+	
+	
 
 	final Label lblNumPanels = new Label();
 	final Label lblPanelSelect = new Label();
@@ -126,13 +134,15 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		panelSelect.addChangeHandler(hadle);
 		lblPanelSelect.setText("Select Panel: ");
 		vertPan.add(lblPanelSelect);
-		vertPan.add(panelSelect);
+		//vertPan.add(panelSelect);
+		vertPan.add(panelBrowserPan);
 
 		// Inverter Selection
 		inverterSelect.addChangeHandler(hadle);
-		vertPan.add(lblInverterSelect);
-		vertPan.add(inverterSelect);
 		lblInverterSelect.setText("Select Inverter: ");
+		vertPan.add(lblInverterSelect);
+		//vertPan.add(inverterSelect);
+		vertPan.add(inverterBrowserPan);
 
 		// Energy Provider
 		energyProvider.addChangeHandler(hadle);
@@ -406,27 +416,47 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 					@Override
 					public void onSuccess(ArrayList<ArrayList<String>> result) {
-						ArrayList<String> array0 = result.get(0);
-						ArrayList<String> array1 = result.get(1);
-						ArrayList<String> array2 = result.get(2);
-
-						for (int i = 0; i < array0.size(); i++) {
-							panelSelect.addItem(array0.get(i));
-						}
+						ArrayList<String> array0 = result.get(0);//Panel
+						ArrayList<String> array1 = result.get(1);//Inverter
+						ArrayList<String> array2 = result.get(2);//Energy Provider
 
 						// Create a model for the browser.
-					    TreeViewModel model = new CellBrowserInverter.CustomTreeModel(array1);
+					    TreeViewModel panelModel = new CellBrowserInverter.CustomTreeModel(array0, "Select Panel");
 
 					    /*
 					     * Create the browser using the model. We use <code>null</code> as the
 					     * default value of the root node. The default value will be passed to
 					     * CustomTreeModel#getNodeInfo();
 					     */
-					    CellBrowser browser = new CellBrowser(model, null);
-					    browser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+					    CellBrowser panelBrowser = new CellBrowser(panelModel, null);
+					    panelBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+					    //RootLayoutPanel.get().add(panelBrowser);
+					    panelBrowserPan.add(panelBrowser);
+					    panelBrowser.setSize("450px", "200px");
+					    
+					    
+						/*for (int i = 0; i < array0.size(); i++) {
+							panelSelect.addItem(array0.get(i));
+						}*/
+
+						// Create a model for the browser.
+					    TreeViewModel inverterModel = new CellBrowserInverter.CustomTreeModel(array1, "Select Inverter");
+
+					    /*
+					     * Create the browser using the model. We use <code>null</code> as the
+					     * default value of the root node. The default value will be passed to
+					     * CustomTreeModel#getNodeInfo();
+					     */
+					    CellBrowser inverterBrowser = new CellBrowser(inverterModel, null);
+					    inverterBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
 					    // Add the browser to the root layout panel.
-					    RootLayoutPanel.get().add(browser);
+					    //RootLayoutPanel.get().add(browser);
+					    inverterBrowserPan.add(inverterBrowser);
+					    inverterBrowser.setSize("450px", "200px");
+					    
+						
+					    
 						/*for (int i = 0; i < array1.size(); i++) {
 							inverterSelect.addItem(array1.get(i));
 						}*/

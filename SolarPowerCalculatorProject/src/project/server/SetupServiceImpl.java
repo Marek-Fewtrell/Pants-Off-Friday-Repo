@@ -26,12 +26,32 @@ public class SetupServiceImpl extends RemoteServiceServlet implements SetupServi
 		/* 
 		 * Start Panel info collection
 		 */
+		ArrayList<String>panelBrand = new ArrayList<String>();
+		ArrayList<String>panelSerial = new ArrayList<String>();
+		panelBrand = db.getAllSolarPanelBrands();
+		//Loop through all the brands of panels
+		for(int i1=0; i1<panelBrand.size(); i1++){
+			String allSolarBrands = panelBrand.get(i1).toString();
+			/*if (i1 < panelBrand.size()-1) {
+				allBrands.concat(",");
+			}*/
+			panelSerial = db.getSolarPanelSerialNumberByBrand(panelBrand.get(i1).toString());
+			//allBrands = allBrands + "," + panelSerial.get(i1);
+			//Loop through all models of the brands of inverters
+			for(int i2 = 0; i2<panelSerial.size(); i2++) {
+				allSolarBrands = allSolarBrands + "," + panelSerial.get(i2).toString();
+				
+			}
+			array1.add(allSolarBrands);
+		}
+		
+		/*
 		ArrayList<String>panels = new ArrayList<String>();
 		panels = db.getAllSolarPanelSerials();
 		for(int i=0; i<panels.size(); i++){
 			//out.print("<option>" + panels.get(i) +"</option>");
 			array1.add(panels.get(i));
-		}
+		}*/
 		/* 
 		 * Stop Panel info collection
 		 */
@@ -44,7 +64,7 @@ public class SetupServiceImpl extends RemoteServiceServlet implements SetupServi
 		inverterBrand = db.getAllInverterBrands();
 		//Loop through all the brands of inverters
 		for(int i1=0; i1<inverterBrand.size(); i1++){
-			String allBrands = inverterBrand.get(i1).toString();
+			String allInverterBrands = inverterBrand.get(i1).toString();
 			/*if (i1 < inverterBrand.size()-1) {
 				allBrands.concat(",");
 			}*/
@@ -52,10 +72,10 @@ public class SetupServiceImpl extends RemoteServiceServlet implements SetupServi
 			//allBrands = allBrands + "," + inverterSerial.get(i1);
 			//Loop through all models of the brands of inverters
 			for(int i2 = 0; i2<inverterSerial.size(); i2++) {
-				allBrands = allBrands + "," + inverterSerial.get(i2).toString();
+				allInverterBrands = allInverterBrands + "," + inverterSerial.get(i2).toString();
 				
 			}
-			array2.add(allBrands);
+			array2.add(allInverterBrands);
 		}
 		/*
 		 * Stop Inverter info collection

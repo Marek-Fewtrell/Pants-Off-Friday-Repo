@@ -17,11 +17,11 @@ public class CellBrowserInverter {
 	/**
 	 * A list of brands.
 	 */
-	private static class listInv {
+	private static class Brand {
 		private final String brand;
-		private final List<String> brandInv = new ArrayList<String>();
+		private final List<String> brandList = new ArrayList<String>();
 
-		public listInv(String brand) {
+		public Brand(String brand) {
 			this.brand = brand;
 		}
 
@@ -32,7 +32,7 @@ public class CellBrowserInverter {
 		 *            the brand of the brand
 		 */
 		public void addBrandInv(String brand) {
-			brandInv.add(brand);
+			brandList.add(brand);
 		}
 
 		public String getBrandInv() {
@@ -43,7 +43,7 @@ public class CellBrowserInverter {
 		 * Return the list of brands in the listInv.
 		 */
 		public List<String> getBrandInvList() {
-			return brandInv;
+			return brandList;
 		}
 	}
 
@@ -52,23 +52,23 @@ public class CellBrowserInverter {
 	/**
 	 * A brand of Inverter.
 	 */
-	private static class Brand {
+	private static class Model {
 		private final String brand;
-		private final List<listInv> invLists = new ArrayList<listInv>();
+		private final List<Brand> modelLists = new ArrayList<Brand>();
 
-		public Brand(String brand) {
+		public Model(String brand) {
 			this.brand = brand;
 		}
 
 		/**
 		 * Add a invLists to the composer.
 		 * 
-		 * @param invLists
+		 * @param modelList
 		 *            the invLists to add
 		 */
-		public listInv addinvList(listInv invList) {
-			invLists.add(invList);
-			return invList;
+		public Brand addinvList(Brand modelList) {
+			modelLists.add(modelList);
+			return modelList;
 		}
 
 		public String getbrand() {
@@ -78,8 +78,8 @@ public class CellBrowserInverter {
 		/**
 		 * Return the rockin' invLists for this composer.
 		 */
-		public List<listInv> getinvLlists() {
-			return invLists;
+		public List<Brand> getinvLlists() {
+			return modelLists;
 		}
 	}
 
@@ -90,7 +90,7 @@ public class CellBrowserInverter {
 	 */
 	public static class CustomTreeModel implements TreeViewModel {
 
-		private final List<Brand> inverter;
+		private final List<Model> item;
 
 		/**
 		 * This selection model is shared across all leaf nodes. A selection
@@ -100,9 +100,9 @@ public class CellBrowserInverter {
 		 */
 		private final SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
 
-		public CustomTreeModel(ArrayList<String> inverterList) {
+		public CustomTreeModel(ArrayList<String> inverterList, String cellTitle) {
 			// Create a database of information.
-			inverter = new ArrayList<Brand>();
+			item = new ArrayList<Model>();
 
 			
 			// use a loop to go through the return of [getAllInverterBrands()]
@@ -110,21 +110,17 @@ public class CellBrowserInverter {
 				
 			// Add compositions by Conergy.
 			{
-				Brand nameBrand = new Brand("Select Inverter");
-				inverter.add(nameBrand);
+				Model brandName = new Model(cellTitle);
+				item.add(brandName);
 				for (int i = 0; i<inverterList.size(); i++) {
 					String line = inverterList.get(i).toString();
 					
 					String delims = "[,]";
 					String[] tokens = line.split(delims);
 					
-					
-					
-					
-					
-					listInv InverterBrand = nameBrand.addinvList(new listInv(tokens[0].toString()));
+					Brand brandModel = brandName.addinvList(new Brand(tokens[0].toString()));
 					for ( int i2 = 1; i2 < tokens.length; i2++){
-						InverterBrand.addBrandInv(tokens[i2].toString());
+						brandModel.addBrandInv(tokens[i2].toString());
 					}
 					
 					
@@ -152,15 +148,15 @@ public class CellBrowserInverter {
 				// We passed null as the root value. Return the inverter.
 
 				// Create a data provider that contains the list of inverter.
-				ListDataProvider<Brand> dataProvider = new ListDataProvider<CellBrowserInverter.Brand>(
-						inverter);
+				ListDataProvider<Model> dataProvider = new ListDataProvider<CellBrowserInverter.Model>(
+						item);
 
 				// Create a cell to display a Brand.
-				Cell<Brand> cell = new AbstractCell<Brand>() {
+				Cell<Model> cell = new AbstractCell<Model>() {
 					@Override
 					public void render(
 							com.google.gwt.cell.client.Cell.Context context,
-							Brand value, SafeHtmlBuilder sb) {
+							Model value, SafeHtmlBuilder sb) {
 						if (value != null) {
 							sb.appendEscaped(value.getbrand());
 						}
@@ -168,27 +164,27 @@ public class CellBrowserInverter {
 				};
 
 				// Return a node info that pairs the data provider and the cell.
-				return new DefaultNodeInfo<Brand>(dataProvider, cell);
-			} else if (value instanceof Brand) {
+				return new DefaultNodeInfo<Model>(dataProvider, cell);
+			} else if (value instanceof Model) {
 				// LEVEL 1.
 				// We want the children of the Brand. Return the Inverters.
-				ListDataProvider<listInv> dataProvider = new ListDataProvider<listInv>(
-						((Brand) value).getinvLlists());
-				Cell<listInv> cell = new AbstractCell<listInv>() {
+				ListDataProvider<Brand> dataProvider = new ListDataProvider<Brand>(
+						((Model) value).getinvLlists());
+				Cell<Brand> cell = new AbstractCell<Brand>() {
 					@Override
-					public void render(Context context, listInv value,
+					public void render(Context context, Brand value,
 							SafeHtmlBuilder sb) {
 						if (value != null) {
 							sb.appendEscaped(value.getBrandInv());
 						}
 					}
 				};
-				return new DefaultNodeInfo<listInv>(dataProvider, cell);
-			} else if (value instanceof listInv) {
+				return new DefaultNodeInfo<Brand>(dataProvider, cell);
+			} else if (value instanceof Brand) {
 				// LEVEL 2 - LEAF.
 				// We want the children of the Inverter. Return the songs.
 				ListDataProvider<String> dataProvider = new ListDataProvider<String>(
-						((listInv) value).getBrandInvList());
+						((Brand) value).getBrandInvList());
 
 				// Use the shared selection model.
 				return new DefaultNodeInfo<String>(dataProvider,

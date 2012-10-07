@@ -1,6 +1,7 @@
 package project.client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import project.shared.CalcException;
 
@@ -12,6 +13,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("calcServ")
 public interface CalculationsService extends RemoteService {
-	ArrayList<ArrayList<String>> CalculationsServer(ArrayList<String> asd) throws IllegalArgumentException, CalcException;
+	ArrayList<ArrayList<String>> CalculationsServer(HashMap<String, String> asd) throws IllegalArgumentException, CalcException;
 }
 

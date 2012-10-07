@@ -32,11 +32,7 @@ public class SetupServiceImpl extends RemoteServiceServlet implements SetupServi
 		//Loop through all the brands of panels
 		for(int i1=0; i1<panelBrand.size(); i1++){
 			String allSolarBrands = panelBrand.get(i1).toString();
-			/*if (i1 < panelBrand.size()-1) {
-				allBrands.concat(",");
-			}*/
 			panelSerial = db.getSolarPanelSerialNumberByBrand(panelBrand.get(i1).toString());
-			//allBrands = allBrands + "," + panelSerial.get(i1);
 			//Loop through all models of the brands of inverters
 			for(int i2 = 0; i2<panelSerial.size(); i2++) {
 				allSolarBrands = allSolarBrands + "," + panelSerial.get(i2).toString();
@@ -45,7 +41,7 @@ public class SetupServiceImpl extends RemoteServiceServlet implements SetupServi
 			array1.add(allSolarBrands);
 		}
 		
-		/*
+		/*//Old way of getting the data.
 		ArrayList<String>panels = new ArrayList<String>();
 		panels = db.getAllSolarPanelSerials();
 		for(int i=0; i<panels.size(); i++){
@@ -65,15 +61,10 @@ public class SetupServiceImpl extends RemoteServiceServlet implements SetupServi
 		//Loop through all the brands of inverters
 		for(int i1=0; i1<inverterBrand.size(); i1++){
 			String allInverterBrands = inverterBrand.get(i1).toString();
-			/*if (i1 < inverterBrand.size()-1) {
-				allBrands.concat(",");
-			}*/
 			inverterSerial = db.getInverterSerialNumberByBrand(inverterBrand.get(i1).toString());
-			//allBrands = allBrands + "," + inverterSerial.get(i1);
 			//Loop through all models of the brands of inverters
 			for(int i2 = 0; i2<inverterSerial.size(); i2++) {
 				allInverterBrands = allInverterBrands + "," + inverterSerial.get(i2).toString();
-				
 			}
 			array2.add(allInverterBrands);
 		}
@@ -87,7 +78,6 @@ public class SetupServiceImpl extends RemoteServiceServlet implements SetupServi
 		ArrayList <String> energyCompanies = new ArrayList<String>();
 		energyCompanies = db.getAllEnergyProviders();
 		for(int i=0; i<energyCompanies.size(); i++){
-			//out.print("<option>" + energyCompanies.get(i) + "</option>");
 			array3.add(energyCompanies.get(i));
 		}
 		/*

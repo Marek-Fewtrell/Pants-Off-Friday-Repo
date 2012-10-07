@@ -2,6 +2,7 @@ package project.server;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import project.client.CalculationsService;
 import project.shared.CalcException;
@@ -18,7 +19,7 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 	public static final String decFormat = "#.##";
 	
 	@Override
-	public ArrayList<ArrayList<String>> CalculationsServer(ArrayList<String> asd) throws CalcException {
+	public ArrayList<ArrayList<String>> CalculationsServer(HashMap<String, String> asd) throws CalcException {
 		
 		if (asd.isEmpty() || asd.get(0) == null || asd.get(0).isEmpty()) {
 			throw new CalcException("Stuff is null");
@@ -26,6 +27,18 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		
 //		Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), Integer.parseInt(asd.get(2)), asd.get(3), asd.get(4), Double.parseDouble(asd.get(5)), 
 //				Integer.parseInt(asd.get(6)), Integer.parseInt(asd.get(7)), Integer.parseInt(asd.get(8)));
+		
+		
+		/*String panelNumber = asd.get("panelSelect");
+		int numberPanels = Integer.parseInt(asd.get("panelNumber"));
+		String suburb = asd.get("");
+		String inverterNumber = asd.get("inverterSelect");
+		String energyCompany = asd.get("energyProvider");
+		double dailyUsage = Double.parseDouble(asd.get("dayTimeUsage"));
+		int tilt = Integer.parseInt(asd.get("tiltAngle"));
+		int orientation= Integer.parseInt(asd.get("panelDirection"));*/
+		
+		
 		
 		Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), asd.get(2), asd.get(3), asd.get(4), 
 				Double.parseDouble(asd.get(5)), Integer.parseInt(asd.get(6)), Integer.parseInt((asd.get(7))));
@@ -84,21 +97,5 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		
 		return arrayOut;
 	}
-
-
-	/**
-	 * Escape an html string. Escaping data received from the client helps to
-	 * prevent cross-site script vulnerabilities.
-	 * 
-	 * @param html the html string to escape
-	 * @return the escaped string
-	 */
-	/*private String escapeHtml(String html) {
-		if (html == null) {
-			return null;
-		}
-		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
-				.replaceAll(">", "&gt;");
-	}*/
 	
 }

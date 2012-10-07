@@ -1,7 +1,9 @@
 package project.client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import project.client.CellBrowserCreationPanel.CustomTreeModel;
 import project.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -21,11 +23,12 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.SelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 
 /**
@@ -45,9 +48,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	/**
 	 * Create a remote service proxy to talk to the server-side services.
 	 */
-	@SuppressWarnings("unused")
-	private final SolarPowerServiceAsync solarPowerService = GWT
-			.create(SolarPowerService.class);
+	
+	//private final SolarPowerServiceAsync solarPowerService = GWT.create(SolarPowerService.class);
 	private final CalculationsServiceAsync calcService = GWT
 			.create(CalculationsService.class);
 	private final SetupServiceAsync setupService = GWT
@@ -85,6 +87,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	//Contains calcMainInputArea and calcOutputArea
 	final VerticalPanel mainArea = new VerticalPanel();
 	
+
+	Button ellbw = new Button("s");
 	
 
 	final Label lblNumPanels = new Label();
@@ -193,6 +197,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		
 		vertPan.add(sendButton);
 		vertPan.add(errorLabel);
+		
 
 		autoFill.addClickHandler(new ClickHandler() {
 			@Override
@@ -298,18 +303,30 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			 */
 			private void sendNameToServer() {
 				
+				HashMap<String, String> map = new HashMap<String, String>();
+				
 				errorLabel.setText("");
 				ArrayList<String> stuffToServer = new ArrayList<String>();
-				stuffToServer.add(panelSelect.getItemText(panelSelect.getSelectedIndex()));
-				stuffToServer.add(numPanels.getText());
-				stuffToServer.add(postcode.getText());
-				stuffToServer.add(inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
-				stuffToServer.add(energyProvider.getItemText(energyProvider.getSelectedIndex()));
-				stuffToServer.add(daytimeUsage.getText());
-				stuffToServer.add(tiltAngle.getText());
-				stuffToServer.add(panDirection.getText());
-				stuffToServer.add(initInstalCost.getText());
-				stuffToServer.add(interestRate.getText());
+				//stuffToServer.add(panelSelect.getItemText(panelSelect.getSelectedIndex()));
+				map.put("panelSelect", panelSelect.getItemText(panelSelect.getSelectedIndex()));
+//				stuffToServer.add(numPanels.getText());
+				map.put("panelNumber", numPanels.getText());
+//				stuffToServer.add(postcode.getText());
+				map.put("postcode", postcode.getText());
+//				stuffToServer.add(inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
+				map.put("inverterSelect", inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
+//				stuffToServer.add(energyProvider.getItemText(energyProvider.getSelectedIndex()));
+				map.put("energyProvider", energyProvider.getItemText(energyProvider.getSelectedIndex()));
+//				stuffToServer.add(daytimeUsage.getText());
+				map.put("dayTimeUsage", daytimeUsage.getText());
+//				stuffToServer.add(tiltAngle.getText());
+				map.put("tiltAngle", tiltAngle.getText());
+//				stuffToServer.add(panDirection.getText());
+				map.put("panelDirection", panDirection.getText());
+//				stuffToServer.add(initInstalCost.getText());
+				map.put("initialInstallCost", initInstalCost.getText());
+//				stuffToServer.add(interestRate.getText());
+				map.put("interestRate", interestRate.getText());
 				
 				boolean toSend = true;
 				
@@ -368,7 +385,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				sendButton.setEnabled(false);
 				serverResponseLabel.setText("");
 
-				calcService.CalculationsServer(stuffToServer,
+				calcService.CalculationsServer(map,
 						new AsyncCallback<ArrayList<ArrayList<String>>>() {
 							public void onFailure(Throwable caught) {
 								// Show the RPC error message to the user
@@ -420,8 +437,11 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 						ArrayList<String> array1 = result.get(1);//Inverter
 						ArrayList<String> array2 = result.get(2);//Energy Provider
 
+						/*
+						 * Panel creation
+						 */
 						// Create a model for the browser.
-					    TreeViewModel panelModel = new CellBrowserInverter.CustomTreeModel(array0, "Select Panel");
+					    TreeViewModel panelModel = new CellBrowserCreationPanel.CustomTreeModel(array0, "Select Panel");
 
 					    /*
 					     * Create the browser using the model. We use <code>null</code> as the
@@ -435,19 +455,27 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 					    panelBrowser.setSize("450px", "200px");
 					    
 					    
-						/*for (int i = 0; i < array0.size(); i++) {
-							panelSelect.addItem(array0.get(i));
-						}*/
-
+					    
+					    /*
+					     * Inverter creation
+					     */
 						// Create a model for the browser.
-					    TreeViewModel inverterModel = new CellBrowserInverter.CustomTreeModel(array1, "Select Inverter");
+					    TreeViewModel inverterModel = new CellBrowserCreationInverter.CustomTreeModel(array1, "Select Inverter");
 
 					    /*
 					     * Create the browser using the model. We use <code>null</code> as the
 					     * default value of the root node. The default value will be passed to
 					     * CustomTreeModel#getNodeInfo();
 					     */
-					    CellBrowser inverterBrowser = new CellBrowser(inverterModel, null);
+					    
+					    //final TreeViewModel alpha = (TreeViewModel) new SingleSelectionModel<CellBrowserCreation.CustomTreeModel>();
+					    //final CellBrowser bravo = new CellBrowser(alpha, null);
+					    
+					    //inverterBrowserPan.add(bravo);
+					    
+					    
+					    
+					    final CellBrowser inverterBrowser = new CellBrowser(inverterModel, null);
 					    inverterBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
 					    // Add the browser to the root layout panel.
@@ -455,11 +483,16 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 					    inverterBrowserPan.add(inverterBrowser);
 					    inverterBrowser.setSize("450px", "200px");
 					    
-						
-					    
-						/*for (int i = 0; i < array1.size(); i++) {
-							inverterSelect.addItem(array1.get(i));
-						}*/
+					    vertPan2.add(ellbw);
+					    ellbw.addClickHandler(new ClickHandler() {
+
+							@Override
+							public void onClick(ClickEvent event) {
+								
+								Window.alert("Panel selected is: " + CellBrowserCreationPanel.CustomTreeModel.getSelectedItem());
+							}
+							
+						});
 
 						for (int i = 0; i < array2.size(); i++) {
 							energyProvider.addItem(array2.get(i));
@@ -503,16 +536,12 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		for (int i = 0; i < array4.size(); i++) {
 			generatedTable.setText(4, i + 1, array4.get(i).toString());
 		}
-		//Window.alert(array5.get(0).toString());
-		//lblbreakeven.setText("Break even time: ");// + array5.get(0).toString());
 		
 		if (Double.parseDouble(array5.get(0)) <= 0){
 			lblbreakeven.setText("Break Even: Does not break even");
 		} else {		
 			lblbreakeven.setText("Break Even: " + array5.get(0).toString() + " yrs");
 		}
-		
-		//calcOutputArea.add("Break even time: " + calcs.getBreakEven(installationCost, interestRate);
 
 	}
 

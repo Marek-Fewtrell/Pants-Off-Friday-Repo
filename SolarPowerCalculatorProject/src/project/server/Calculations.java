@@ -149,7 +149,6 @@ public class Calculations {
 	}
 	
 	public double getBreakEven(double initialCost, double interestRate) throws CalcException{
-		System.out.println("fafdsafsd");
 		if(initialCost < 0){
 			throw new CalcException("Initial cost must be positive");
 		}

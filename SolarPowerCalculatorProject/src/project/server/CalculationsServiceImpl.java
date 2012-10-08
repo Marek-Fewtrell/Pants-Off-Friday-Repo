@@ -20,28 +20,34 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 	
 	@Override
 	public ArrayList<ArrayList<String>> CalculationsServer(HashMap<String, String> asd) throws CalcException {
-		
-		if (asd.isEmpty() || asd.get(0) == null || asd.get(0).isEmpty()) {
+		System.out.println("chechpoint2");
+		/*if (asd.isEmpty() || asd.get(0) == null || asd.get(0).isEmpty()) {
 			throw new CalcException("Stuff is null");
-		}
-		
+		}*/
+		System.out.println("chechpoint3");
 //		Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), Integer.parseInt(asd.get(2)), asd.get(3), asd.get(4), Double.parseDouble(asd.get(5)), 
 //				Integer.parseInt(asd.get(6)), Integer.parseInt(asd.get(7)), Integer.parseInt(asd.get(8)));
 		
 		
-		/*String panelNumber = asd.get("panelSelect");
+		String panelNumber = asd.get("panelSelect");
 		int numberPanels = Integer.parseInt(asd.get("panelNumber"));
 		String suburb = asd.get("");
 		String inverterNumber = asd.get("inverterSelect");
 		String energyCompany = asd.get("energyProvider");
 		double dailyUsage = Double.parseDouble(asd.get("dayTimeUsage"));
 		int tilt = Integer.parseInt(asd.get("tiltAngle"));
-		int orientation= Integer.parseInt(asd.get("panelDirection"));*/
+		int orientation= Integer.parseInt(asd.get("panelDirection"));
+		double initInstallCost = Double.parseDouble(asd.get("initialInstallCost"));
+		double interestRate = Double.parseDouble(asd.get("interestRate"));
 		
 		
+		Calculations calcs = new Calculations(panelNumber, numberPanels, suburb, inverterNumber, energyCompany, 
+				dailyUsage, tilt, orientation);
+		System.out.println("chechpoint4");
 		
-		Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), asd.get(2), asd.get(3), asd.get(4), 
-				Double.parseDouble(asd.get(5)), Integer.parseInt(asd.get(6)), Integer.parseInt((asd.get(7))));
+		
+		/*Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), asd.get(2), asd.get(3), asd.get(4), 
+				Double.parseDouble(asd.get(5)), Integer.parseInt(asd.get(6)), Integer.parseInt((asd.get(7))));*/
 
 		DecimalFormat decForm = new DecimalFormat(decFormat);
 
@@ -53,13 +59,10 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		ArrayList<String> array6 = new ArrayList<String>();//Break even
 		ArrayList<ArrayList<String>> arrayOut = new ArrayList<ArrayList<String>>();
 		
-		Double installationCost = Double.parseDouble(asd.get(8));
-		Double interestRate = Double.parseDouble(asd.get(9));
-		
 		double[] savings = new double[20];
 		savings = calcs.getCumulativeSavings(20);
 		double[] investment = new double [20];
-		investment[0] = installationCost *(1+interestRate/100);
+		investment[0] = initInstallCost *(1+interestRate/100);
 		for(int i=1; i<investment.length; i++){
 			investment[i] = investment[i-1]*(1+interestRate/100);
 		}
@@ -86,7 +89,7 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		}
 		
 		
-		array6.add(decForm.format((calcs.getBreakEven(installationCost, interestRate))));
+		array6.add(decForm.format((calcs.getBreakEven(initInstallCost, interestRate))));
 		
 		arrayOut.add(array1);
 		arrayOut.add(array2);

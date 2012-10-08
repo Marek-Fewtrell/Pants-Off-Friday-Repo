@@ -3,7 +3,6 @@ package project.client;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import project.client.CellBrowserCreationPanel.CustomTreeModel;
 import project.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -12,6 +11,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
@@ -23,12 +23,13 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.ValueBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.SelectionModel;
-import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.TreeViewModel;
 
 /**
@@ -308,13 +309,15 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				errorLabel.setText("");
 				ArrayList<String> stuffToServer = new ArrayList<String>();
 				//stuffToServer.add(panelSelect.getItemText(panelSelect.getSelectedIndex()));
-				map.put("panelSelect", panelSelect.getItemText(panelSelect.getSelectedIndex()));
+				//map.put("panelSelect", panelSelect.getItemText(panelSelect.getSelectedIndex()));
+				map.put("panelSelect", "Rec250peBLK");
 //				stuffToServer.add(numPanels.getText());
 				map.put("panelNumber", numPanels.getText());
 //				stuffToServer.add(postcode.getText());
 				map.put("postcode", postcode.getText());
 //				stuffToServer.add(inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
-				map.put("inverterSelect", inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
+				//map.put("inverterSelect", inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
+				map.put("inverterSelect", "1.5kTL");
 //				stuffToServer.add(energyProvider.getItemText(energyProvider.getSelectedIndex()));
 				map.put("energyProvider", energyProvider.getItemText(energyProvider.getSelectedIndex()));
 //				stuffToServer.add(daytimeUsage.getText());
@@ -330,6 +333,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				
 				boolean toSend = true;
 				
+				/*
 				for (String s : stuffToServer) {
 					if (FieldVerifier.isNull(s) || FieldVerifier.isEmpty(s.toString())) {
 						errorLabel.setText("Error, a field is empty");
@@ -379,7 +383,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 					errorLabel.setVisible(true);
 					toSend = false;
 				}
-				
+				*/
 				if (toSend == true) {
 				// Then, we send the input to the server.
 				sendButton.setEnabled(false);
@@ -387,7 +391,9 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 				calcService.CalculationsServer(map,
 						new AsyncCallback<ArrayList<ArrayList<String>>>() {
+					
 							public void onFailure(Throwable caught) {
+								System.out.println("chechpoint1");
 								// Show the RPC error message to the user
 								dialogBox
 										.setText("Connection with Server - Failure");
@@ -420,8 +426,37 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		MyHandler handler = new MyHandler();
 		sendButton.addClickHandler(handler);
 		// nameField.addKeyUpHandler(handler);
-	}
+		
 
+	    Button b2 = new Button("Show graph!");
+
+	    b2.addClickHandler(new ClickHandler() {
+	      public void onClick(ClickEvent event) {
+	        // Create the new popup.
+	        final MyPopup popup = new MyPopup();
+	        // Position the popup 1/3rd of the way down and across the screen, and
+	        // show the popup. Since the position calculation is based on the
+	        // offsetWidth and offsetHeight of the popup, you have to use the
+	        // setPopupPositionAndShow(callback) method. The alternative would
+	        // be to call show(), calculate the left and top positions, and
+	        // call setPopupPosition(left, top). This would have the ugly side
+	        // effect of the popup jumping from its original position to its
+	        // new position.
+	        popup.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
+	          public void setPosition(int offsetWidth, int offsetHeight) {
+	            int left = (Window.getClientWidth() - offsetWidth) / 3;
+	            int top = (Window.getClientHeight() - offsetHeight) / 3;
+	            popup.setPopupPosition(left, top);
+	          }
+	        });
+	      }
+	    });
+
+	    RootPanel.get().add(b2);
+		
+	} // End onModuleLoad()
+	
+	
 	private void createLists() {
 		setupService
 				.SetupServer(new AsyncCallback<ArrayList<ArrayList<String>>>() {
@@ -467,13 +502,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 					     * default value of the root node. The default value will be passed to
 					     * CustomTreeModel#getNodeInfo();
 					     */
-					    
-					    //final TreeViewModel alpha = (TreeViewModel) new SingleSelectionModel<CellBrowserCreation.CustomTreeModel>();
-					    //final CellBrowser bravo = new CellBrowser(alpha, null);
-					    
-					    //inverterBrowserPan.add(bravo);
-					    
-					    
 					    
 					    final CellBrowser inverterBrowser = new CellBrowser(inverterModel, null);
 					    inverterBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
@@ -544,5 +572,53 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		}
 
 	}
+	
+	private static class MyPopup extends PopupPanel {
+
+		public MyPopup() {
+	      // PopupPanel's constructor takes 'auto-hide' as its boolean parameter.
+	      // If this is set, the panel closes itself automatically when the user
+	      // clicks outside of it.
+	      super(true);
+
+	      // PopupPanel is a SimplePanel, so you have to set it's widget property to
+	      // whatever you want its contents to be.
+	      //setWidget(new Label(penis()));
+	      setWidget(makeGraph());
+	      //setWidget(makeGraph());
+	      
+
+	    }//end MyPopup constructor
+		
+		
+		public static native String penis() /*-{
+			return 'penis';
+		}-*/;
+		
+		public static native Widget makeGraph() /*-{
+			
+			google.load("visualization", "1", {
+				packages : [ "corechart" ]
+			});
+			google.setOnLoadCallback(drawChart);
+			function drawChart() {
+				var data = google.visualization.arrayToDataTable([
+						[ 'Year', 'Yearly Savings', 'Investment Return' ],
+						[ '1', 712.06, 3347.2 ], [ '2', 1419.15, 3501.17 ],
+						[ '3', 2121.24, 3662.23 ], [ '4', 2818.35, 3830.69 ],
+						[ '5', 3510.48, 4006.9 ], [ '6', 4197.62, 4191.22 ],
+						[ '7', 4879.78, 4384.01 ], [ '8', 5556.95, 4585.68 ] ]);
+
+				var options = {
+					title : 'Company Performance'
+				};
+
+				var chart = new google.visualization.LineChart(document
+						.getElementById('chart_div'));
+				chart.draw(data, options);
+			}
+		}-*/;
+		
+	  }
 
 }

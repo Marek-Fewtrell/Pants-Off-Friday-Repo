@@ -3,6 +3,7 @@ package project.client;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import project.shared.CalcException;
 import project.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -11,7 +12,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
@@ -27,9 +27,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.ValueBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.TreeViewModel;
 
 /**
@@ -51,11 +49,14 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	 */
 	
 	//private final SolarPowerServiceAsync solarPowerService = GWT.create(SolarPowerService.class);
+	//This creates the remote async service proxy for communication with the server-side calculations service.
 	private final CalculationsServiceAsync calcService = GWT
 			.create(CalculationsService.class);
+	//This creates the remote async service proxy for the server-side page set-up service.
 	private final SetupServiceAsync setupService = GWT
 			.create(SetupService.class);
 
+	//Inputs for the form.
 	final Button sendButton = new Button("Send");
 	final TextBox numPanels = new TextBox();
 	final ListBox panelSelect = new ListBox();
@@ -88,10 +89,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	//Contains calcMainInputArea and calcOutputArea
 	final VerticalPanel mainArea = new VerticalPanel();
 	
-
-	Button ellbw = new Button("s");
-	
-
+	// Labels for the inputs
 	final Label lblNumPanels = new Label();
 	final Label lblPanelSelect = new Label();
 	final Label lblInverterSelect = new Label();
@@ -103,7 +101,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	final Label lbltiltAngle = new Label();
 	final Label lblpanDirection = new Label();
 	final Label lblbreakeven = new Label();
-
+	
+	//Scroll Panels and the flextable which is incased and holds the generated output info.
 	final ScrollPanel outputstuf = new ScrollPanel();
 	final FlexTable generatedTable = new FlexTable();
 
@@ -113,7 +112,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	/**
 	 * This is the entry point method.
 	 */
-	public void onModuleLoad() {
+	public void onModuleLoad() {//TODO split up into methods and what not
 
 		class UpdatingHandler implements ChangeHandler {
 			@SuppressWarnings("unused")
@@ -210,6 +209,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				interestRate.setText("4.6");
 				tiltAngle.setText("20");
 				panDirection.setText("6");
+				CellBrowserCreationPanel.CustomTreeModel.setSelectedItem("Rec250peBLK", true);
+				CellBrowserCreationInverter.CustomTreeModel.setSelectedItem("SB3000", true);
 			}
 		});
 
@@ -294,106 +295,104 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			 * Fired when the user clicks on the sendButton.
 			 */
 			public void onClick(ClickEvent event) {
-				sendNameToServer();
+				try {
+					sendNameToServer();
+				} catch (CalcException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 			}
 
 			/**
 			 * Send the name from the nameField to the server and wait for a
 			 * response.
+			 * @throws CalcException 
 			 */
-			private void sendNameToServer() {
+			private void sendNameToServer() throws CalcException {
 				
-				HashMap<String, String> map = new HashMap<String, String>();
 				
 				errorLabel.setText("");
-				ArrayList<String> stuffToServer = new ArrayList<String>();
-				//stuffToServer.add(panelSelect.getItemText(panelSelect.getSelectedIndex()));
-				//map.put("panelSelect", panelSelect.getItemText(panelSelect.getSelectedIndex()));
-				map.put("panelSelect", "Rec250peBLK");
-//				stuffToServer.add(numPanels.getText());
-				map.put("panelNumber", numPanels.getText());
-//				stuffToServer.add(postcode.getText());
-				map.put("postcode", postcode.getText());
-//				stuffToServer.add(inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
-				//map.put("inverterSelect", inverterSelect.getItemText(inverterSelect.getSelectedIndex()));
-				map.put("inverterSelect", "1.5kTL");
-//				stuffToServer.add(energyProvider.getItemText(energyProvider.getSelectedIndex()));
-				map.put("energyProvider", energyProvider.getItemText(energyProvider.getSelectedIndex()));
-//				stuffToServer.add(daytimeUsage.getText());
-				map.put("dayTimeUsage", daytimeUsage.getText());
-//				stuffToServer.add(tiltAngle.getText());
-				map.put("tiltAngle", tiltAngle.getText());
-//				stuffToServer.add(panDirection.getText());
-				map.put("panelDirection", panDirection.getText());
-//				stuffToServer.add(initInstalCost.getText());
-				map.put("initialInstallCost", initInstalCost.getText());
-//				stuffToServer.add(interestRate.getText());
-				map.put("interestRate", interestRate.getText());
+				
 				
 				boolean toSend = true;
 				
-				/*
-				for (String s : stuffToServer) {
-					if (FieldVerifier.isNull(s) || FieldVerifier.isEmpty(s.toString())) {
+				
+				
+				
+					/*if (FieldVerifier.isNull(s) || FieldVerifier.isEmpty(s.toString())) {
 						errorLabel.setText("Error, a field is empty");
 						toSend = false;
 						return;
-					}
-				}
+					}*/
 				
-				if (!FieldVerifier.containsNum(interestRate.getText())) {
+				//TODO improve validation and add exceptions and exception handling.
+				
+				if (!FieldVerifier.containsNum(interestRate.getText()) || FieldVerifier.isEmpty(interestRate.getText())) {
 					errorLabel.setText("No letter in the interest rate field.");
 					toSend = false;
 					errorLabel.setVisible(true);
 				}
 				
-				if (!FieldVerifier.containsNum(initInstalCost.getText())) {
+				if (!FieldVerifier.containsNum(initInstalCost.getText()) || FieldVerifier.isEmpty(initInstalCost.getText())) {
 					errorLabel.setText("No letter in the initial install cost field.");
 					toSend = false;
 					errorLabel.setVisible(true);
 				}
 				
-				if (!FieldVerifier.containsNum(postcode.getText())) {
+				if (!FieldVerifier.containsNum(postcode.getText()) || FieldVerifier.isEmpty(postcode.getText())) {
 					errorLabel.setText("No letters in the postcode field.");
 					toSend = false;
 					errorLabel.setVisible(true);
 				}
 				
-				if (!FieldVerifier.containsNum(panDirection.getText())) {
+				if (!FieldVerifier.containsNum(panDirection.getText()) || FieldVerifier.isEmpty(panDirection.getText())) {
 					errorLabel.setText("No letter in the Roof Dirction field.");
 					toSend = false;
 					errorLabel.setVisible(true);
 				}
 				
-				if (!FieldVerifier.containsNum(tiltAngle.getText())) {
+				if (!FieldVerifier.containsNum(tiltAngle.getText()) || FieldVerifier.isEmpty(tiltAngle.getText())) {
 					errorLabel.setText("No letter in the roof tilt angle field.");
 					toSend = false;
 					errorLabel.setVisible(true);
 				}
 				
-				if (!FieldVerifier.containsNum(daytimeUsage.getText())) {
+				if (!FieldVerifier.containsNum(daytimeUsage.getText()) || FieldVerifier.isEmpty(daytimeUsage.getText())) {
 					errorLabel.setText("No letter in the Day time usage field.");
 					toSend = false;
 					errorLabel.setVisible(true);
 				}
 				
-				if (!FieldVerifier.containsNum(numPanels.getText())) {
+				if (!FieldVerifier.containsNum(numPanels.getText()) || FieldVerifier.isEmpty(numPanels.getText())) {
 					errorLabel.setText("No letters in the the Number of Panels field.");
 					errorLabel.setVisible(true);
 					toSend = false;
 				}
-				*/
+				
+				
 				if (toSend == true) {
+					HashMap<String, String> map = new HashMap<String, String>();
+					map.put("panelSelect", CellBrowserCreationPanel.CustomTreeModel.getSelectedItem().toString());
+					map.put("panelNumber", numPanels.getText());
+					map.put("postcode", postcode.getText());
+					map.put("inverterSelect", CellBrowserCreationInverter.CustomTreeModel.getSelectedItem().toString());
+					map.put("energyProvider", energyProvider.getItemText(energyProvider.getSelectedIndex()));
+					map.put("dayTimeUsage", daytimeUsage.getText());
+					map.put("tiltAngle", tiltAngle.getText());
+					map.put("panelDirection", panDirection.getText());
+					map.put("initialInstallCost", initInstalCost.getText());
+					map.put("interestRate", interestRate.getText());
+					
+					map.put("suburb", "STAFFORD");
 				// Then, we send the input to the server.
 				sendButton.setEnabled(false);
 				serverResponseLabel.setText("");
 
 				calcService.CalculationsServer(map,
 						new AsyncCallback<ArrayList<ArrayList<String>>>() {
-					
+						//TODO improve descriptions
 							public void onFailure(Throwable caught) {
-								System.out.println("chechpoint1");
 								// Show the RPC error message to the user
 								dialogBox
 										.setText("Connection with Server - Failure");
@@ -456,14 +455,16 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		
 	} // End onModuleLoad()
 	
-	
+	/**
+	 * This creates the lists for Panel, Inverter and Energy Providers selection.
+	 */
 	private void createLists() {
 		setupService
 				.SetupServer(new AsyncCallback<ArrayList<ArrayList<String>>>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("Failed");
+						Window.alert("Failed");//TODO improve description
 					}
 
 					@Override
@@ -507,20 +508,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 					    inverterBrowser.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
 					    // Add the browser to the root layout panel.
-					    //RootLayoutPanel.get().add(browser);
 					    inverterBrowserPan.add(inverterBrowser);
 					    inverterBrowser.setSize("450px", "200px");
-					    
-					    vertPan2.add(ellbw);
-					    ellbw.addClickHandler(new ClickHandler() {
-
-							@Override
-							public void onClick(ClickEvent event) {
-								
-								Window.alert("Panel selected is: " + CellBrowserCreationPanel.CustomTreeModel.getSelectedItem());
-							}
-							
-						});
 
 						for (int i = 0; i < array2.size(); i++) {
 							energyProvider.addItem(array2.get(i));
@@ -531,6 +520,10 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				});
 	}
 
+	/**
+	 * Generates the table filled with the output.
+	 * @param result the output to be inserted into the table.
+	 */
 	private void generatingOutput(ArrayList<ArrayList<String>> result) {
 
 		ArrayList<String> array0 = result.get(0);
@@ -574,7 +567,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	}
 	
 	private static class MyPopup extends PopupPanel {
-
 		public MyPopup() {
 	      // PopupPanel's constructor takes 'auto-hide' as its boolean parameter.
 	      // If this is set, the panel closes itself automatically when the user
@@ -584,18 +576,22 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	      // PopupPanel is a SimplePanel, so you have to set it's widget property to
 	      // whatever you want its contents to be.
 	      //setWidget(new Label(penis()));
-	      setWidget(makeGraph());
 	      //setWidget(makeGraph());
+	      setWidget(new HTML("<div id=\"chart_div\" style=\"width: 900px; height: 500px;\"></div>"));
+	      //drawChart();
 	      
 
 	    }//end MyPopup constructor
 		
+		public static native void drawChart() /*-{
+			google.setOnLoadCallback(drawChart);
+		}-*/;
 		
 		public static native String penis() /*-{
 			return 'penis';
 		}-*/;
 		
-		public static native Widget makeGraph() /*-{
+		public static native void makeGraph() /*-{
 			
 			google.load("visualization", "1", {
 				packages : [ "corechart" ]

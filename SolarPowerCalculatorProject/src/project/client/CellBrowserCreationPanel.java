@@ -3,6 +3,8 @@ package project.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import project.shared.CalcException;
+
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 
@@ -100,8 +102,17 @@ public class CellBrowserCreationPanel {
 		 */
 		private final static SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
 
-		public static String getSelectedItem() {
-			return selectionModel.getSelectedObject().toString();
+		//TODO add null exception handling.
+		public static String getSelectedItem() throws CalcException {
+			try {
+				return selectionModel.getSelectedObject().toString();
+			} catch (NullPointerException e) {
+				throw new CalcException("A Panel wasn't selected");
+			}
+		}
+		
+		public static void setSelectedItem(String object, boolean selected) {
+			selectionModel.setSelected(object, selected);
 		}
 		
 		public CustomTreeModel(ArrayList<String> inverterList, String cellTitle) {

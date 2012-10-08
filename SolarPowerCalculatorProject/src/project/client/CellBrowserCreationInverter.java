@@ -100,15 +100,20 @@ public class CellBrowserCreationInverter {
 		 */
 		private final static SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
 
+		//TODO add null exception handling
 		public static String getSelectedItem() {
 			return selectionModel.getSelectedObject().toString();
+		}
+		
+		public static void setSelectedItem(String object, boolean selected) {
+			selectionModel.setSelected(object, selected);
 		}
 		
 		public CustomTreeModel(ArrayList<String> inverterList, String cellTitle) {
 			// Create a database of information.
 			item = new ArrayList<Model>();
 				
-			// Add compositions by Conergy.
+			// Add models by Brands.
 			{
 				Model brandName = new Model(cellTitle);
 				item.add(brandName);

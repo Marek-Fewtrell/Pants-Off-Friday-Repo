@@ -9,6 +9,29 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+//function initialiseChart(){
+	google.load("visualization", "1", {packages : [ "corechart" ]});
+    
+//}
+
+function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+            [ 'Year', 'Yearly Savings', 'Investment Return' ],
+            [ '1', 712.06, 3347.2 ], [ '2', 1419.15, 3501.17 ],
+            [ '3', 2121.24, 3662.23 ], [ '4', 2818.35, 3830.69 ],
+            [ '5', 3510.48, 4006.9 ], [ '6', 4197.62, 4191.22 ],
+            [ '7', 4879.78, 4384.01 ], [ '8', 5556.95, 4585.68 ] ]);
+
+    var options = {
+        title : 'Company Performance'
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+}
+</script>
+<script type="text/javascript">google.setOnLoadCallback(drawChart);</script>
 
 <!--                                                               -->
 <!-- Consider inlining CSS to reduce the number of requested files -->

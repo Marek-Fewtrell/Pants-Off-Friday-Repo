@@ -20,18 +20,17 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 	
 	@Override
 	public ArrayList<ArrayList<String>> CalculationsServer(HashMap<String, String> asd) throws CalcException {
-		System.out.println("chechpoint2");
 		/*if (asd.isEmpty() || asd.get(0) == null || asd.get(0).isEmpty()) {
 			throw new CalcException("Stuff is null");
 		}*/
-		System.out.println("chechpoint3");
+		
 //		Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), Integer.parseInt(asd.get(2)), asd.get(3), asd.get(4), Double.parseDouble(asd.get(5)), 
 //				Integer.parseInt(asd.get(6)), Integer.parseInt(asd.get(7)), Integer.parseInt(asd.get(8)));
 		
 		
 		String panelNumber = asd.get("panelSelect");
 		int numberPanels = Integer.parseInt(asd.get("panelNumber"));
-		String suburb = asd.get("");
+		String suburb = asd.get("suburb");
 		String inverterNumber = asd.get("inverterSelect");
 		String energyCompany = asd.get("energyProvider");
 		double dailyUsage = Double.parseDouble(asd.get("dayTimeUsage"));
@@ -43,7 +42,6 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		
 		Calculations calcs = new Calculations(panelNumber, numberPanels, suburb, inverterNumber, energyCompany, 
 				dailyUsage, tilt, orientation);
-		System.out.println("chechpoint4");
 		
 		
 		/*Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), asd.get(2), asd.get(3), asd.get(4), 
@@ -62,9 +60,9 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		double[] savings = new double[20];
 		savings = calcs.getCumulativeSavings(20);
 		double[] investment = new double [20];
-		investment[0] = initInstallCost *(1+interestRate/100);
+		investment[0] = initInstallCost *(1 + interestRate / 100);
 		for(int i=1; i<investment.length; i++){
-			investment[i] = investment[i-1]*(1+interestRate/100);
+			investment[i] = investment[i - 1] * (1 + interestRate / 100);
 		}
 		
 		//Year

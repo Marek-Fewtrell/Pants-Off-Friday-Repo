@@ -209,6 +209,24 @@ public class CalculationsTest {
 				energyCompany, dailyUsage, tilt, 500, "test");
 	}
 	
+	//Test -300 == 60 
+	@Test
+	public void testOrientationAtNegThreeHundred() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+			energyCompany, dailyUsage, tilt, -300, "test");
+		assertTrue((test2.getOrientation()) == 60);
+	}
+	
+	
+	//Test 300 == 60
+	//should be -60 but everything is converted to positive values
+	@Test
+	public void testOrientationAtPosThreeHundred() throws CalcException {
+		Calculations test2 = new Calculations(panelNumber, numPanels, suburb, inverterNumber,
+			energyCompany, dailyUsage, tilt, 300, "test");
+		assertTrue((test2.getOrientation()) == 60);
+	}
+	
 	//
 	//Test the flat areas of the graph
 	//
@@ -267,6 +285,7 @@ public class CalculationsTest {
 				energyCompany, dailyUsage, 45, 170, "test");
 		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.5);
 	}
+	//idealTilt + 22 orientation 170 = 0.6 loss
 	//46
 	@Test
 	public void testOrientationAtFortySixByOneSeventy() throws CalcException{
@@ -357,6 +376,91 @@ public class CalculationsTest {
 				energyCompany, dailyUsage, 83, 80, "test");
 		assertTrue((test2.getOrientationEfficiencyLoss()) == 0.6);
 	}
+	
+	//Break even tests
+	@Test (expected = CalcException.class)
+	public void testBreakEvenNegativeInitialInvestment() throws CalcException{
+		test.getBreakEven(-500, 5);
+	}
+	
+	@Test (expected = CalcException.class)
+	public void testBreakEvenNegativeInterest() throws CalcException{
+		test.getBreakEven(500, -0.5);
+	}
+	
+	//Break even = 0 years
+	@Test
+	public void testBreakEvenZeroYears() throws CalcException{
+		assertTrue(test.getBreakEven(0, 0) == 0);
+	}
+	
+	@Test
+	public void testBreakEvenJustOverZeroYears() throws CalcException{
+		assertTrue(decForm.format(test.getBreakEven(8, 0)).equals("0.01"));
+	}
+	
+	//Break even = 0.5
+	@Test
+	public void testBreakHalfYear() throws CalcException{
+		assertTrue(decForm.format(test.getBreakEven(401, 0)).equals("0.5"));
+	}
+	//Break even = 0.99
+	@Test
+	public void testBreakAlmostOneYear() throws CalcException{
+		assertTrue(decForm.format(test.getBreakEven(801, 0)).equals("0.99"));
+	}
+	
+	//Break even = 1 year
+	@Test
+	public void testBreakEvenOneYear() throws CalcException{
+		assertTrue(test.getBreakEven(802, 0) == 1);
+	}
+	
+	//Break even = 1.01 
+	@Test
+	public void testBreakJustOverOneYear() throws CalcException{
+		assertTrue(decForm.format(test.getBreakEven(811, 0)).equals("1.01"));
+	}
+	
+	//Break even = 1.5 years
+	@Test public void testBreakEvenOneAndHalfYears() throws CalcException{
+		assertTrue(decForm.format(test.getBreakEven(1200, 0)).equals("1.5"));
+	}
+	
+	//Break even = 1.99
+	@Test
+	public void testBreakAlmostTwoYears() throws CalcException{
+		assertTrue(decForm.format(test.getBreakEven(1597, 0)).equals("1.99"));
+	}
+	
+	//Break even = 2 years
+	@Test
+	public void testBreakEvenTwoYears() throws CalcException{
+		assertTrue(test.getBreakEven(1598, 0) == 2);
+	}
+	
+	//Break even = 2.01
+	@Test
+	public void testBreakEvenJustOverTwoYears() throws CalcException{
+		assertTrue(decForm.format(test.getBreakEven(1607, 0)).equals("2.01"));
+	}
+
+	@Test
+	public void testNeverBreaksEven() throws CalcException{
+		assertTrue(test.getBreakEven(10000, 10) == -5);
+	}
+	
+	@Test
+	public void testBreaksEvenThenFallsBelowInvestment() throws CalcException{
+		assertTrue(test.getBreakEven(400, 25) == -5);
+	}
+/*"801.76"));
+assertTrue(decForm.format(savings[1]).equals("1597.91"));
+assertTrue(decForm.format(savings[2]).equals("2388.45"));
+assertTrue(decForm.format(savings[3]).equals("3173.37"));
+assertTrue(decForm.format(savings[4]).equals("3952.69"));
+assertTrue(decForm.format(savings[5]).equals("4726.39"));*/
+	
 	//-11 = 0.1 loss, -10 = 0 loss, -60 = 0.1 loss, -61 = 0.2 loss
 	//if orientation is -500 should throw calcExeption
 	//if orientation value is -300 should change the orientation value to +60 (statement in constructor) 

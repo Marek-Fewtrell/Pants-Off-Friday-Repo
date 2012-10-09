@@ -186,7 +186,6 @@ public class Calculations {
 			for(int i=0; i<366; i++){
 				saved = saved + this.getDailySavings((int)year);
 				invested = invested + (interestRate/100/DAYSPERYEAR)*invested;
-				System.out.println(invested);
 				if(saved < invested){
 					day = i + 1.0;
 				}	

@@ -24,13 +24,9 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 			throw new CalcException("Stuff is null");
 		}*/
 		
-//		Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), Integer.parseInt(asd.get(2)), asd.get(3), asd.get(4), Double.parseDouble(asd.get(5)), 
-//				Integer.parseInt(asd.get(6)), Integer.parseInt(asd.get(7)), Integer.parseInt(asd.get(8)));
-		
-		
 		String panelNumber = asd.get("panelSelect");
 		int numberPanels = Integer.parseInt(asd.get("panelNumber"));
-		String suburb = asd.get("suburb");
+		String postcode = asd.get("postcode");
 		String inverterNumber = asd.get("inverterSelect");
 		String energyCompany = asd.get("energyProvider");
 		double dailyUsage = Double.parseDouble(asd.get("dayTimeUsage"));
@@ -40,21 +36,17 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		double interestRate = Double.parseDouble(asd.get("interestRate"));
 		
 		
-		Calculations calcs = new Calculations(panelNumber, numberPanels, suburb, inverterNumber, energyCompany, 
+		Calculations calcs = new Calculations(panelNumber, numberPanels, postcode, inverterNumber, energyCompany, 
 				dailyUsage, tilt, orientation);
 		
-		
-		/*Calculations calcs = new Calculations(asd.get(0), Integer.parseInt(asd.get(1)), asd.get(2), asd.get(3), asd.get(4), 
-				Double.parseDouble(asd.get(5)), Integer.parseInt(asd.get(6)), Integer.parseInt((asd.get(7))));*/
-
 		DecimalFormat decForm = new DecimalFormat(decFormat);
 
-		ArrayList<String> array1 = new ArrayList<String>();//Year
-		ArrayList<String> array2 = new ArrayList<String>();//Daily Gen
-		ArrayList<String> array3 = new ArrayList<String>();//Yearly Gen
-		ArrayList<String> array4 = new ArrayList<String>();//Yearly Savings
-		ArrayList<String> array5 = new ArrayList<String>();//Invest Return
-		ArrayList<String> array6 = new ArrayList<String>();//Break even
+		ArrayList<String> yearlyArray = new ArrayList<String>();//Year
+		ArrayList<String> dailyGenResultArray = new ArrayList<String>();//Daily Gen
+		ArrayList<String> yearlyGenResultArray = new ArrayList<String>();//Yearly Gen
+		ArrayList<String> yearlySavingResultArray = new ArrayList<String>();//Yearly Savings
+		ArrayList<String> investReturnResultArray = new ArrayList<String>();//Invest Return
+		ArrayList<String> breakEvenArray = new ArrayList<String>();//Break even
 		ArrayList<ArrayList<String>> arrayOut = new ArrayList<ArrayList<String>>();
 		
 		double[] savings = new double[20];
@@ -67,34 +59,34 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		
 		//Year
 		for (int i = 1; i < savings.length + 1; i++) {
-			array1.add(Integer.toString(i));
+			yearlyArray.add(Integer.toString(i));
 		}
 		//Daily Generation
 		for(int i=0; i<savings.length; i++){
-			array2.add(decForm.format(calcs.getPowerGenerated(i)));
+			dailyGenResultArray.add(decForm.format(calcs.getPowerGenerated(i)));
 		}
 		//Yearly Generation
 		for(int i=0; i<savings.length; i++){
-			array3.add(decForm.format(calcs.getPowerGenerated(i)*365.25));
+			yearlyGenResultArray.add(decForm.format(calcs.getPowerGenerated(i)*365.25));
 		}
 		//Yearly Savings
 		for (int i=0; i<savings.length; i++){
-			array4.add(decForm.format(savings[i]));
+			yearlySavingResultArray.add(decForm.format(savings[i]));
 		}
 		//Investment Return
 		for(int i=0; i<investment.length; i++){
-			array5.add(decForm.format(investment[i]));
+			investReturnResultArray.add(decForm.format(investment[i]));
 		}
 		
 		
-		array6.add(decForm.format((calcs.getBreakEven(initInstallCost, interestRate))));
+		breakEvenArray.add(decForm.format((calcs.getBreakEven(initInstallCost, interestRate))));
 		
-		arrayOut.add(array1);
-		arrayOut.add(array2);
-		arrayOut.add(array3);
-		arrayOut.add(array4);
-		arrayOut.add(array5);
-		arrayOut.add(array6);
+		arrayOut.add(yearlyArray);
+		arrayOut.add(dailyGenResultArray);
+		arrayOut.add(yearlyGenResultArray);
+		arrayOut.add(yearlySavingResultArray);
+		arrayOut.add(investReturnResultArray);
+		arrayOut.add(breakEvenArray);
 		
 		return arrayOut;
 	}

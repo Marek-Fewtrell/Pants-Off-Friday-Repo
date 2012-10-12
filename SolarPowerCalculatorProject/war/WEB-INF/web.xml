@@ -11,6 +11,15 @@
 		<url-pattern>/CalculatorServlet</url-pattern>
 	</servlet-mapping>
 
+    <servlet>
+        <servlet-name>GuiAppServlet</servlet-name>
+        <servlet-class>project.server.GUIServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GuiAppServlet</servlet-name>
+        <url-pattern>/guiAppServlet</url-pattern>
+    </servlet-mapping>
+
 	<servlet>
 		<servlet-name>SolarPowerServletImpl</servlet-name>
 		<servlet-class>project.server.SolarPowerServiceImpl</servlet-class>

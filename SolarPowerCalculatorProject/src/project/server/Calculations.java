@@ -80,6 +80,58 @@ public class Calculations {
 		calcOrientationEfficiencyLoss();
 	}
 	
+	public Calculations(String panelNumber, int numberPanels, String suburb,
+			String inverterNumber, String energyCompany, double tariff11Usage, 
+			int days, int tilt, int orientation) throws CalcException{
+		if(numberPanels < 0){
+			throw new CalcException("Number of panels must be positive");
+		}
+		if(tariff11Usage < 0){
+			throw new CalcException("Daily usage must be positive");
+		}
+		if(days < 0){
+			throw new CalcException("Daily usage must be positive");
+		}
+		if((tilt < 0) || (tilt > 90)){
+			throw new CalcException("Tilt must be between 0 and 90 degrees");
+		}
+		if((orientation <= -360) || (orientation >= 360)){
+			throw new CalcException("Orientation must be between -360 and 360 degrees");
+		}
+
+		this.panelNumber = panelNumber;
+		this.inverterNumber = inverterNumber;
+		this.energyCompany = energyCompany;
+		inverter = new Inverter(inverterNumber);
+		panel = new SolarPanel(panelNumber);
+		sunData = new SunData(suburb);	
+		this.numberPanels = numberPanels;
+		systemPower = inverter.getPMax();
+		tariffs = new Tariffs(energyCompany, systemPower);
+		feedInTariff = tariffs.getFeedInTariff();
+		tariff11 = tariffs.getNormalTariff();
+		//changes system power if the total power of the solar panels
+		//is less than that of the inverter pMax
+		if(panel.getPMaxNOCT()*numberPanels < systemPower){
+			systemPower = panel.getPMaxNOCT()*numberPanels;
+		}
+			
+		
+		inverterEfficiency = inverter.getMaxEfficiency();
+		solarExposure = sunData.getSolarExposure();
+		calcDailyElectricityConsumption(tariff11Usage, days);
+		latitude = Math.abs(sunData.getLatitude());
+		this.tilt = tilt;
+		idealTilt = this.latitude * IDEALANGLEFACTOR;
+		this.orientation = Math.abs(orientation);
+		
+		//changes orientation angle to a number between 0 and 180
+		if(this.orientation > 180){
+			this.orientation = 360 - this.orientation;
+		}
+		calcOrientationEfficiencyLoss();
+	}
+	
 	//use year to adjust efficiency
 	public double getPowerGenerated(int year){			
 		//daily generation

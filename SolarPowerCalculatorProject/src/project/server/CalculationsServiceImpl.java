@@ -19,7 +19,7 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 	public static final String decFormat = "#.##";
 	
 	@Override
-	public ArrayList<ArrayList<String>> CalculationsServer(HashMap<String, String> asd) throws CalcException {
+	public ArrayList<ArrayList<String>> CalculationsServer(HashMap<String, String> asd, boolean use) throws CalcException {
 		/*if (asd.isEmpty() || asd.get(0) == null || asd.get(0).isEmpty()) {
 			throw new CalcException("Stuff is null");
 		}*/
@@ -34,11 +34,17 @@ public class CalculationsServiceImpl extends RemoteServiceServlet implements Cal
 		int orientation= Integer.parseInt(asd.get("panelDirection"));
 		double initInstallCost = Double.parseDouble(asd.get("initialInstallCost"));
 		double interestRate = Double.parseDouble(asd.get("interestRate"));
+		double tariff11Usage = Double.parseDouble(asd.get("tarrif11usage"));
+		int days = Integer.parseInt(asd.get("days"));
 		
-		
-		Calculations calcs = new Calculations(panelNumber, numberPanels, postcode, inverterNumber, energyCompany, 
+		Calculations calcs = null;
+		if (use) {
+			calcs = new Calculations(panelNumber, numberPanels, postcode, inverterNumber, energyCompany, 
 				dailyUsage, tilt, orientation);
-		
+		} else if (use == false){
+			calcs = new Calculations(panelNumber, numberPanels, postcode, inverterNumber, energyCompany, 
+					tariff11Usage, days, tilt, orientation);
+		}
 		DecimalFormat decForm = new DecimalFormat(decFormat);
 
 		ArrayList<String> yearlyArray = new ArrayList<String>();//Year

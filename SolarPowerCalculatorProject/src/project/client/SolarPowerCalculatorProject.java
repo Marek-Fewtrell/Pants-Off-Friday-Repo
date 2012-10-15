@@ -13,6 +13,10 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
@@ -24,6 +28,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -72,6 +77,14 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	final ListBox panelSelect = new ListBox();
 	final ListBox inverterSelect = new ListBox();
 	final TextBox daytimeUsage = new TextBox();
+	
+	final TextBox tarrif11Usage = new TextBox();
+	final TextBox billingPeriod = new TextBox();
+
+	final Label choice = new Label("Click to specify");
+	final RadioButton radioDayTimeUsage = new RadioButton("myRadioGroup", "Day time usage.");
+	final RadioButton radioTarrifBilling = new RadioButton("myRadioGroup", "Tarrif 11 price and billing period.");
+	
 	final TextBox postcode = new TextBox();
 	final ListBox energyProvider = new ListBox();
 	final TextBox initInstalCost = new TextBox();
@@ -99,11 +112,18 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	// Contains calcMainInputArea and calcOutputArea
 	final VerticalPanel mainArea = new VerticalPanel();
 
+	CellBrowser panelBrowser;
+	CellBrowser inverterBrowser;
+	
 	// Labels for the inputs
 	final Label lblNumPanels = new Label();
 	final Label lblPanelSelect = new Label();
 	final Label lblInverterSelect = new Label();
 	final Label lblDayTimeUsage = new Label();
+	
+	final Label lblTarrif11Usage = new Label();
+	final Label lblbillingPeriod = new Label();
+	
 	final Label lblPostcode = new Label();
 	final Label lblEnergyProvider = new Label();
 	final Label lblInitInstalCost = new Label();
@@ -125,20 +145,20 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {// TODO split up into methods and what not
-
+		
 		class UpdatingHandler implements ChangeHandler {
-			@SuppressWarnings("unused")
 			private void asyncOutput() {
 
 			}
 
 			@Override
 			public void onChange(ChangeEvent event) {
-				// asyncOutput();
+				
 			}
 		}
 
 		UpdatingHandler hadle = new UpdatingHandler();
+		
 
 		// Number of Panel Selection
 		numPanels.addChangeHandler(hadle);
@@ -166,12 +186,52 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		vertPan.add(energyProvider);
 		lblEnergyProvider.setText("Select Energy Provider: ");
 
+		radioDayTimeUsage.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				if (radioDayTimeUsage.getValue() == true) {
+					daytimeUsage.setVisible(true);
+					tarrif11Usage.setVisible(false);
+					lblbillingPeriod.setVisible(false);
+					billingPeriod.setVisible(false);
+				}
+			}
+		});
+		vertPan.add(radioDayTimeUsage);
 		// Day Time Usage
-		daytimeUsage.addChangeHandler(hadle);
 		vertPan.add(lblDayTimeUsage);
 		vertPan.add(daytimeUsage);
 		lblDayTimeUsage.setText("Day time Electricity usage (kW): ");
-
+		lblDayTimeUsage.setVisible(false);
+		daytimeUsage.setVisible(false);
+		
+		radioTarrifBilling.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				if (radioTarrifBilling.getValue() == true) {
+					tarrif11Usage.setVisible(true);
+					lblbillingPeriod.setVisible(true);
+					billingPeriod.setVisible(true);
+					daytimeUsage.setVisible(false);
+				}
+			}
+		});
+		vertPan.add(radioTarrifBilling);
+		//Tarrif 11 usage
+		vertPan.add(lblTarrif11Usage);
+		vertPan.add(tarrif11Usage);
+		lblTarrif11Usage.setText("Tarrif 11 usage (kW/h): ");
+		lblTarrif11Usage.setVisible(false);
+		tarrif11Usage.setVisible(false);
+		
+		//Billing Period
+		vertPan.add(lblbillingPeriod);
+		vertPan.add(billingPeriod);
+		lblbillingPeriod.setText("Billing period (days): ");
+		lblbillingPeriod.setVisible(false);
+		billingPeriod.setVisible(false);
+		
 		// Tilt Angle
 		tiltAngle.addChangeHandler(hadle);
 		vertPan2.add(lbltiltAngle);
@@ -205,17 +265,18 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 		// Sample data stuff
 		lblAutoFill.setText("Insert a selection of sample data");
-		vertPan.add(lblAutoFill);
-		vertPan.add(autoFill);
+		vertPan2.add(lblAutoFill);
+		vertPan2.add(autoFill);
 
-		vertPan.add(sendButton);
-		vertPan.add(errorLabel);
+		vertPan2.add(sendButton);
+		vertPan2.add(errorLabel);
 
 		autoFill.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				numPanels.setText("8");
 				daytimeUsage.setText("10");
+				radioDayTimeUsage.setValue(true, true);
 				postcode.setText("4053");
 				initInstalCost.setText("3200");
 				interestRate.setText("4.6");
@@ -381,13 +442,13 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 					errorLabel.setVisible(true);
 				}
 
-				if (!FieldVerifier.containsNum(daytimeUsage.getText())
+				/*if (!FieldVerifier.containsNum(daytimeUsage.getText())
 						|| FieldVerifier.isEmpty(daytimeUsage.getText())) {
 					errorLabel
 							.setText("No letter in the Day time usage field.");
 					toSend = false;
 					errorLabel.setVisible(true);
-				}
+				}*/
 
 				if (!FieldVerifier.containsNum(numPanels.getText())
 						|| FieldVerifier.isEmpty(numPanels.getText())) {
@@ -397,6 +458,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 					toSend = false;
 				}
 
+				
+				
 				if (toSend == true) {
 					HashMap<String, String> map = new HashMap<String, String>();
 					map.put("panelSelect",
@@ -414,12 +477,22 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 					map.put("panelDirection", panDirection.getText());
 					map.put("initialInstallCost", initInstalCost.getText());
 					map.put("interestRate", interestRate.getText());
-
+					map.put("tarrif11usage", tarrif11Usage.getText());
+					map.put("days", billingPeriod.getText());
+					
 					// Then, we send the input to the server.
-					sendButton.setEnabled(false);
+					//sendButton.setEnabled(false);
 					serverResponseLabel.setText("");
 
-					calcService.CalculationsServer(map,
+					boolean use1Calc = true;
+					if (daytimeUsage.getText() == "") {
+						daytimeUsage.setText("-1");
+						use1Calc = false;
+					} else {
+						tarrif11Usage.setText("-1");
+						billingPeriod.setText("-1");
+					}
+					calcService.CalculationsServer(map, use1Calc,
 							new AsyncCallback<ArrayList<ArrayList<String>>>() {
 								// TODO improve descriptions
 								public void onFailure(Throwable caught) {
@@ -487,13 +560,17 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 						 * node. The default value will be passed to
 						 * CustomTreeModel#getNodeInfo();
 						 */
-						CellBrowser panelBrowser = new CellBrowser(panelModel,
+						panelBrowser = new CellBrowser(panelModel,
 								null);
 						panelBrowser
 								.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 						// RootLayoutPanel.get().add(panelBrowser);
 						panelBrowserPan.add(panelBrowser);
 						panelBrowser.setSize("450px", "200px");
+						panelBrowser.setMinimumColumnWidth(150);
+						panelBrowser.setDefaultColumnWidth(150);
+						
+						//panelBrowser.getRootTreeNode().setChildOpen(0, true);
 
 						/*
 						 * Inverter creation
@@ -509,7 +586,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 						 * CustomTreeModel#getNodeInfo();
 						 */
 
-						final CellBrowser inverterBrowser = new CellBrowser(
+						inverterBrowser = new CellBrowser(
 								inverterModel, null);
 						inverterBrowser
 								.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
@@ -517,6 +594,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 						// Add the browser to the root layout panel.
 						inverterBrowserPan.add(inverterBrowser);
 						inverterBrowser.setSize("450px", "200px");
+						inverterBrowser.setMinimumColumnWidth(150);
+						inverterBrowser.setDefaultColumnWidth(150);
 
 						for (int i = 0; i < array2.size(); i++) {
 							energyProvider.addItem(array2.get(i));
@@ -541,6 +620,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		ArrayList<String> yearlySavingResultArray = result.get(3);
 		ArrayList<String> investReturnResultArray = result.get(4);
 		ArrayList<String> breakEvenArray = result.get(5);
+		
+		
 		
 		data = com.google.gwt.visualization.client.DataTable.create();
 
@@ -660,7 +741,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		};
 	}
 
-	public com.google.gwt.visualization.client.DataTable data;
+	public static com.google.gwt.visualization.client.DataTable data;
 	
 	private AbstractDataTable createTable() {
 		/*data = com.google.gwt.visualization.client.DataTable

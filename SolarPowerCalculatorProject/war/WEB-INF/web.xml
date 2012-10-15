@@ -12,12 +12,21 @@
 	</servlet-mapping>
 
     <servlet>
-        <servlet-name>GuiAppServlet</servlet-name>
-        <servlet-class>project.server.GUIServlet</servlet-class>
+        <servlet-name>GuiAppCalcServlet</servlet-name>
+        <servlet-class>project.server.CalcGUIServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GuiAppServlet</servlet-name>
-        <url-pattern>/guiAppServlet</url-pattern>
+        <servlet-name>GuiAppCalcServlet</servlet-name>
+        <url-pattern>/guiAppCalcServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>GuiAppPopulateServlet</servlet-name>
+        <servlet-class>project.server.PopulateGUIServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GuiAppPopulateServlet</servlet-name>
+        <url-pattern>/guiAppPopulateServlet</url-pattern>
     </servlet-mapping>
 
 	<servlet>

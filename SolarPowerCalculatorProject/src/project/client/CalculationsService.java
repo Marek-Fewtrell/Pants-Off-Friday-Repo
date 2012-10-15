@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("calcServ")
 public interface CalculationsService extends RemoteService {
-	ArrayList<ArrayList<String>> CalculationsServer(HashMap<String, String> asd) throws IllegalArgumentException, CalcException;
+	ArrayList<ArrayList<String>> CalculationsServer(HashMap<String, String> asd, boolean use) throws IllegalArgumentException, CalcException;
+	
 }
 

@@ -7,6 +7,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 public interface CalculationsServiceAsync {
-	void CalculationsServer(HashMap<String, String> stuffToServer, AsyncCallback<ArrayList<ArrayList<String>>> callback)
+	void CalculationsServer(HashMap<String, String> stuffToServer, boolean use, AsyncCallback<ArrayList<ArrayList<String>>> callback)
 			throws IllegalArgumentException;
 }

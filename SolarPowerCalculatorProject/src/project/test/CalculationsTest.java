@@ -72,18 +72,19 @@ public class CalculationsTest {
 
 	@Test
 	public void testGetDailySavingsYearTen(){
-		assertTrue(decForm.format(test.getDailySavings(10)).equals("2.06"));
+		assertTrue(decForm.format(test.getDailySavings(10)).equals("3.6"));
 	}
 	
 	@Test
 	public void testGetCumulativeSavings(){
 		double[] savings = test.getCumulativeSavings(20);
 		assertTrue(decForm.format(savings[0]).equals("801.76"));
-		assertTrue(decForm.format(savings[1]).equals("1597.91"));
-		assertTrue(decForm.format(savings[2]).equals("2388.45"));
-		assertTrue(decForm.format(savings[3]).equals("3173.37"));
-		assertTrue(decForm.format(savings[4]).equals("3952.69"));
-		assertTrue(decForm.format(savings[5]).equals("4726.39"));
+		assertTrue(decForm.format(savings[1]).equals("1664.23"));
+		assertTrue(decForm.format(savings[2]).equals("2586.47"));
+		assertTrue(decForm.format(savings[3]).equals("3567.55"));
+		assertTrue(decForm.format(savings[4]).equals("4606.53"));
+		assertTrue(decForm.format(savings[5]).equals("5702.47"));
+		
 	}
 	
 	@Test 
@@ -407,7 +408,7 @@ public class CalculationsTest {
 	//Break even = 0.99
 	@Test
 	public void testBreakAlmostOneYear() throws CalcException{
-		assertTrue(decForm.format(test.getBreakEven(801, 0)).equals("0.99"));
+		assertTrue(decForm.format(test.getBreakEven(797, 0)).equals("0.99"));
 	}
 	
 	//Break even = 1 year
@@ -424,27 +425,33 @@ public class CalculationsTest {
 	
 	//Break even = 1.5 years
 	@Test public void testBreakEvenOneAndHalfYears() throws CalcException{
-		assertTrue(decForm.format(test.getBreakEven(1200, 0)).equals("1.5"));
+		assertTrue(decForm.format(test.getBreakEven(1232, 0)).equals("1.5"));
 	}
 	
 	//Break even = 1.99
 	@Test
 	public void testBreakAlmostTwoYears() throws CalcException{
-		assertTrue(decForm.format(test.getBreakEven(1597, 0)).equals("1.99"));
+		assertTrue(decForm.format(test.getBreakEven(1660, 0)).equals("1.99"));
 	}
 	
 	//Break even = 2 years
 	@Test
 	public void testBreakEvenTwoYears() throws CalcException{
-		assertTrue(test.getBreakEven(1598, 0) == 2);
+		assertTrue(test.getBreakEven(1665, 0) == 2);
 	}
 	
 	//Break even = 2.01
 	@Test
 	public void testBreakEvenJustOverTwoYears() throws CalcException{
-		assertTrue(decForm.format(test.getBreakEven(1607, 0)).equals("2.01"));
+		assertTrue(decForm.format(test.getBreakEven(1673, 0)).equals("2.01"));
 	}
 
+	//Break even = 2.5
+	@Test
+	public void testBreakEvenTwoAndHalfYears() throws CalcException{
+		assertTrue(decForm.format(test.getBreakEven(2125, 0)).equals("2.5"));
+	}
+	
 	@Test
 	public void testNeverBreaksEven() throws CalcException{
 		assertTrue(test.getBreakEven(10000, 10) == -5);

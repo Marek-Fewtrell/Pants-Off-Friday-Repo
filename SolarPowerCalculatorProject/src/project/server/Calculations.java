@@ -29,6 +29,7 @@ public class Calculations {
 	private static double YEARLYEFFICIENCYLOSS = 0.007;
 	private static double IDEALANGLEFACTOR = 0.87; //qld
 	private double idealTilt;
+	private static double ANNUALTARIFFINCREASE = 0.0833;
 
 	
 	
@@ -145,11 +146,12 @@ public class Calculations {
 		//in dollars
 		double power = this.getPowerGenerated(year);
 		if(replacementGeneration < power){
-			dailySavings = replacementGeneration * tariff11 + 
-				(power - replacementGeneration)
-				* feedInTariff;
+			dailySavings = replacementGeneration * tariff11 * 
+					(1 + ANNUALTARIFFINCREASE * (year - 1)) + 
+					(power - replacementGeneration)	* feedInTariff;
 		}else{
-			dailySavings = power * tariff11;
+			dailySavings = power * tariff11 * 
+					(1 + ANNUALTARIFFINCREASE * (year - 1));
 		}
 		return dailySavings;
 	}
@@ -236,7 +238,7 @@ public class Calculations {
 			double day = 0;
 			//find what day the investment breaks even 
 			for(int i=0; i<366; i++){
-				saved = saved + this.getDailySavings((int)year);
+				saved = saved + this.getDailySavings((int)year + 1);
 				invested = invested + (interestRate/100/DAYSPERYEAR)*invested;
 				if(saved < invested){
 					day = i + 1.0;

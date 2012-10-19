@@ -60,8 +60,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	 * Create a remote service proxy to talk to the server-side services.
 	 */
 
-	// private final SolarPowerServiceAsync solarPowerService =
-	// GWT.create(SolarPowerService.class);
 	// This creates the remote async service proxy for communication with the
 	// server-side calculations service.
 	private final CalculationsServiceAsync calcService = GWT
@@ -83,7 +81,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 	final Label choice = new Label("Click to specify");
 	final RadioButton radioDayTimeUsage = new RadioButton("myRadioGroup", "Day time usage.");
-	final RadioButton radioTarrifBilling = new RadioButton("myRadioGroup", "Tarrif 11 price and billing period.");
+	final RadioButton radioTarrifBilling = new RadioButton("myRadioGroup", "Tarrif 11 usage and billing period.");
 	
 	final TextBox postcode = new TextBox();
 	final ListBox energyProvider = new ListBox();
@@ -136,7 +134,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	// output info.
 	final ScrollPanel outputstuf = new ScrollPanel();
 	final FlexTable generatedTable = new FlexTable();
-	static LineChart lineChart;
+	static LineChart lineChart = null;
 
 	final Button autoFill = new Button("Sample Data");
 	final Label lblAutoFill = new Label();
@@ -147,13 +145,9 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	public void onModuleLoad() {// TODO split up into methods and what not
 		
 		class UpdatingHandler implements ChangeHandler {
-			private void asyncOutput() {
-
-			}
-
 			@Override
 			public void onChange(ChangeEvent event) {
-				
+				sendButton.setEnabled(true);
 			}
 		}
 
@@ -191,10 +185,12 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
 				if (radioDayTimeUsage.getValue() == true) {
+					lblDayTimeUsage.setVisible(true);
 					daytimeUsage.setVisible(true);
 					tarrif11Usage.setVisible(false);
 					lblbillingPeriod.setVisible(false);
 					billingPeriod.setVisible(false);
+					lblTarrif11Usage.setVisible(false);
 				}
 			}
 		});
@@ -205,15 +201,18 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		lblDayTimeUsage.setText("Day time Electricity usage (kW): ");
 		lblDayTimeUsage.setVisible(false);
 		daytimeUsage.setVisible(false);
+		daytimeUsage.addChangeHandler(hadle);
 		
 		radioTarrifBilling.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
 				if (radioTarrifBilling.getValue() == true) {
+					lblTarrif11Usage.setVisible(true);
 					tarrif11Usage.setVisible(true);
 					lblbillingPeriod.setVisible(true);
 					billingPeriod.setVisible(true);
 					daytimeUsage.setVisible(false);
+					lblDayTimeUsage.setVisible(false);
 				}
 			}
 		});
@@ -224,6 +223,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		lblTarrif11Usage.setText("Tarrif 11 usage (kW/h): ");
 		lblTarrif11Usage.setVisible(false);
 		tarrif11Usage.setVisible(false);
+		tarrif11Usage.addChangeHandler(hadle);
 		
 		//Billing Period
 		vertPan.add(lblbillingPeriod);
@@ -231,6 +231,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		lblbillingPeriod.setText("Billing period (days): ");
 		lblbillingPeriod.setVisible(false);
 		billingPeriod.setVisible(false);
+		billingPeriod.addChangeHandler(hadle);
 		
 		// Tilt Angle
 		tiltAngle.addChangeHandler(hadle);
@@ -298,6 +299,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		mainArea.add(calcOutputArea);
 
 		calcOutputArea.add(lblbreakeven);
+//		calcOutputArea.add(lineChart);
 
 		// **Start output table**
 		outputstuf.add(generatedTable);
@@ -368,7 +370,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			}
 		});
 
-		// Create a handler for the sendButton and nameField
+		// Create a handler for the sendButton
 		class MyHandler implements ClickHandler {
 			/**
 			 * Fired when the user clicks on the sendButton.
@@ -461,6 +463,18 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 				
 				
 				if (toSend == true) {
+					boolean use1Calc = true;
+					if (daytimeUsage.getText().isEmpty()) {
+						daytimeUsage.setText("-1");
+						use1Calc = false;
+					} else if (daytimeUsage.getText() == "-1") {
+						use1Calc = false;
+					} else if (!daytimeUsage.getText().isEmpty()) {
+						tarrif11Usage.setText("-1");
+						billingPeriod.setText("-1");
+						
+					}
+					
 					HashMap<String, String> map = new HashMap<String, String>();
 					map.put("panelSelect",
 							CellBrowserCreationPanel.CustomTreeModel
@@ -481,17 +495,10 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 					map.put("days", billingPeriod.getText());
 					
 					// Then, we send the input to the server.
-					//sendButton.setEnabled(false);
+					sendButton.setEnabled(false);
 					serverResponseLabel.setText("");
 
-					boolean use1Calc = true;
-					if (daytimeUsage.getText() == "") {
-						daytimeUsage.setText("-1");
-						use1Calc = false;
-					} else {
-						tarrif11Usage.setText("-1");
-						billingPeriod.setText("-1");
-					}
+					
 					calcService.CalculationsServer(map, use1Calc,
 							new AsyncCallback<ArrayList<ArrayList<String>>>() {
 								// TODO improve descriptions
@@ -519,10 +526,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			}
 		}
 
-		// Add a handler to send the name to the server
-		MyHandler handler = new MyHandler();
-		sendButton.addClickHandler(handler);
-		// nameField.addKeyUpHandler(handler);
+		// Add a handler to send the options to the server
+		sendButton.addClickHandler(new MyHandler());
 
 
 	} // End onModuleLoad()
@@ -537,15 +542,14 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("Failed");// TODO improve description
+						Window.alert("Sorry, an error occured while loading. Please trying refreashing.");
 					}
 
 					@Override
 					public void onSuccess(ArrayList<ArrayList<String>> result) {
 						ArrayList<String> array0 = result.get(0);// Panel
 						ArrayList<String> array1 = result.get(1);// Inverter
-						ArrayList<String> array2 = result.get(2);// Energy
-																	// Provider
+						ArrayList<String> array2 = result.get(2);// Energy Provider
 
 						/*
 						 * Panel creation
@@ -622,7 +626,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		ArrayList<String> breakEvenArray = result.get(5);
 		
 		
-		
+		data = null;
 		data = com.google.gwt.visualization.client.DataTable.create();
 
 		data.addColumn(ColumnType.STRING, "Solar Panel Return");
@@ -665,7 +669,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			lblbreakeven.setText("Break Even: " + breakEvenArray.get(0).toString()
 					+ " yrs");
 		}
-
 		createGraph();
 
 	}
@@ -678,8 +681,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 				// Create a pie chart visualization.
 				lineChart = new LineChart(createTable(), createOptions());
-
-				//lineChart.addSelectHandler(createSelectHandler(lineChart));
+				
 				calcOutputArea.add(lineChart);
 			}
 		};
@@ -744,33 +746,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	public static com.google.gwt.visualization.client.DataTable data;
 	
 	private AbstractDataTable createTable() {
-		/*data = com.google.gwt.visualization.client.DataTable
-				.create();
-
-		data.addColumn(ColumnType.STRING, "Solar Panel Return");
-		data.addColumn(ColumnType.NUMBER, "Investment Return");
-		data.addColumn(ColumnType.NUMBER, "Yearly Savings");
-		data.addRows(5);
-		// data.setValue(0, 0, "1");
-		// data.setValue(0, 1, 14);
-		// data.setValue(1, 0, "2");
-		// data.setValue(1, 1, 0);
-		// data.setValue(2, 0, "4");
-		// data.setValue(2, 1, 18);
-		Random rand = new Random();
-		int amount = 0;
-		for (int i = 0; i < 5; i++) {
-			amount = rand.nextInt(50);
-			data.setValue(i, 0, Integer.toString(i));
-			data.setValue(i, 1, amount);
-
-		}
-
-		for (int i = 0; i < 5; i++) {
-			amount = rand.nextInt(50);
-			data.setValue(i, 2, amount);
-
-		}*/
 		return data;
 	}
 

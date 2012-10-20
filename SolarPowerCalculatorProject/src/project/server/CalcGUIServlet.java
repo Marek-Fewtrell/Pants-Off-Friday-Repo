@@ -25,18 +25,6 @@ public class CalcGUIServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest request, 
 	        HttpServletResponse response) throws ServletException, IOException {
-		//request.getAttribute("input1");
-		
-//		String panelNumber = "REC215PE";//request.getParameter("panelNum").toString();
-//    	Integer numberPanels = 8;//Integer.parseInt(request.getParameter("numPanel").toString());
-//    	String postcode = "4053";//request.getParameter("postcode").toString();
-//    	String inverterNumber = "1.5kTL";//request.getParameter("invNum").toString();
-//    	String energyCompany = "Click Energy";//request.getParameter("energyComp").toString();
-//    	Double dailyUsage = 12.3;//Double.parseDouble(request.getParameter("dailyUsage").toString());
-//    	Integer tilt = 12;//Integer.parseInt(request.getParameter("tilt").toString());
-//    	Integer orientation = 12;//Integer.parseInt(request.getParameter("orientation").toString());
-//    	Integer initInstallCost = 1000;//Integer.parseInt(request.getParameter("initInstalCost").toString());
-//    	Integer interestRate = 1;
 
 		String panelNumber = request.getParameter("panelNum").toString();
     	Integer numberPanels = Integer.parseInt(request.getParameter("numPanel").toString());
@@ -56,15 +44,12 @@ public class CalcGUIServlet extends HttpServlet {
 		String investReturnResultArray = new String("investReturnResultArray");//Invest Return
 		String breakEvenArray = new String("breakEvenArray");//Break even
 		
-		//.........
 		try {
 			Calculations calcs = new Calculations(panelNumber, numberPanels, postcode, inverterNumber, energyCompany, 
 							dailyUsage, tilt, orientation);
 			
 			DecimalFormat decForm = new DecimalFormat(decFormat);
 
-			
-			
 			double[] savings = new double[20];
 			savings = calcs.getCumulativeSavings(20);
 			double[] investment = new double [20];
@@ -75,34 +60,34 @@ public class CalcGUIServlet extends HttpServlet {
 			
 			//Year
 			for (int i = 1; i < savings.length + 1; i++) {
-				yearlyArray += (Integer.toString(i));
+				yearlyArray += ("," + Integer.toString(i));
 			}
 			//Daily Generation
 			for(int i=0; i<savings.length; i++){
-				dailyGenResultArray += (decForm.format(calcs.getPowerGenerated(i)));
+				dailyGenResultArray += ("," + decForm.format(calcs.getPowerGenerated(i)));
 			}
 			//Yearly Generation
 			for(int i=0; i<savings.length; i++){
-				yearlyGenResultArray +=(decForm.format(calcs.getPowerGenerated(i)*365.25));
+				yearlyGenResultArray +=("," + decForm.format(calcs.getPowerGenerated(i)*365.25));
 			}
 			//Yearly Savings
 			for (int i=0; i<savings.length; i++){
-				yearlySavingResultArray += (decForm.format(savings[i]));
+				yearlySavingResultArray += ("," + decForm.format(savings[i]));
 			}
 			//Investment Return
 			for(int i=0; i<investment.length; i++){
-				investReturnResultArray += (decForm.format(investment[i]));
+				investReturnResultArray += ("," + decForm.format(investment[i]));
 			}
 			
 			
-			breakEvenArray += (decForm.format((calcs.getBreakEven(initInstallCost, interestRate))));
+			breakEvenArray += ("," + decForm.format((calcs.getBreakEven(initInstallCost, interestRate))));
 			
 		} catch (CalcException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		//response.setContentType("text/plain");
+		response.setContentType("text/plain");
 		response.getWriter().println(yearlyArray);
 		response.getWriter().println(dailyGenResultArray);
 		response.getWriter().println(yearlyGenResultArray);

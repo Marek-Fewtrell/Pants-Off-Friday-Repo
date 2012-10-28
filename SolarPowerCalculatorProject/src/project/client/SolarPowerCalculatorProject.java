@@ -23,6 +23,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -129,15 +130,21 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	final Label lbltiltAngle = new Label();
 	final Label lblpanDirection = new Label();
 	final Label lblbreakeven = new Label();
+	
+	final Label lblsendButtonClicked = new Label("Change value to resend");
 
 	// Scroll Panels and the flextable which is incased and holds the generated
 	// output info.
 	final ScrollPanel outputstuf = new ScrollPanel();
 	final FlexTable generatedTable = new FlexTable();
 	static LineChart lineChart = null;
+	final VerticalPanel outputGraph = new VerticalPanel();
 
 	final Button autoFill = new Button("Sample Data");
 	final Label lblAutoFill = new Label();
+	
+//	DisclosurePanel disclaimerPan = new DisclosurePanel("Click for !!DISCLAIMER!!");
+//	Label lblDisclosure = new Label("This calculator is not 100% accurate all the time. But it is damn near close.");
 
 	/**
 	 * This is the entry point method.
@@ -153,7 +160,6 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 		UpdatingHandler hadle = new UpdatingHandler();
 		
-
 		// Number of Panel Selection
 		numPanels.addChangeHandler(hadle);
 		vertPan.add(lblNumPanels);
@@ -269,8 +275,11 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		vertPan2.add(lblAutoFill);
 		vertPan2.add(autoFill);
 
-		vertPan2.add(sendButton);
+		// Send button
 		vertPan2.add(errorLabel);
+		vertPan2.add(sendButton);
+		vertPan2.add(lblsendButtonClicked);
+		lblsendButtonClicked.setVisible(false);
 
 		autoFill.addClickHandler(new ClickHandler() {
 			@Override
@@ -294,7 +303,9 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		inputArea.add(vertPan2);
 
 		calcMainInputArea.add(inputArea);
-
+		
+//		disclaimerPan.add(lblDisclosure);
+//		mainArea.add(disclaimerPan);
 		mainArea.add(calcMainInputArea);
 		mainArea.add(calcOutputArea);
 
@@ -304,7 +315,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		// **Start output table**
 		outputstuf.add(generatedTable);
 		outputstuf.setAlwaysShowScrollBars(true);
-		outputstuf.setWidth("40%");
+		outputstuf.setWidth("45%");
 		calcOutputArea.add(outputstuf);
 
 		generatedTable.setCellPadding(6);
@@ -328,6 +339,10 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		generatedTable.setText(3, 0, "Yearly Savings");
 		generatedTable.setText(4, 0, "Investment Return");
 		// **End output table**
+		
+		calcOutputArea.add(outputGraph);
+		outputGraph.setHeight("500");
+		
 
 		// Add the Panel to the RootPanel
 		// Use RootPanel.get() to get the entire body element
@@ -365,8 +380,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		closeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				dialogBox.hide();
-				sendButton.setEnabled(true);
-				sendButton.setFocus(true);
+//				sendButton.setEnabled(true);
+//				sendButton.setFocus(true);
 			}
 		});
 
@@ -496,6 +511,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 					
 					// Then, we send the input to the server.
 					sendButton.setEnabled(false);
+					lblsendButtonClicked.setVisible(true);
 					serverResponseLabel.setText("");
 
 					
@@ -681,8 +697,8 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 				// Create a pie chart visualization.
 				lineChart = new LineChart(createTable(), createOptions());
-				
-				calcOutputArea.add(lineChart);
+				outputGraph.clear();
+				outputGraph.add(lineChart);
 			}
 		};
 
@@ -694,9 +710,9 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 	private com.google.gwt.visualization.client.visualizations.corechart.Options createOptions() {
 		Options options = Options.create();
-		options.setWidth(550);
-		options.setHeight(400);
-		options.setTitle("Predecited investment returns");
+		options.setWidth(700);
+		options.setHeight(440);
+		options.setTitle("Predicted investment returns");
 		return options;
 	}
 

@@ -11,5 +11,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="gwt-visualization.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marek/Dropbox/QUT/372 Agile Soft Dev/itext-5.3.3/itextpdf-5.3.3.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

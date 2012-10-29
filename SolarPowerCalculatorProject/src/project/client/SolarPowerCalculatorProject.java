@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -55,12 +56,14 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 			+ "attempting to contact the server. Please check your network "
 			+ "connection and try again.";
 
-	private static final String SERVER_SUCCESS = "Request processed succesfully. Results are now displayed.";
+	//private static final String SERVER_SUCCESS = "Request processed succesfully. Results are now displayed.";
 
 	/**
 	 * Create a remote service proxy to talk to the server-side services.
 	 */
 
+	
+	
 	// This creates the remote async service proxy for communication with the
 	// server-side calculations service.
 	private final CalculationsServiceAsync calcService = GWT
@@ -143,6 +146,25 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	final Button autoFill = new Button("Sample Data");
 	final Label lblAutoFill = new Label();
 	
+	final static HTML helpText = new HTML(
+			"Number of Panels: " + "Enter the total number of Solar Panels that are"
+	                + " going to be installed on the roof of your home. </br></br>"+ 
+			"Selecting a panel: " +"Select the Brand of your Panels and Select the corresponding Model of your Panels. </br></br>" +
+			"Selecting an inverter: " + "Select the Brand of your Inverter and Select the corresponding Model of your Inverter. </br></br>" +
+			"Selecting an energy provider: "+" Select your current Energy Provider from the"
+            + " list of available Companies. </br></br>" +
+			"selecting either day time usage or tarrif 11 usage and billing period: </br>" + "Enter your current average daily energy consumption"
+            + " in whole kiloWatts. OR Enter your tarrif 11 usage and the period of usage as found on your recent energy bill.</br></br>" +
+			"tilt angle: " + "Enter the known tilt angle of the panels"
+            + " on the roof, in whole degrees.</br></br>" +
+			"Roof direction: " + "Enter the known orientation of your roof"
+            + " in whole degrees deviation from Solar North. This value can"
+            + " be positive or negative. </br></br>" +
+			"postcode: " + "Enter the postcode you live in.</br>" +
+			"initial install cost: " + "Enter the initial cost of the Solar Panel"
+            + " installation in whole dollars.</br></br>"+
+			"interest rate: </br>");
+	
 //	DisclosurePanel disclaimerPan = new DisclosurePanel("Click for !!DISCLAIMER!!");
 //	Label lblDisclosure = new Label("This calculator is not 100% accurate all the time. But it is damn near close.");
 
@@ -150,6 +172,45 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {// TODO split up into methods and what not
+		
+		final Image helpImage = new Image("help_question_mark.gif");
+		helpImage.setAltText("Help Image");
+		
+		final DialogBox dialogBoxHelp = new DialogBox();
+		dialogBoxHelp.setWidth("500px");
+		dialogBoxHelp.setText("Help Request");
+		dialogBoxHelp.setAnimationEnabled(true);
+		final Button closeButtonHelp = new Button("Close");
+		// We can set the id of a widget by accessing its Element
+		closeButtonHelp.getElement().setId("closeButtonHelp");
+		final Label textHelpLabel = new Label("");
+		//final HTML serverResponseLabel = new HTML();
+		VerticalPanel dialogVPanelHelp = new VerticalPanel();
+		dialogVPanelHelp.addStyleName("dialogVPanel");
+		dialogVPanelHelp.add(new HTML("<b>Help Dialog</b>"));
+		dialogVPanelHelp.add(helpText);
+		//dialogVPanelHelp.add(new HTML("<br>Request Status</b>"));
+		dialogVPanelHelp.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+		dialogVPanelHelp.add(closeButtonHelp);
+		dialogBoxHelp.setWidget(dialogVPanelHelp);
+
+		// Add a handler to close the DialogBox
+		closeButtonHelp.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				dialogBoxHelp.hide();
+//				sendButton.setEnabled(true);
+//				sendButton.setFocus(true);
+			}
+		});
+		
+		// Create a handler for the help image
+		
+		helpImage.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				dialogBoxHelp.center();
+				//dialogBoxHelp.show();
+			}
+		});
 		
 		class UpdatingHandler implements ChangeHandler {
 			@Override
@@ -159,6 +220,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 		}
 
 		UpdatingHandler hadle = new UpdatingHandler();
+		
 		
 		// Number of Panel Selection
 		numPanels.addChangeHandler(hadle);
@@ -277,7 +339,9 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 
 		// Send button
 		vertPan2.add(errorLabel);
+		vertPan2.add(helpImage);
 		vertPan2.add(sendButton);
+		
 		vertPan2.add(lblsendButtonClicked);
 		lblsendButtonClicked.setVisible(false);
 
@@ -482,7 +546,7 @@ public class SolarPowerCalculatorProject implements EntryPoint {
 					if (daytimeUsage.getText().isEmpty()) {
 						daytimeUsage.setText("-1");
 						use1Calc = false;
-					} else if (daytimeUsage.getText() == "-1") {
+					} else if (daytimeUsage.getText() == "-1" || daytimeUsage.getText().isEmpty()) {
 						use1Calc = false;
 					} else if (!daytimeUsage.getText().isEmpty()) {
 						tarrif11Usage.setText("-1");
